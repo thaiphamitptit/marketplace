@@ -12,3 +12,21 @@ export class ErrorResponse extends Error {
     this.status = status
   }
 }
+
+/** 422 */
+export class ValidatorError extends ErrorResponse {
+  errors: object
+
+  constructor({
+    errors,
+    message = ReasonPhrases.UNPROCESSABLE_ENTITY,
+    status = StatusCodes.UNPROCESSABLE_ENTITY
+  }: {
+    errors: object
+    message?: string
+    status?: number
+  }) {
+    super(message, status)
+    this.errors = errors
+  }
+}
