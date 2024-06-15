@@ -2,7 +2,10 @@ const systemMessages = {
   INVALID_REQUEST: 'Invalid request',
   NOT_ALLOWED_ACCESS_RESOURCE: 'Not allowed access resource',
   USER_ALREADY_REGISTERED: 'User already registered',
-  REGISTER_SUCCESSFULLY: 'Register successfully'
+  USER_NOT_REGISTERED: 'User not registered',
+  EMAIL_OR_PASSWORD_IS_INCORRECT: 'Email or password is incorrect',
+  REGISTER_SUCCESSFULLY: 'Register successfully',
+  LOGIN_SUCCESSFULLY: 'Login successfully'
 } as const
 
 export default systemMessages

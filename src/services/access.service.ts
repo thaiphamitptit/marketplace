@@ -43,4 +43,47 @@ export default class AccessService {
       tokens
     }
   }
+
+  static login = async ({
+    email,
+    password,
+    refreshToken = null
+  }: {
+    email: string
+    password: string
+    refreshToken?: string | null
+  }) => {
+    const foundUser = await UserService.findUserByEmail({ email })
+    if (!foundUser) {
+      throw new BadRequestError(systemMessages.USER_NOT_REGISTERED)
+    }
+    const match = await bcrypt.compare(password, foundUser.password)
+    if (!match) {
+      throw new BadRequestError(systemMessages.EMAIL_OR_PASSWORD_IS_INCORRECT)
+    }
+    const { privateKey, publicKey } = generateKeyPairSync('rsa', {
+      modulusLength: 4096,
+      privateKeyEncoding: {
+        type: 'pkcs1',
+        format: 'pem'
+      },
+      publicKeyEncoding: {
+        type: 'pkcs1',
+        format: 'pem'
+      }
+    })
+    const { _id: userId } = foundUser
+    const tokens = await signTokenPair({ userId, email }, privateKey, publicKey)
+    await KeyTokenService.createKeyToken({
+      userId,
+      privateKey,
+      publicKey,
+      refreshToken: tokens.refreshToken
+    })
+
+    return {
+      user: foundUser,
+      tokens
+    }
+  }
 }

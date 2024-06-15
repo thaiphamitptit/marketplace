@@ -13,6 +13,21 @@ export default class KeyTokenService {
     publicKey: string
     refreshToken: string
   }) => {
-    return await keyTokenModel.create({ userId, privateKey, publicKey, refreshToken })
+    const filter = {
+      userId
+    }
+    const update = {
+      $set: {
+        userId,
+        privateKey,
+        publicKey,
+        refreshToken
+      }
+    }
+    const options = {
+      upsert: true,
+      new: true
+    }
+    return await keyTokenModel.findOneAndUpdate(filter, update, options)
   }
 }
