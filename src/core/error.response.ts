@@ -13,6 +13,20 @@ export class ErrorResponse extends Error {
   }
 }
 
+/** 400 */
+export class BadRequestError extends ErrorResponse {
+  constructor(message = ReasonPhrases.BAD_REQUEST as string, status = StatusCodes.BAD_REQUEST as number) {
+    super(message, status)
+  }
+}
+
+/** 403 */
+export class ForbiddenError extends ErrorResponse {
+  constructor(message = ReasonPhrases.FORBIDDEN as string, status = StatusCodes.FORBIDDEN as number) {
+    super(message, status)
+  }
+}
+
 /** 422 */
 export class ValidatorError extends ErrorResponse {
   errors: object
