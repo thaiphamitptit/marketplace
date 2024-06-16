@@ -6,7 +6,8 @@ const systemMessages = {
   INVALID_USER: 'Invalid user',
   EMAIL_OR_PASSWORD_IS_INCORRECT: 'Email or password is incorrect',
   REGISTER_SUCCESSFULLY: 'Register successfully',
-  LOGIN_SUCCESSFULLY: 'Login successfully'
+  LOGIN_SUCCESSFULLY: 'Login successfully',
+  LOGOUT_SUCCESSFULLY: 'Logout successfully'
 } as const
 
 export default systemMessages

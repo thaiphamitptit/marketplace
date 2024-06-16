@@ -5,6 +5,7 @@ import UserService from '~/services/user.service'
 import KeyTokenService from '~/services/keytoken.service'
 import { signTokenPair } from '~/helpers/jwt.helper'
 import systemMessages from '~/constants/messages'
+import { KeyToken } from '~/types'
 
 export default class AccessService {
   static register = async ({ email }: { email: string }) => {
@@ -85,5 +86,10 @@ export default class AccessService {
       user: foundUser,
       tokens
     }
+  }
+
+  static logout = async ({ keyToken }: { keyToken: KeyToken }) => {
+    const keyTokenId = keyToken._id.toString()
+    return await KeyTokenService.deleteKeyTokenById({ keyTokenId })
   }
 }

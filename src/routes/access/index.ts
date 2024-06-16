@@ -14,4 +14,6 @@ accessRoute.post('/login', validate(loginJoiSchema, 'body'), asyncHandler(access
 /** Check authentication middleware */
 accessRoute.use(validate(authJoiSchema, 'headers'), checkAuthentication)
 
+accessRoute.post('/logout', asyncHandler(accessController.logout))
+
 export default accessRoute

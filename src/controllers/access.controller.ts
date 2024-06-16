@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express'
 import { CreatedResponse, SuccessResponse } from '~/core/success.response'
 import AccessService from '~/services/access.service'
 import systemMessages from '~/constants/messages'
+import { AuthFailureError } from '~/core/error.response'
 
 class AccessController {
   register = async (req: Request, res: Response, next: NextFunction) => {
@@ -17,6 +18,17 @@ class AccessController {
     new SuccessResponse({
       message: systemMessages.LOGIN_SUCCESSFULLY,
       metadata: await AccessService.login({ email, password })
+    }).send(res)
+  }
+
+  logout = async (req: Request, res: Response, next: NextFunction) => {
+    const keyToken = req.keyToken
+    if (!keyToken) {
+      throw new AuthFailureError(systemMessages.INVALID_REQUEST)
+    }
+    new SuccessResponse({
+      message: systemMessages.LOGOUT_SUCCESSFULLY,
+      metadata: await AccessService.logout({ keyToken })
     }).send(res)
   }
 }

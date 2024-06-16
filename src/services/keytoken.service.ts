@@ -34,4 +34,8 @@ export default class KeyTokenService {
   static findKeyTokenByUserId = async ({ userId }: { userId: string }) => {
     return await keyTokenModel.findOne({ userId: new Types.ObjectId(userId) })
   }
+
+  static deleteKeyTokenById = async ({ keyTokenId }: { keyTokenId: string }) => {
+    return await keyTokenModel.deleteOne({ _id: new Types.ObjectId(keyTokenId) })
+  }
 }
