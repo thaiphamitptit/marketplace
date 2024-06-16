@@ -20,6 +20,13 @@ export class BadRequestError extends ErrorResponse {
   }
 }
 
+/** 401 */
+export class AuthFailureError extends ErrorResponse {
+  constructor(message = ReasonPhrases.UNAUTHORIZED as string, status = StatusCodes.UNAUTHORIZED as number) {
+    super(message, status)
+  }
+}
+
 /** 403 */
 export class ForbiddenError extends ErrorResponse {
   constructor(message = ReasonPhrases.FORBIDDEN as string, status = StatusCodes.FORBIDDEN as number) {

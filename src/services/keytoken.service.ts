@@ -30,4 +30,8 @@ export default class KeyTokenService {
     }
     return await keyTokenModel.findOneAndUpdate(filter, update, options)
   }
+
+  static findKeyTokenByUserId = async ({ userId }: { userId: string }) => {
+    return await keyTokenModel.findOne({ userId: new Types.ObjectId(userId) })
+  }
 }
