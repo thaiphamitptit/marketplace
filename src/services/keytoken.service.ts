@@ -35,6 +35,31 @@ export default class KeyTokenService {
     return await keyTokenModel.findOne({ userId: new Types.ObjectId(userId) })
   }
 
+  static updateKeyTokenByRefreshToken = async ({
+    newRefreshToken,
+    currentRefreshToken
+  }: {
+    newRefreshToken: string
+    currentRefreshToken: string
+  }) => {
+    const filter = {
+      refreshToken: currentRefreshToken
+    }
+    const update = {
+      $set: {
+        refreshToken: newRefreshToken
+      },
+      $addToSet: {
+        refreshTokensUsed: currentRefreshToken
+      }
+    }
+    const options = {
+      upsert: true,
+      new: true
+    }
+    return await keyTokenModel.findOneAndUpdate(filter, update, options)
+  }
+
   static deleteKeyTokenById = async ({ keyTokenId }: { keyTokenId: string }) => {
     return await keyTokenModel.deleteOne({ _id: new Types.ObjectId(keyTokenId) })
   }

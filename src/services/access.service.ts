@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt'
+import { JwtPayload } from 'jsonwebtoken'
 import { generateKeyPairSync, randomBytes } from 'crypto'
-import { BadRequestError } from '~/core/error.response'
+import { BadRequestError, ForbiddenError } from '~/core/error.response'
 import UserService from '~/services/user.service'
 import KeyTokenService from '~/services/keytoken.service'
 import { signTokenPair } from '~/helpers/jwt.helper'
@@ -91,5 +92,39 @@ export default class AccessService {
   static logout = async ({ keyToken }: { keyToken: KeyToken }) => {
     const keyTokenId = keyToken._id.toString()
     return await KeyTokenService.deleteKeyTokenById({ keyTokenId })
+  }
+
+  static refreshTokenPair = async ({
+    keyToken,
+    userInfo,
+    refreshToken
+  }: {
+    keyToken: KeyToken
+    userInfo: JwtPayload
+    refreshToken: string
+  }) => {
+    if (keyToken.refreshTokensUsed.includes(refreshToken)) {
+      const keyTokenId = keyToken._id.toString()
+      await KeyTokenService.deleteKeyTokenById({ keyTokenId })
+      throw new ForbiddenError(systemMessages.PLEASE_RELOGIN_BECAUSE_SOMETHING_WRONG_HAPPENED)
+    }
+    if (keyToken.refreshToken !== refreshToken) {
+      throw new BadRequestError(systemMessages.INVALID_REFRESH_TOKEN)
+    }
+    const { userId, email } = userInfo
+    const tokens = await signTokenPair({ userId, email }, keyToken.privateKey, keyToken.publicKey)
+    const foundUser = await UserService.findUserByEmail({ email })
+    if (!foundUser) {
+      throw new BadRequestError(systemMessages.USER_NOT_REGISTERED)
+    }
+    await KeyTokenService.updateKeyTokenByRefreshToken({
+      newRefreshToken: tokens.refreshToken,
+      currentRefreshToken: refreshToken
+    })
+
+    return {
+      user: foundUser,
+      tokens
+    }
   }
 }

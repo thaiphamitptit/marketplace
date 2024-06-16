@@ -15,5 +15,6 @@ accessRoute.post('/login', validate(loginJoiSchema, 'body'), asyncHandler(access
 accessRoute.use(validate(authJoiSchema, 'headers'), checkAuthentication)
 
 accessRoute.post('/logout', asyncHandler(accessController.logout))
+accessRoute.post('/tokens', asyncHandler(accessController.refreshTokenPair))
 
 export default accessRoute

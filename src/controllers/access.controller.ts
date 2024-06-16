@@ -31,6 +31,19 @@ class AccessController {
       metadata: await AccessService.logout({ keyToken })
     }).send(res)
   }
+
+  refreshTokenPair = async (req: Request, res: Response, next: NextFunction) => {
+    const keyToken = req.keyToken
+    const userInfo = req.userInfo
+    const refreshToken = req.refreshToken
+    if (!(keyToken && userInfo && refreshToken)) {
+      throw new AuthFailureError(systemMessages.INVALID_REQUEST)
+    }
+    new SuccessResponse({
+      message: systemMessages.REFRESH_TOKEN_PAIR_SUCCESSFULLY,
+      metadata: await AccessService.refreshTokenPair({ keyToken, userInfo, refreshToken })
+    }).send(res)
+  }
 }
 
 const accessController = new AccessController()
