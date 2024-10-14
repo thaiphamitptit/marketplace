@@ -2,9 +2,13 @@ import express from 'express'
 import morgan from 'morgan'
 import helmet from 'helmet'
 import compression from 'compression'
+import appRoutes from '@/routes'
+import { configs, env } from '@/configs/env.config'
+import instanceMongodb from '@/databases/init.mongodb'
+import errorHandler from '@/middlewares/error.middleware'
 
 const app = express()
-const port = 3000
+const { port } = configs[env].app
 
 /** Init middlewares */
 app.use(morgan('dev'))
@@ -16,6 +20,15 @@ app.use(
     extended: true
   })
 )
+
+/** Init dbs */
+instanceMongodb.connect()
+
+/** Init routes */
+app.use('/api/v1', appRoutes)
+
+/** Error handler */
+app.use(errorHandler)
 
 /** Start server */
 const server = app.listen(port, () => {
