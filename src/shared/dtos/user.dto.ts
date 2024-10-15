@@ -1,10 +1,22 @@
-import { ICreateNewUserDto, IRegisterDto } from '@/shared/types/user'
+import { ICreateNewUserDto, ILoginDto, IRegisterDto } from '@/shared/types/user'
 
 export class RegisterDto {
   email: string
 
   constructor({ email }: IRegisterDto) {
     this.email = email
+  }
+}
+
+export class LoginDto {
+  email: string
+  password: string
+  refreshToken?: string
+
+  constructor({ email, password, refreshToken }: ILoginDto) {
+    this.email = email
+    this.password = password
+    this.refreshToken = refreshToken
   }
 }
 
