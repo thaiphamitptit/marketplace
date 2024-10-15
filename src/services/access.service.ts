@@ -4,10 +4,10 @@ import UserRepository from '@/repositories/user.repository'
 import KeyStoreRepository from '@/repositories/key-store.repository'
 import { CreateNewUserDto } from '@/shared/dtos/user.dto'
 import { CreateNewKeyStoreDto } from '@/shared/dtos/key-store.dto'
-import { BadRequest } from '@/shared/responses/error.response'
+import { AuthFailure, BadRequest } from '@/shared/responses/error.response'
 import { generateTokenPair } from '@/shared/helpers/jwt-handler'
 import { getInfoData } from '@/shared/utils'
-import { IRegisterDto } from '@/shared/types/user'
+import { ILoginDto, IRegisterDto } from '@/shared/types/user'
 import { ErrorMessages } from '@/shared/constants'
 
 export default class AccessService {
@@ -61,6 +61,59 @@ export default class AccessService {
 
     return {
       user: getInfoData(newUser.toObject(), ['_id', 'email']),
+      tokens
+    }
+  }
+
+  static login = async (dto: ILoginDto) => {
+    const { email, password } = dto
+    /** Check user exists or not */
+    const user = await UserRepository.findByEmail(email)
+    if (!user) {
+      throw new BadRequest({
+        message: ErrorMessages.EMAIL_NOT_REGISTERED
+      })
+    }
+    /** Check password matches or not */
+    const { _id: userId, password: hashPassword } = user
+    const isMatched = await bcrypt.compare(password, hashPassword)
+    if (!isMatched) {
+      throw new AuthFailure({
+        message: ErrorMessages.INVALID_CREDENTIALS
+      })
+    }
+    /** Generate key pair */
+    const { privateKey, publicKey } = generateKeyPairSync('rsa', {
+      modulusLength: 4096,
+      privateKeyEncoding: {
+        type: 'pkcs1',
+        format: 'pem'
+      },
+      publicKeyEncoding: {
+        type: 'pkcs1',
+        format: 'pem'
+      }
+    })
+    /** Generate token pair */
+    const tokens = await generateTokenPair({
+      payload: {
+        user: userId,
+        email
+      },
+      secretOrPrivateKey: privateKey
+    })
+    /** Create new key store */
+    const createNewKeyStoreDto = new CreateNewKeyStoreDto({
+      user: userId,
+      privateKey,
+      publicKey,
+      refreshToken: tokens.refreshToken,
+      refreshTokensUsed: []
+    })
+    await KeyStoreRepository.createNew(createNewKeyStoreDto)
+
+    return {
+      user: getInfoData(user.toObject(), ['_id', 'email']),
       tokens
     }
   }

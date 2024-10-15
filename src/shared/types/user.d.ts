@@ -29,6 +29,17 @@ export interface IRegisterDto {
   email: string
 }
 
+export interface ILoginReqBody {
+  email: string
+  password: string
+}
+
+export interface ILoginDto {
+  email: string
+  password: string
+  refreshToken?: string
+}
+
 export interface ICreateNewUserDto {
   email: string
   name?: string
