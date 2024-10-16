@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express'
 import AccessService from '@/services/access.service'
 import { LoginDto, RegisterDto } from '@/shared/dtos/user.dto'
 import { Created, Ok } from '@/shared/responses/success.response'
-import { ILoginReqBody, IRegisterReqBody } from '@/shared/types/user'
+import { ILoginReqBody, IRegisterReqBody, IUserInfo } from '@/shared/types/user'
 import { SuccessMessages } from '@/shared/constants'
 
 class AccessController {
@@ -26,6 +26,14 @@ class AccessController {
     new Ok({
       message: SuccessMessages.LOGIN_SUCCESSFULLY,
       metadata: await AccessService.login(loginDto)
+    }).send(res)
+  }
+
+  logout = async (req: Request, res: Response, next: NextFunction) => {
+    const userInfo = req.userInfo as IUserInfo
+    new Ok({
+      message: SuccessMessages.LOGOUT_SUCCESSFULLY,
+      metadata: await AccessService.logout(userInfo)
     }).send(res)
   }
 }

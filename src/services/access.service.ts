@@ -7,7 +7,7 @@ import { CreateNewKeyStoreDto } from '@/shared/dtos/key-store.dto'
 import { AuthFailure, BadRequest } from '@/shared/responses/error.response'
 import { generateTokenPair } from '@/shared/helpers/jwt-handler'
 import { getInfoData } from '@/shared/utils'
-import { ILoginDto, IRegisterDto } from '@/shared/types/user'
+import { ILoginDto, IRegisterDto, IUserInfo } from '@/shared/types/user'
 import { ErrorMessages } from '@/shared/constants'
 
 export default class AccessService {
@@ -115,6 +115,16 @@ export default class AccessService {
     return {
       user: getInfoData(user.toObject(), ['_id', 'email']),
       tokens
+    }
+  }
+
+  static logout = async (userInfo: IUserInfo) => {
+    /** Delete key store */
+    const { user: userId } = userInfo
+    await KeyStoreRepository.deleteByUser(userId)
+
+    return {
+      user: userId
     }
   }
 }

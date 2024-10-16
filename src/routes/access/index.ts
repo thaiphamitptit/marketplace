@@ -15,4 +15,6 @@ accessRoutes.post('/login', validateSchema(loginReqBody, 'body'), asyncHandler(a
 accessRoutes.use(validateSchema(authReqHeaders, 'headers'), checkAuthentication)
 accessRoutes.use(checkAuthorization(['user']))
 
+accessRoutes.post('/logout', asyncHandler(accessController.logout))
+
 export default accessRoutes

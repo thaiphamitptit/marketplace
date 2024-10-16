@@ -23,4 +23,11 @@ export default class KeyStoreRepository {
     }
     return await keyStoreModel.findOne(filter)
   }
+
+  static deleteByUser = async (user: string) => {
+    const filter = {
+      user
+    }
+    return await keyStoreModel.findOneAndDelete(filter)
+  }
 }
