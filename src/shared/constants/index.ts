@@ -15,12 +15,14 @@ export enum ErrorMessages {
   INVALID_CREDENTIALS = 'Invalid credentials',
   KEY_STORE_NOT_FOUND = 'Key store not found',
   INVALID_AUTH_TOKEN = 'Invalid auth token',
-  AUTH_TOKEN_ALREADY_REUSED = 'Auth token already reused'
+  AUTH_TOKEN_ALREADY_REUSED = 'Auth token already reused',
+  CATEGORY_NOT_FOUND = 'Category not found'
 }
 
 export enum SuccessMessages {
   REGISTER_SUCCESSFULLY = 'Register successfully',
   LOGIN_SUCCESSFULLY = 'Login successfully',
   LOGOUT_SUCCESSFULLY = 'Logout successfully',
-  REFRESH_TOKENS_SUCCESSFULLY = 'Refresh tokens successfully'
+  REFRESH_TOKENS_SUCCESSFULLY = 'Refresh tokens successfully',
+  CREATE_NEW_CATEGORY_SUCCESSFULLY = 'Create new category successfully'
 }
