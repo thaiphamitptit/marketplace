@@ -30,5 +30,6 @@ export enum SuccessMessages {
   DELETE_CATEGORY_SUCCESSFULLY = 'Delete category successfully',
   GET_CATEGORY_SUCCESSFULLY = 'Get category successfully',
   GET_CATEGORIES_SUCCESSFULLY = 'Get categories successfully',
-  SEARCH_CATEGORIES_SUCCESSFULLY = 'Search categories successfully'
+  SEARCH_CATEGORIES_SUCCESSFULLY = 'Search categories successfully',
+  GET_ANCESTOR_CATEGORIES_SUCCESSFULLY = 'Get ancestor categories successfully'
 }

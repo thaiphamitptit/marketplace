@@ -118,3 +118,25 @@ export interface ISearchCategoriesDto {
   order?: 'asc' | 'desc'
   select?: string[]
 }
+
+export interface IGetAncestorCategoriesReqQuery extends ParsedQs {
+  filter?: Omit<ICategoryFilter, 'left' | 'right'>
+  page?: number
+  limit?: number
+  sort?: 'name' | 'left' | 'right' | 'createdAt' | 'updatedAt'
+  order?: 'asc' | 'desc'
+  select?: string[]
+}
+
+export interface IGetAncestorCategoriesReqParams extends ParamsDictionary {
+  categoryId: string
+}
+
+export interface IGetAncestorCategoriesDto {
+  filter?: ICategoryFilter
+  page?: number
+  limit?: number
+  sort?: 'name' | 'left' | 'right' | 'createdAt' | 'updatedAt'
+  order?: 'asc' | 'desc'
+  select?: string[]
+}

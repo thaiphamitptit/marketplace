@@ -1,6 +1,7 @@
 import CategoryRepository from '@/repositories/category.repository'
 import {
   CreateNewCategoryDto,
+  GetAncestorCategoriesDto,
   GetCategoriesDto,
   SearchCategoriesDto,
   UpdateCategoryDto
@@ -9,6 +10,7 @@ import { BadRequest, NotFound } from '@/shared/responses/error.response'
 import { unGetInfoData } from '@/shared/utils'
 import {
   ICreateNewCategoryDto,
+  IGetAncestorCategoriesDto,
   IGetCategoriesDto,
   ISearchCategoriesDto,
   IUpdateCategoryDto
@@ -185,6 +187,41 @@ export default class CategoryService {
         limit
       },
       categories: foundCategories
+    }
+  }
+
+  static getAncestorCategories = async (categoryId: string, dto: IGetAncestorCategoriesDto) => {
+    /** Check category exists or not */
+    const category = await CategoryRepository.findById(categoryId)
+    if (!category) {
+      throw new NotFound({
+        message: ErrorMessages.CATEGORY_NOT_FOUND
+      })
+    }
+    const { left, right } = category
+    const { filter } = dto
+    /** Get ancestor categories combined filter and pagination */
+    const getAncestorCategoriesDto = new GetAncestorCategoriesDto({
+      ...dto,
+      filter: {
+        ...filter,
+        left: {
+          $lt: left
+        },
+        right: {
+          $gt: right
+        }
+      }
+    })
+    const { page, limit } = getAncestorCategoriesDto
+    const ancestorCategories = await CategoryRepository.findByFilterAndPagination(getAncestorCategoriesDto)
+
+    return {
+      pagination: {
+        page,
+        limit
+      },
+      categories: ancestorCategories
     }
   }
 }
