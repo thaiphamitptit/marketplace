@@ -4,6 +4,7 @@ import {
   CreateNewCategoryDto,
   GetAncestorCategoriesDto,
   GetCategoriesDto,
+  GetDescendantCategoriesDto,
   SearchCategoriesDto,
   UpdateCategoryDto
 } from '@/shared/dtos/category.dto'
@@ -15,6 +16,8 @@ import {
   IGetAncestorCategoriesReqQuery,
   IGetCategoriesReqQuery,
   IGetCategoryReqParams,
+  IGetDescendantCategoriesReqParams,
+  IGetDescendantCategoriesReqQuery,
   ISearchCategoriesReqQuery,
   IUpdateCategoryReqBody,
   IUpdateCategoryReqParams
@@ -103,6 +106,21 @@ class CategoryController {
     new Ok({
       message: SuccessMessages.GET_ANCESTOR_CATEGORIES_SUCCESSFULLY,
       metadata: await CategoryService.getAncestorCategories(categoryId, getAncestorCategoriesDto)
+    }).send(res)
+  }
+
+  getDescendantCategories = async (
+    req: Request<IGetDescendantCategoriesReqParams, any, any, IGetDescendantCategoriesReqQuery>,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const { categoryId } = req.params
+    const getDescendantCategoriesDto = new GetDescendantCategoriesDto({
+      ...req.query
+    })
+    new Ok({
+      message: SuccessMessages.GET_DESCENDANT_CATEGORIES_SUCCESSFULLY,
+      metadata: await CategoryService.getDescendantCategories(categoryId, getDescendantCategoriesDto)
     }).send(res)
   }
 }

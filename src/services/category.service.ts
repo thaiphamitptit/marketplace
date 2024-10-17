@@ -3,6 +3,7 @@ import {
   CreateNewCategoryDto,
   GetAncestorCategoriesDto,
   GetCategoriesDto,
+  GetDescendantCategoriesDto,
   SearchCategoriesDto,
   UpdateCategoryDto
 } from '@/shared/dtos/category.dto'
@@ -12,6 +13,7 @@ import {
   ICreateNewCategoryDto,
   IGetAncestorCategoriesDto,
   IGetCategoriesDto,
+  IGetDescendantCategoriesDto,
   ISearchCategoriesDto,
   IUpdateCategoryDto
 } from '@/shared/types/category'
@@ -215,6 +217,41 @@ export default class CategoryService {
     })
     const { page, limit } = getAncestorCategoriesDto
     const ancestorCategories = await CategoryRepository.findByFilterAndPagination(getAncestorCategoriesDto)
+
+    return {
+      pagination: {
+        page,
+        limit
+      },
+      categories: ancestorCategories
+    }
+  }
+
+  static getDescendantCategories = async (categoryId: string, dto: IGetDescendantCategoriesDto) => {
+    /** Check category exists or not */
+    const category = await CategoryRepository.findById(categoryId)
+    if (!category) {
+      throw new NotFound({
+        message: ErrorMessages.CATEGORY_NOT_FOUND
+      })
+    }
+    const { left, right } = category
+    const { filter } = dto
+    /** Get descendant categories combined filter and pagination */
+    const getDescendantCategoriesDto = new GetDescendantCategoriesDto({
+      ...dto,
+      filter: {
+        ...filter,
+        left: {
+          $gt: left
+        },
+        right: {
+          $lt: right
+        }
+      }
+    })
+    const { page, limit } = getDescendantCategoriesDto
+    const ancestorCategories = await CategoryRepository.findByFilterAndPagination(getDescendantCategoriesDto)
 
     return {
       pagination: {
