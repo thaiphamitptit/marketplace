@@ -9,6 +9,8 @@ import {
   getAncestorCategoriesReqQuery,
   getCategoriesReqQuery,
   getCategoryReqParams,
+  getDescendantCategoriesReqParams,
+  getDescendantCategoriesReqQuery,
   searchCategoriesReqQuery,
   updateCategoryReqBody,
   updateCategoryReqParams
@@ -39,6 +41,12 @@ categoryRoutes.get(
   validateSchema(getAncestorCategoriesReqParams, 'params'),
   validateSchema(getAncestorCategoriesReqQuery, 'query'),
   asyncHandler(categoryController.getAncestorCategories)
+)
+categoryRoutes.get(
+  '/:categoryId/descendants',
+  validateSchema(getDescendantCategoriesReqParams, 'params'),
+  validateSchema(getDescendantCategoriesReqQuery, 'query'),
+  asyncHandler(categoryController.getDescendantCategories)
 )
 categoryRoutes.post(
   '',
