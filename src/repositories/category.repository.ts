@@ -1,5 +1,6 @@
 import { categoryModel } from '@/models/category.model'
-import { ICreateNewCategoryDto, IUpdateCategoryDto } from '@/shared/types/category'
+import { ICreateNewCategoryDto, IGetCategoriesDto, IUpdateCategoryDto } from '@/shared/types/category'
+import { getSelectData } from '@/shared/utils'
 
 export default class CategoryRepository {
   static createNew = async (dto: ICreateNewCategoryDto) => {
@@ -24,6 +25,23 @@ export default class CategoryRepository {
       right: order
     }
     return await categoryModel.findOne(filter).sort(arg)
+  }
+
+  static findByFilterAndPagination = async (dto: IGetCategoriesDto) => {
+    const {
+      filter = {},
+      page = 1,
+      limit = 50,
+      sort = 'updatedAt',
+      order = 'desc',
+      select = ['slug', 'parent', 'name', 'thumb', 'description']
+    } = dto
+    const offset = (page - 1) * limit
+    const arg = {
+      [sort]: order
+    }
+    const fields = getSelectData(select)
+    return await categoryModel.find(filter).skip(offset).limit(limit).sort(arg).select(fields)
   }
 
   static updateById = async (categoryId: string, dto: IUpdateCategoryDto) => {

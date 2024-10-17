@@ -1,8 +1,8 @@
 import CategoryRepository from '@/repositories/category.repository'
-import { CreateNewCategoryDto, UpdateCategoryDto } from '@/shared/dtos/category.dto'
+import { CreateNewCategoryDto, GetCategoriesDto, UpdateCategoryDto } from '@/shared/dtos/category.dto'
 import { BadRequest, NotFound } from '@/shared/responses/error.response'
 import { unGetInfoData } from '@/shared/utils'
-import { ICreateNewCategoryDto, IUpdateCategoryDto } from '@/shared/types/category'
+import { ICreateNewCategoryDto, IGetCategoriesDto, IUpdateCategoryDto } from '@/shared/types/category'
 import { ErrorMessages } from '@/shared/constants'
 
 export default class CategoryService {
@@ -141,6 +141,23 @@ export default class CategoryService {
 
     return {
       category: unGetInfoData(foundCategory.toObject(), ['__v'])
+    }
+  }
+
+  static getCategories = async (dto: IGetCategoriesDto) => {
+    /** Get categories combined filter and pagination */
+    const getCategoriesDto = new GetCategoriesDto({
+      ...dto
+    })
+    const { page, limit } = getCategoriesDto
+    const foundCategories = await CategoryRepository.findByFilterAndPagination(getCategoriesDto)
+
+    return {
+      pagination: {
+        page,
+        limit
+      },
+      categories: foundCategories
     }
   }
 }

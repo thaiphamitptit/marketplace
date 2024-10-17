@@ -1,5 +1,6 @@
 import { Document } from 'mongoose'
 import { ParamsDictionary } from 'express-serve-static-core'
+import { ParsedQs } from 'qs'
 
 export interface ICategory extends Document {
   _id: string
@@ -13,6 +14,19 @@ export interface ICategory extends Document {
   createdAt?: Date | string
   updatedAt?: Date | string
   __v?: number
+}
+
+export interface ICategoryFilter {
+  _id?: string
+  parent?: string | null
+  createdAt?: {
+    $gte?: Date | string
+    $lte?: Date | string
+  }
+  updatedAt?: {
+    $gte?: Date | string
+    $lte?: Date | string
+  }
 }
 
 export interface ICreateNewCategoryReqBody {
@@ -57,4 +71,22 @@ export interface IDeleteCategoryReqParams extends ParamsDictionary {
 
 export interface IGetCategoryReqParams extends ParamsDictionary {
   categoryId: string
+}
+
+export interface IGetCategoriesReqQuery extends ParsedQs {
+  filter?: ICategoryFilter
+  page?: number
+  limit?: number
+  sort?: 'name' | 'left' | 'right' | 'createdAt' | 'updatedAt'
+  order?: 'asc' | 'desc'
+  select?: string[]
+}
+
+export interface IGetCategoriesDto {
+  filter?: ICategoryFilter
+  page?: number
+  limit?: number
+  sort?: 'name' | 'left' | 'right' | 'createdAt' | 'updatedAt'
+  order?: 'asc' | 'desc'
+  select?: string[]
 }

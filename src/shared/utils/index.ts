@@ -15,3 +15,11 @@ export const unGetInfoData = <T extends object, K extends keyof T>(obj: T, keys:
       return acc
     }, {})
 }
+
+export const getSelectData = (keys: string[]) => {
+  return Object.fromEntries(keys.map((key) => [key, 1]))
+}
+
+export const unGetSelectData = (keys: string[]) => {
+  return Object.fromEntries(keys.map((key) => [key, 0]))
+}
