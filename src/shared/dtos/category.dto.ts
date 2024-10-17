@@ -1,5 +1,5 @@
 import {
-  ICategoryFilter,
+  ICategoryNestedSetFilter,
   ICreateNewCategoryDto,
   IGetCategoriesDto,
   ISearchCategoriesDto,
@@ -43,7 +43,7 @@ export class UpdateCategoryDto {
 }
 
 export class GetCategoriesDto {
-  filter: ICategoryFilter
+  filter: ICategoryNestedSetFilter
   page: number
   limit: number
   sort: 'name' | 'left' | 'right' | 'createdAt' | 'updatedAt'
@@ -69,7 +69,7 @@ export class GetCategoriesDto {
 
 export class SearchCategoriesDto {
   keyword: string
-  filter: ICategoryFilter
+  filter: ICategoryNestedSetFilter
   page: number
   limit: number
   sort: 'name' | 'left' | 'right' | 'createdAt' | 'updatedAt'
@@ -86,6 +86,31 @@ export class SearchCategoriesDto {
     select = ['slug', 'parent', 'name', 'thumb', 'description']
   }: ISearchCategoriesDto) {
     this.keyword = keyword
+    this.filter = filter
+    this.page = page
+    this.limit = limit
+    this.sort = sort
+    this.order = order
+    this.select = select
+  }
+}
+
+export class GetAncestorCategoriesDto {
+  filter: ICategoryNestedSetFilter
+  page: number
+  limit: number
+  sort: 'name' | 'left' | 'right' | 'createdAt' | 'updatedAt'
+  order: 'asc' | 'desc'
+  select: string[]
+
+  constructor({
+    filter = {},
+    page = 1,
+    limit = 50,
+    sort = 'left',
+    order = 'desc',
+    select = ['slug', 'parent', 'name', 'thumb', 'description']
+  }: IGetCategoriesDto) {
     this.filter = filter
     this.page = page
     this.limit = limit

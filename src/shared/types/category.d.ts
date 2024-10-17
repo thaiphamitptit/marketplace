@@ -29,6 +29,19 @@ export interface ICategoryFilter {
   }
 }
 
+export interface INestedSetFilter {
+  left?: {
+    $gt?: number
+    $lt?: number
+  }
+  right?: {
+    $gt?: number
+    $lt?: number
+  }
+}
+
+export interface ICategoryNestedSetFilter extends ICategoryFilter, INestedSetFilter {}
+
 export interface ICreateNewCategoryReqBody {
   parent?: string | null
   name: string
@@ -83,7 +96,7 @@ export interface IGetCategoriesReqQuery extends ParsedQs {
 }
 
 export interface IGetCategoriesDto {
-  filter?: ICategoryFilter
+  filter?: ICategoryNestedSetFilter
   page?: number
   limit?: number
   sort?: 'name' | 'left' | 'right' | 'createdAt' | 'updatedAt'
@@ -103,7 +116,29 @@ export interface ISearchCategoriesReqQuery extends ParsedQs {
 
 export interface ISearchCategoriesDto {
   keyword: string
+  filter?: ICategoryNestedSetFilter
+  page?: number
+  limit?: number
+  sort?: 'name' | 'left' | 'right' | 'createdAt' | 'updatedAt'
+  order?: 'asc' | 'desc'
+  select?: string[]
+}
+
+export interface IGetAncestorCategoriesReqQuery extends ParsedQs {
   filter?: ICategoryFilter
+  page?: number
+  limit?: number
+  sort?: 'name' | 'left' | 'right' | 'createdAt' | 'updatedAt'
+  order?: 'asc' | 'desc'
+  select?: string[]
+}
+
+export interface IGetAncestorCategoriesReqParams extends ParamsDictionary {
+  categoryId: string
+}
+
+export interface IGetAncestorCategoriesDto {
+  filter?: ICategoryNestedSetFilter
   page?: number
   limit?: number
   sort?: 'name' | 'left' | 'right' | 'createdAt' | 'updatedAt'

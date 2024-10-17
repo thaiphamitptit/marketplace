@@ -5,6 +5,8 @@ import categoryController from '@/controllers/category.controller'
 import {
   createNewCategoryReqBody,
   deleteCategoryReqParams,
+  getAncestorCategoriesReqParams,
+  getAncestorCategoriesReqQuery,
   getCategoriesReqQuery,
   getCategoryReqParams,
   searchCategoriesReqQuery,
@@ -32,6 +34,12 @@ categoryRoutes.get(
 categoryRoutes.use(validateSchema(authReqHeaders, 'headers'), checkAuthentication)
 categoryRoutes.use(checkAuthorization(['admin', 'seller']))
 
+categoryRoutes.get(
+  '/:categoryId/ancestors',
+  validateSchema(getAncestorCategoriesReqParams, 'params'),
+  validateSchema(getAncestorCategoriesReqQuery, 'query'),
+  asyncHandler(categoryController.getAncestorCategories)
+)
 categoryRoutes.post(
   '',
   validateSchema(createNewCategoryReqBody, 'body'),
