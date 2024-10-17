@@ -17,3 +17,7 @@ export const updateCategoryReqBody = Joi.object({
 export const updateCategoryReqParams = Joi.object({
   categoryId: Joi.string().uuid().required()
 })
+
+export const deleteCategoryReqParams = Joi.object({
+  categoryId: Joi.string().uuid().required()
+})

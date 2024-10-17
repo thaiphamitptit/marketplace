@@ -26,5 +26,6 @@ export enum SuccessMessages {
   LOGOUT_SUCCESSFULLY = 'Logout successfully',
   REFRESH_TOKENS_SUCCESSFULLY = 'Refresh tokens successfully',
   CREATE_NEW_CATEGORY_SUCCESSFULLY = 'Create new category successfully',
-  UPDATE_CATEGORY_SUCCESSFULLY = 'Update category successfully'
+  UPDATE_CATEGORY_SUCCESSFULLY = 'Update category successfully',
+  DELETE_CATEGORY_SUCCESSFULLY = 'Delete category successfully'
 }

@@ -4,6 +4,7 @@ import { checkAuthentication, checkAuthorization } from '@/middlewares/auth.midd
 import categoryController from '@/controllers/category.controller'
 import {
   createNewCategoryReqBody,
+  deleteCategoryReqParams,
   updateCategoryReqBody,
   updateCategoryReqParams
 } from '@/shared/validators/category.validator'
@@ -26,6 +27,11 @@ categoryRoutes.patch(
   validateSchema(updateCategoryReqParams, 'params'),
   validateSchema(updateCategoryReqBody, 'body'),
   asyncHandler(categoryController.updateCategory)
+)
+categoryRoutes.delete(
+  '/:categoryId',
+  validateSchema(deleteCategoryReqParams, 'params'),
+  asyncHandler(categoryController.deleteCategory)
 )
 
 export default categoryRoutes

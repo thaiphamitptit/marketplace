@@ -89,4 +89,21 @@ export default class CategoryRepository {
     }
     return await categoryModel.updateMany(filter, update)
   }
+
+  static deleteById = async (categoryId: string) => {
+    return await categoryModel.findByIdAndDelete(categoryId)
+  }
+
+  static deleteByLeftGreaterThanAndRightLessThan = async (left: number, right: number, equals: boolean) => {
+    const operators = equals ? ['$gte', '$lte'] : ['$gt', '$lt']
+    const filter = {
+      left: {
+        [operators[0]]: left
+      },
+      right: {
+        [operators[1]]: right
+      }
+    }
+    return await categoryModel.deleteMany(filter)
+  }
 }
