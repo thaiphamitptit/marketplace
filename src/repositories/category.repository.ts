@@ -1,5 +1,5 @@
 import { categoryModel } from '@/models/category.model'
-import { ICreateNewCategoryDto } from '@/shared/types/category'
+import { ICreateNewCategoryDto, IUpdateCategoryDto } from '@/shared/types/category'
 
 export default class CategoryRepository {
   static createNew = async (dto: ICreateNewCategoryDto) => {
@@ -26,6 +26,16 @@ export default class CategoryRepository {
     return await categoryModel.findOne(filter).sort(arg)
   }
 
+  static updateById = async (categoryId: string, dto: IUpdateCategoryDto) => {
+    const update = {
+      $set: dto
+    }
+    const options = {
+      new: true
+    }
+    return await categoryModel.findByIdAndUpdate(categoryId, update, options)
+  }
+
   static updateByLeftGreaterThan = async (left: number, offset: number, equals: boolean) => {
     const operator = equals ? '$gte' : '$gt'
     const filter = {
@@ -50,6 +60,30 @@ export default class CategoryRepository {
     }
     const update = {
       $inc: {
+        right: offset
+      }
+    }
+    return await categoryModel.updateMany(filter, update)
+  }
+
+  static updateByLeftGreaterThanAndRightLessThan = async (
+    left: number,
+    right: number,
+    offset: number,
+    equals: boolean
+  ) => {
+    const operators = equals ? ['$gte', '$lte'] : ['$gt', '$lt']
+    const filter = {
+      left: {
+        [operators[0]]: left
+      },
+      right: {
+        [operators[1]]: right
+      }
+    }
+    const update = {
+      $inc: {
+        left: offset,
         right: offset
       }
     }
