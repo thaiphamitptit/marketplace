@@ -98,3 +98,23 @@ export interface IGetCategoriesDto {
   order?: 'asc' | 'desc'
   select?: string[]
 }
+
+export interface ISearchCategoriesReqQuery extends ParsedQs {
+  keyword: string
+  filter?: Omit<ICategoryFilter, 'left' | 'right'>
+  page?: number
+  limit?: number
+  sort?: 'name' | 'left' | 'right' | 'createdAt' | 'updatedAt'
+  order?: 'asc' | 'desc'
+  select?: string[]
+}
+
+export interface ISearchCategoriesDto {
+  keyword: string
+  filter?: ICategoryFilter
+  page?: number
+  limit?: number
+  sort?: 'name' | 'left' | 'right' | 'createdAt' | 'updatedAt'
+  order?: 'asc' | 'desc'
+  select?: string[]
+}

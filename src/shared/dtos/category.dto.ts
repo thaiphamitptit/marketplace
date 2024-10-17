@@ -1,4 +1,10 @@
-import { ICategoryFilter, ICreateNewCategoryDto, IGetCategoriesDto, IUpdateCategoryDto } from '@/shared/types/category'
+import {
+  ICategoryFilter,
+  ICreateNewCategoryDto,
+  IGetCategoriesDto,
+  ISearchCategoriesDto,
+  IUpdateCategoryDto
+} from '@/shared/types/category'
 
 export class CreateNewCategoryDto {
   parent?: string | null
@@ -52,6 +58,34 @@ export class GetCategoriesDto {
     order = 'desc',
     select = ['slug', 'parent', 'name', 'thumb', 'description']
   }: IGetCategoriesDto) {
+    this.filter = filter
+    this.page = page
+    this.limit = limit
+    this.sort = sort
+    this.order = order
+    this.select = select
+  }
+}
+
+export class SearchCategoriesDto {
+  keyword: string
+  filter: ICategoryFilter
+  page: number
+  limit: number
+  sort: 'name' | 'left' | 'right' | 'createdAt' | 'updatedAt'
+  order: 'asc' | 'desc'
+  select: string[]
+
+  constructor({
+    keyword,
+    filter = {},
+    page = 1,
+    limit = 50,
+    sort = 'updatedAt',
+    order = 'desc',
+    select = ['slug', 'parent', 'name', 'thumb', 'description']
+  }: ISearchCategoriesDto) {
+    this.keyword = keyword
     this.filter = filter
     this.page = page
     this.limit = limit

@@ -7,6 +7,7 @@ import {
   deleteCategoryReqParams,
   getCategoriesReqQuery,
   getCategoryReqParams,
+  searchCategoriesReqQuery,
   updateCategoryReqBody,
   updateCategoryReqParams
 } from '@/shared/validators/category.validator'
@@ -15,6 +16,11 @@ import asyncHandler from '@/shared/helpers/async-handler'
 
 const categoryRoutes = Router()
 
+categoryRoutes.get(
+  '/search',
+  validateSchema(searchCategoriesReqQuery, 'query'),
+  asyncHandler(categoryController.searchCategories)
+)
 categoryRoutes.get('', validateSchema(getCategoriesReqQuery, 'query'), asyncHandler(categoryController.getCategories))
 categoryRoutes.get(
   '/:categoryId',
