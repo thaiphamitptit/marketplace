@@ -50,3 +50,7 @@ export interface IUpdateCategoryDto {
   thumb?: string
   description?: string
 }
+
+export interface IDeleteCategoryReqParams extends ParamsDictionary {
+  categoryId: string
+}

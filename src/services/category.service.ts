@@ -107,4 +107,26 @@ export default class CategoryService {
       category: unGetInfoData(updatedCategory.toObject(), ['__v'])
     }
   }
+
+  static deleteCategory = async (categoryId: string) => {
+    /** Delete category */
+    const deletedCategory = await CategoryRepository.deleteById(categoryId)
+    if (!deletedCategory) {
+      throw new NotFound({
+        message: ErrorMessages.CATEGORY_NOT_FOUND
+      })
+    }
+    const { left, right } = deletedCategory
+    const width = right - left + 1
+    /** Update ref categories */
+    await Promise.all([
+      CategoryRepository.deleteByLeftGreaterThanAndRightLessThan(left, right, false),
+      CategoryRepository.updateByLeftGreaterThan(right, -width, false),
+      CategoryRepository.updateByRightGreaterThan(right, -width, false)
+    ])
+
+    return {
+      category: categoryId
+    }
+  }
 }

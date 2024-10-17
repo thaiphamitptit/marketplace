@@ -2,7 +2,12 @@ import { NextFunction, Request, Response } from 'express'
 import CategoryService from '@/services/category.service'
 import { CreateNewCategoryDto, UpdateCategoryDto } from '@/shared/dtos/category.dto'
 import { Created, Ok } from '@/shared/responses/success.response'
-import { ICreateNewCategoryReqBody, IUpdateCategoryReqBody, IUpdateCategoryReqParams } from '@/shared/types/category'
+import {
+  ICreateNewCategoryReqBody,
+  IDeleteCategoryReqParams,
+  IUpdateCategoryReqBody,
+  IUpdateCategoryReqParams
+} from '@/shared/types/category'
 import { SuccessMessages } from '@/shared/constants'
 
 class CategoryController {
@@ -32,6 +37,14 @@ class CategoryController {
     new Ok({
       message: SuccessMessages.UPDATE_CATEGORY_SUCCESSFULLY,
       metadata: await CategoryService.updateCategory(categoryId, updateCategoryDto)
+    }).send(res)
+  }
+
+  deleteCategory = async (req: Request<IDeleteCategoryReqParams, any, any, any>, res: Response, next: NextFunction) => {
+    const { categoryId } = req.params
+    new Ok({
+      message: SuccessMessages.DELETE_CATEGORY_SUCCESSFULLY,
+      metadata: await CategoryService.deleteCategory(categoryId)
     }).send(res)
   }
 }
