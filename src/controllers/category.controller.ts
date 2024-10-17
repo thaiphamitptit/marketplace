@@ -1,12 +1,18 @@
 import { NextFunction, Request, Response } from 'express'
 import CategoryService from '@/services/category.service'
-import { CreateNewCategoryDto, GetCategoriesDto, UpdateCategoryDto } from '@/shared/dtos/category.dto'
+import {
+  CreateNewCategoryDto,
+  GetCategoriesDto,
+  SearchCategoriesDto,
+  UpdateCategoryDto
+} from '@/shared/dtos/category.dto'
 import { Created, Ok } from '@/shared/responses/success.response'
 import {
   ICreateNewCategoryReqBody,
   IDeleteCategoryReqParams,
   IGetCategoriesReqQuery,
   IGetCategoryReqParams,
+  ISearchCategoriesReqQuery,
   IUpdateCategoryReqBody,
   IUpdateCategoryReqParams
 } from '@/shared/types/category'
@@ -65,6 +71,20 @@ class CategoryController {
     new Ok({
       message: SuccessMessages.GET_CATEGORIES_SUCCESSFULLY,
       metadata: await CategoryService.getCategories(getCategoriesDto)
+    }).send(res)
+  }
+
+  searchCategories = async (
+    req: Request<any, any, any, ISearchCategoriesReqQuery>,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const searchCategoriesDto = new SearchCategoriesDto({
+      ...req.query
+    })
+    new Ok({
+      message: SuccessMessages.SEARCH_CATEGORIES_SUCCESSFULLY,
+      metadata: await CategoryService.searchCategories(searchCategoriesDto)
     }).send(res)
   }
 }

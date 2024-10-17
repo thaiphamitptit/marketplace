@@ -49,6 +49,8 @@ const categorySchema = new Schema<ICategory>(
   }
 )
 
+categorySchema.index({ name: 'text', description: 'text' })
+
 categorySchema.pre('save', async function (next) {
   if (this.isModified('name') || this.isNew) {
     const base = slugify(this.name, {

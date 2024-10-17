@@ -1,5 +1,10 @@
 import { categoryModel } from '@/models/category.model'
-import { ICreateNewCategoryDto, IGetCategoriesDto, IUpdateCategoryDto } from '@/shared/types/category'
+import {
+  ICreateNewCategoryDto,
+  IGetCategoriesDto,
+  ISearchCategoriesDto,
+  IUpdateCategoryDto
+} from '@/shared/types/category'
 import { getSelectData } from '@/shared/utils'
 
 export default class CategoryRepository {
@@ -42,6 +47,33 @@ export default class CategoryRepository {
     }
     const fields = getSelectData(select)
     return await categoryModel.find(filter).skip(offset).limit(limit).sort(arg).select(fields)
+  }
+
+  static findByKeywordFilterAndPagination = async (dto: ISearchCategoriesDto) => {
+    const {
+      keyword,
+      filter = {},
+      page = 1,
+      limit = 50,
+      sort = 'updatedAt',
+      order = 'desc',
+      select = ['slug', 'parent', 'name', 'thumb', 'description']
+    } = dto
+    const engine = {
+      ...filter,
+      $text: {
+        $search: keyword
+      }
+    }
+    const offset = (page - 1) * limit
+    const arg = {
+      score: {
+        $meta: 'textScore'
+      },
+      [sort]: order
+    }
+    const fields = getSelectData(select)
+    return await categoryModel.find(engine).skip(offset).limit(limit).sort(arg).select(fields)
   }
 
   static updateById = async (categoryId: string, dto: IUpdateCategoryDto) => {
