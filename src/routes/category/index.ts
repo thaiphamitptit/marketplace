@@ -5,6 +5,7 @@ import categoryController from '@/controllers/category.controller'
 import {
   createNewCategoryReqBody,
   deleteCategoryReqParams,
+  getCategoriesReqQuery,
   getCategoryReqParams,
   updateCategoryReqBody,
   updateCategoryReqParams
@@ -14,6 +15,7 @@ import asyncHandler from '@/shared/helpers/async-handler'
 
 const categoryRoutes = Router()
 
+categoryRoutes.get('', validateSchema(getCategoriesReqQuery, 'query'), asyncHandler(categoryController.getCategories))
 categoryRoutes.get(
   '/:categoryId',
   validateSchema(getCategoryReqParams, 'params'),

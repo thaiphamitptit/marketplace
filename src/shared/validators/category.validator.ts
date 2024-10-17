@@ -25,3 +25,25 @@ export const deleteCategoryReqParams = Joi.object({
 export const getCategoryReqParams = Joi.object({
   categoryId: Joi.string().uuid().required()
 })
+
+export const getCategoriesReqQuery = Joi.object({
+  filter: Joi.object({
+    parent: Joi.string().uuid().optional(),
+    createdAt: Joi.object({
+      $gte: Joi.date().iso().optional(),
+      $lte: Joi.date().iso().optional()
+    }).optional(),
+    updatedAt: Joi.object({
+      $gte: Joi.date().iso().optional(),
+      $lte: Joi.date().iso().optional()
+    }).optional()
+  }).optional(),
+  page: Joi.number().integer().optional(),
+  limit: Joi.number().integer().optional(),
+  sort: Joi.string().valid('name', 'left', 'right', 'createdAt', 'updatedAt').optional(),
+  order: Joi.string().valid('asc', 'desc').optional(),
+  select: Joi.array()
+    .items(Joi.string().valid('slug', 'parent', 'left', 'right', 'name', 'thumb', 'description').optional())
+    .unique()
+    .optional()
+})

@@ -1,4 +1,4 @@
-import { ICreateNewCategoryDto, IUpdateCategoryDto } from '@/shared/types/category'
+import { ICategoryFilter, ICreateNewCategoryDto, IGetCategoriesDto, IUpdateCategoryDto } from '@/shared/types/category'
 
 export class CreateNewCategoryDto {
   parent?: string | null
@@ -33,5 +33,30 @@ export class UpdateCategoryDto {
     this.name = name
     this.thumb = thumb
     this.description = description
+  }
+}
+
+export class GetCategoriesDto {
+  filter: ICategoryFilter
+  page: number
+  limit: number
+  sort: 'name' | 'left' | 'right' | 'createdAt' | 'updatedAt'
+  order: 'asc' | 'desc'
+  select: string[]
+
+  constructor({
+    filter = {},
+    page = 1,
+    limit = 50,
+    sort = 'updatedAt',
+    order = 'desc',
+    select = ['slug', 'parent', 'name', 'thumb', 'description']
+  }: IGetCategoriesDto) {
+    this.filter = filter
+    this.page = page
+    this.limit = limit
+    this.sort = sort
+    this.order = order
+    this.select = select
   }
 }
