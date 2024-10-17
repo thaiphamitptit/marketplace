@@ -54,3 +54,7 @@ export interface IUpdateCategoryDto {
 export interface IDeleteCategoryReqParams extends ParamsDictionary {
   categoryId: string
 }
+
+export interface IGetCategoryReqParams extends ParamsDictionary {
+  categoryId: string
+}

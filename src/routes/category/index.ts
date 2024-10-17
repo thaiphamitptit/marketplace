@@ -5,6 +5,7 @@ import categoryController from '@/controllers/category.controller'
 import {
   createNewCategoryReqBody,
   deleteCategoryReqParams,
+  getCategoryReqParams,
   updateCategoryReqBody,
   updateCategoryReqParams
 } from '@/shared/validators/category.validator'
@@ -12,6 +13,12 @@ import { authReqHeaders } from '@/shared/validators/auth.validator'
 import asyncHandler from '@/shared/helpers/async-handler'
 
 const categoryRoutes = Router()
+
+categoryRoutes.get(
+  '/:categoryId',
+  validateSchema(getCategoryReqParams, 'params'),
+  asyncHandler(categoryController.getCategory)
+)
 
 /** Check authentication */
 categoryRoutes.use(validateSchema(authReqHeaders, 'headers'), checkAuthentication)

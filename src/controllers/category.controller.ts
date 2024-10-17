@@ -5,6 +5,7 @@ import { Created, Ok } from '@/shared/responses/success.response'
 import {
   ICreateNewCategoryReqBody,
   IDeleteCategoryReqParams,
+  IGetCategoryReqParams,
   IUpdateCategoryReqBody,
   IUpdateCategoryReqParams
 } from '@/shared/types/category'
@@ -45,6 +46,14 @@ class CategoryController {
     new Ok({
       message: SuccessMessages.DELETE_CATEGORY_SUCCESSFULLY,
       metadata: await CategoryService.deleteCategory(categoryId)
+    }).send(res)
+  }
+
+  getCategory = async (req: Request<IGetCategoryReqParams, any, any, any>, res: Response, next: NextFunction) => {
+    const { categoryId } = req.params
+    new Ok({
+      message: SuccessMessages.GET_CATEGORY_SUCCESSFULLY,
+      metadata: await CategoryService.getCategory(categoryId)
     }).send(res)
   }
 }

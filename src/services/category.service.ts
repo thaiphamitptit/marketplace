@@ -129,4 +129,18 @@ export default class CategoryService {
       category: categoryId
     }
   }
+
+  static getCategory = async (categoryId: string) => {
+    /** Get category */
+    const foundCategory = await CategoryRepository.findById(categoryId)
+    if (!foundCategory) {
+      throw new NotFound({
+        message: ErrorMessages.CATEGORY_NOT_FOUND
+      })
+    }
+
+    return {
+      category: unGetInfoData(foundCategory.toObject(), ['__v'])
+    }
+  }
 }
