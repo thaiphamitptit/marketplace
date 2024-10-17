@@ -1,8 +1,8 @@
 import CategoryRepository from '@/repositories/category.repository'
-import { CreateNewCategoryDto } from '@/shared/dtos/category.dto'
-import { BadRequest } from '@/shared/responses/error.response'
+import { CreateNewCategoryDto, UpdateCategoryDto } from '@/shared/dtos/category.dto'
+import { BadRequest, NotFound } from '@/shared/responses/error.response'
 import { unGetInfoData } from '@/shared/utils'
-import { ICreateNewCategoryDto } from '@/shared/types/category'
+import { ICreateNewCategoryDto, IUpdateCategoryDto } from '@/shared/types/category'
 import { ErrorMessages } from '@/shared/constants'
 
 export default class CategoryService {
@@ -42,6 +42,69 @@ export default class CategoryService {
 
     return {
       category: unGetInfoData(newCategory.toObject(), ['__v'])
+    }
+  }
+
+  static updateCategory = async (categoryId: string, dto: IUpdateCategoryDto) => {
+    const { parent: parentId } = dto
+    if (parentId) {
+      const [category, parentCategory] = await Promise.all([
+        CategoryRepository.findById(categoryId),
+        CategoryRepository.findById(parentId)
+      ])
+      /** Check category exists or not */
+      if (!category) {
+        throw new NotFound({
+          message: ErrorMessages.CATEGORY_NOT_FOUND
+        })
+      }
+      /** Check parent category exists or not */
+      if (!parentCategory) {
+        throw new BadRequest({
+          message: ErrorMessages.CATEGORY_NOT_FOUND
+        })
+      }
+      const { left, right } = category
+      const { left: parentLeft, right: parentRight } = parentCategory
+      /** Check parent category valid or not */
+      if ((parentLeft >= left && parentRight <= right) || (parentLeft < left && parentRight > right)) {
+        throw new BadRequest({
+          message: ErrorMessages.INVALID_PARENT_CATEGORY
+        })
+      }
+      /** Update ref categories */
+      const direction = left > parentRight
+      const offset = parentRight - left
+      const width = right - left + 1
+      /** Update ref categories before moving */
+      await Promise.all([
+        CategoryRepository.updateByLeftGreaterThan(parentRight, width, false),
+        CategoryRepository.updateByRightGreaterThan(parentRight, width, true)
+      ])
+      /** Update ref categories being moved */
+      const newLeft = direction ? left + width : left
+      const newRight = direction ? right + width : right
+      const newOffset = direction ? offset - width : offset
+      await CategoryRepository.updateByLeftGreaterThanAndRightLessThan(newLeft, newRight, newOffset, true)
+      /** Update ref categories after moving */
+      await Promise.all([
+        CategoryRepository.updateByLeftGreaterThan(right, -width, false),
+        CategoryRepository.updateByRightGreaterThan(right, -width, false)
+      ])
+    }
+    /** Update category */
+    const updateCategoryDto = new UpdateCategoryDto({
+      ...dto
+    })
+    const updatedCategory = await CategoryRepository.updateById(categoryId, updateCategoryDto)
+    if (!updatedCategory) {
+      throw new NotFound({
+        message: ErrorMessages.CATEGORY_NOT_FOUND
+      })
+    }
+
+    return {
+      category: unGetInfoData(updatedCategory.toObject(), ['__v'])
     }
   }
 }

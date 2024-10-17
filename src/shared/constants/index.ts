@@ -16,7 +16,8 @@ export enum ErrorMessages {
   KEY_STORE_NOT_FOUND = 'Key store not found',
   INVALID_AUTH_TOKEN = 'Invalid auth token',
   AUTH_TOKEN_ALREADY_REUSED = 'Auth token already reused',
-  CATEGORY_NOT_FOUND = 'Category not found'
+  CATEGORY_NOT_FOUND = 'Category not found',
+  INVALID_PARENT_CATEGORY = 'Invalid parent category'
 }
 
 export enum SuccessMessages {
@@ -24,5 +25,6 @@ export enum SuccessMessages {
   LOGIN_SUCCESSFULLY = 'Login successfully',
   LOGOUT_SUCCESSFULLY = 'Logout successfully',
   REFRESH_TOKENS_SUCCESSFULLY = 'Refresh tokens successfully',
-  CREATE_NEW_CATEGORY_SUCCESSFULLY = 'Create new category successfully'
+  CREATE_NEW_CATEGORY_SUCCESSFULLY = 'Create new category successfully',
+  UPDATE_CATEGORY_SUCCESSFULLY = 'Update category successfully'
 }
