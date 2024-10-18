@@ -17,7 +17,8 @@ export enum ErrorMessages {
   INVALID_AUTH_TOKEN = 'Invalid auth token',
   AUTH_TOKEN_ALREADY_REUSED = 'Auth token already reused',
   CATEGORY_NOT_FOUND = 'Category not found',
-  INVALID_PARENT_CATEGORY = 'Invalid parent category'
+  INVALID_PARENT_CATEGORY = 'Invalid parent category',
+  INVALID_ATTRIBUTE_NAME = 'Invalid attribute name'
 }
 
 export enum SuccessMessages {
@@ -32,5 +33,6 @@ export enum SuccessMessages {
   GET_CATEGORIES_SUCCESSFULLY = 'Get categories successfully',
   SEARCH_CATEGORIES_SUCCESSFULLY = 'Search categories successfully',
   GET_ANCESTOR_CATEGORIES_SUCCESSFULLY = 'Get ancestor categories successfully',
-  GET_DESCENDANT_CATEGORIES_SUCCESSFULLY = 'Get descendant categories successfully'
+  GET_DESCENDANT_CATEGORIES_SUCCESSFULLY = 'Get descendant categories successfully',
+  CREATE_NEW_ATTRIBUTE_SUCCESSFULLY = 'Create new attribute successfully'
 }
