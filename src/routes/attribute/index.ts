@@ -4,6 +4,7 @@ import { checkAuthentication, checkAuthorization } from '@/middlewares/auth.midd
 import attributeController from '@/controllers/attribute.controller'
 import {
   createNewAttributeReqBody,
+  deleteAttributeReqParams,
   updateAttributeReqBody,
   updateAttributeReqParams
 } from '@/shared/validators/attribute.validator'
@@ -26,6 +27,11 @@ attributeRoutes.patch(
   validateSchema(updateAttributeReqParams, 'params'),
   validateSchema(updateAttributeReqBody, 'body'),
   asyncHandler(attributeController.updateAttribute)
+)
+attributeRoutes.delete(
+  '/:attributeId',
+  validateSchema(deleteAttributeReqParams, 'params'),
+  asyncHandler(attributeController.deleteAttribute)
 )
 
 export default attributeRoutes

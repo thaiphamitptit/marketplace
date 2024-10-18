@@ -36,5 +36,6 @@ export enum SuccessMessages {
   GET_ANCESTOR_CATEGORIES_SUCCESSFULLY = 'Get ancestor categories successfully',
   GET_DESCENDANT_CATEGORIES_SUCCESSFULLY = 'Get descendant categories successfully',
   CREATE_NEW_ATTRIBUTE_SUCCESSFULLY = 'Create new attribute successfully',
-  UPDATE_ATTRIBUTE_SUCCESSFULLY = 'Update attribute successfully'
+  UPDATE_ATTRIBUTE_SUCCESSFULLY = 'Update attribute successfully',
+  DELETE_ATTRIBUTE_SUCCESSFULLY = 'Delete attribute successfully'
 }

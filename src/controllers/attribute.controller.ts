@@ -4,6 +4,7 @@ import { CreateNewAttributeDto, UpdateAttributeDto } from '@/shared/dtos/attribu
 import { Created, Ok } from '@/shared/responses/success.response'
 import {
   ICreateNewAttributeReqBody,
+  IDeleteAttributeReqParams,
   IUpdateAttributeReqBody,
   IUpdateAttributeReqParams
 } from '@/shared/types/attribute'
@@ -36,6 +37,18 @@ class AttributeController {
     new Ok({
       message: SuccessMessages.UPDATE_ATTRIBUTE_SUCCESSFULLY,
       metadata: await AttributeService.updateAttribute(attributeId, updateAttributeDto)
+    }).send(res)
+  }
+
+  deleteAttribute = async (
+    req: Request<IDeleteAttributeReqParams, any, any, any>,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const { attributeId } = req.params
+    new Ok({
+      message: SuccessMessages.DELETE_ATTRIBUTE_SUCCESSFULLY,
+      metadata: await AttributeService.deleteAttribute(attributeId)
     }).send(res)
   }
 }
