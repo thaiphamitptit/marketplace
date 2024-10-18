@@ -1,5 +1,10 @@
 import { attributeModel } from '@/models/attribute.model'
-import { ICreateNewAttributeDto, IGetAttributesDto, IUpdateAttributeDto } from '@/shared/types/attribute'
+import {
+  ICreateNewAttributeDto,
+  IGetAttributesDto,
+  ISearchAttributesDto,
+  IUpdateAttributeDto
+} from '@/shared/types/attribute'
 import { getSelectData } from '@/shared/utils'
 
 export default class AttributeRepository {
@@ -33,6 +38,33 @@ export default class AttributeRepository {
     }
     const fields = getSelectData(select)
     return await attributeModel.find(filter).skip(offset).limit(limit).sort(arg).select(fields)
+  }
+
+  static findByKeywordFilterAndPagination = async (dto: ISearchAttributesDto) => {
+    const {
+      keyword,
+      filter = {},
+      page = 1,
+      limit = 50,
+      sort = 'updatedAt',
+      order = 'desc',
+      select = ['slug', 'name', 'type', 'description']
+    } = dto
+    const engine = {
+      ...filter,
+      $text: {
+        $search: keyword
+      }
+    }
+    const offset = (page - 1) * limit
+    const arg = {
+      score: {
+        $meta: 'textScore'
+      },
+      [sort]: order
+    }
+    const fields = getSelectData(select)
+    return await attributeModel.find(engine).skip(offset).limit(limit).sort(arg).select(fields)
   }
 
   static updateById = async (attributeId: string, dto: IUpdateAttributeDto) => {

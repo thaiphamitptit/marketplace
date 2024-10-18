@@ -79,3 +79,23 @@ export interface IGetAttributesDto {
   order?: 'asc' | 'desc'
   select?: string[]
 }
+
+export interface ISearchAttributesReqQuery extends ParsedQs {
+  keyword: string
+  filter?: IAttributeFilter
+  page?: number
+  limit?: number
+  sort?: 'name' | 'createdAt' | 'updatedAt'
+  order?: 'asc' | 'desc'
+  select?: string[]
+}
+
+export interface ISearchAttributesDto {
+  keyword: string
+  filter?: IAttributeFilter
+  page?: number
+  limit?: number
+  sort?: 'name' | 'createdAt' | 'updatedAt'
+  order?: 'asc' | 'desc'
+  select?: string[]
+}

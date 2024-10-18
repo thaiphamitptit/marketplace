@@ -2,6 +2,7 @@ import {
   IAttributeFilter,
   ICreateNewAttributeDto,
   IGetAttributesDto,
+  ISearchAttributesDto,
   IUpdateAttributeDto
 } from '@/shared/types/attribute'
 
@@ -45,6 +46,34 @@ export class GetAttributesDto {
     order = 'desc',
     select = ['slug', 'name', 'type', 'description']
   }: IGetAttributesDto) {
+    this.filter = filter
+    this.page = page
+    this.limit = limit
+    this.sort = sort
+    this.order = order
+    this.select = select
+  }
+}
+
+export class SearchAttributesDto {
+  keyword: string
+  filter: IAttributeFilter
+  page: number
+  limit: number
+  sort: 'name' | 'createdAt' | 'updatedAt'
+  order: 'asc' | 'desc'
+  select: string[]
+
+  constructor({
+    keyword,
+    filter = {},
+    page = 1,
+    limit = 50,
+    sort = 'updatedAt',
+    order = 'desc',
+    select = ['slug', 'name', 'type', 'description']
+  }: ISearchAttributesDto) {
+    this.keyword = keyword
     this.filter = filter
     this.page = page
     this.limit = limit

@@ -39,5 +39,6 @@ export enum SuccessMessages {
   UPDATE_ATTRIBUTE_SUCCESSFULLY = 'Update attribute successfully',
   DELETE_ATTRIBUTE_SUCCESSFULLY = 'Delete attribute successfully',
   GET_ATTRIBUTE_SUCCESSFULLY = 'Get attribute successfully',
-  GET_ATTRIBUTES_SUCCESSFULLY = 'Get attributes successfully'
+  GET_ATTRIBUTES_SUCCESSFULLY = 'Get attributes successfully',
+  SEARCH_ATTRIBUTES_SUCCESSFULLY = 'Search attributes successfully'
 }
