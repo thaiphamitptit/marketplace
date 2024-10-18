@@ -1,8 +1,8 @@
 import AttributeRepository from '@/repositories/attribute.repository'
-import { CreateNewAttributeDto } from '@/shared/dtos/attribute.dto'
-import { BadRequest } from '@/shared/responses/error.response'
+import { CreateNewAttributeDto, UpdateAttributeDto } from '@/shared/dtos/attribute.dto'
+import { BadRequest, NotFound } from '@/shared/responses/error.response'
 import { unGetInfoData } from '@/shared/utils'
-import { ICreateNewAttributeDto } from '@/shared/types/attribute'
+import { ICreateNewAttributeDto, IUpdateAttributeDto } from '@/shared/types/attribute'
 import { ErrorMessages } from '@/shared/constants'
 
 export default class AttributeService {
@@ -23,6 +23,33 @@ export default class AttributeService {
 
     return {
       attribute: unGetInfoData(newAttribute.toObject(), ['__v'])
+    }
+  }
+
+  static updateAttribute = async (attributeId: string, dto: IUpdateAttributeDto) => {
+    const { name } = dto
+    /** Check attribute name valid or not */
+    if (name) {
+      const attribute = await AttributeRepository.findByName(name)
+      if (attribute) {
+        throw new BadRequest({
+          message: ErrorMessages.INVALID_ATTRIBUTE_NAME
+        })
+      }
+    }
+    /** Update attribute */
+    const updateAttributeDto = new UpdateAttributeDto({
+      ...dto
+    })
+    const updatedAttribute = await AttributeRepository.updateById(attributeId, updateAttributeDto)
+    if (!updatedAttribute) {
+      throw new NotFound({
+        message: ErrorMessages.ATTRIBUTE_NOT_FOUND
+      })
+    }
+
+    return {
+      attribute: unGetInfoData(updatedAttribute.toObject(), ['__v'])
     }
   }
 }
