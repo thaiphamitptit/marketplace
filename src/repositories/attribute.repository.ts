@@ -1,5 +1,5 @@
 import { attributeModel } from '@/models/attribute.model'
-import { ICreateNewAttributeDto } from '@/shared/types/attribute'
+import { ICreateNewAttributeDto, IUpdateAttributeDto } from '@/shared/types/attribute'
 
 export default class AttributeRepository {
   static createNew = async (dto: ICreateNewAttributeDto) => {
@@ -11,5 +11,15 @@ export default class AttributeRepository {
       name
     }
     return await attributeModel.findOne(filter)
+  }
+
+  static updateById = async (attributeId: string, dto: IUpdateAttributeDto) => {
+    const update = {
+      $set: dto
+    }
+    const options = {
+      new: true
+    }
+    return await attributeModel.findByIdAndUpdate(attributeId, update, options)
   }
 }

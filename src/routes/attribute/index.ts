@@ -2,7 +2,11 @@ import { Router } from 'express'
 import { validateSchema } from '@/middlewares/validator.middleware'
 import { checkAuthentication, checkAuthorization } from '@/middlewares/auth.middleware'
 import attributeController from '@/controllers/attribute.controller'
-import { createNewAttributeReqBody } from '@/shared/validators/attribute.validator'
+import {
+  createNewAttributeReqBody,
+  updateAttributeReqBody,
+  updateAttributeReqParams
+} from '@/shared/validators/attribute.validator'
 import { authReqHeaders } from '@/shared/validators/auth.validator'
 import asyncHandler from '@/shared/helpers/async-handler'
 
@@ -16,6 +20,12 @@ attributeRoutes.post(
   '',
   validateSchema(createNewAttributeReqBody, 'body'),
   asyncHandler(attributeController.createNewAttribute)
+)
+attributeRoutes.patch(
+  '/:attributeId',
+  validateSchema(updateAttributeReqParams, 'params'),
+  validateSchema(updateAttributeReqBody, 'body'),
+  asyncHandler(attributeController.updateAttribute)
 )
 
 export default attributeRoutes

@@ -1,4 +1,5 @@
 import { Document } from 'mongoose'
+import { ParamsDictionary } from 'express-serve-static-core'
 
 export interface IAttribute extends Document {
   _id: string
@@ -20,5 +21,21 @@ export interface ICreateNewAttributeReqBody {
 export interface ICreateNewAttributeDto {
   name: string
   type: 'string' | 'number' | 'date' | 'boolean' | 'array' | 'object'
+  description?: string
+}
+
+export interface IUpdateAttributeReqBody {
+  name?: string
+  type?: 'string' | 'number' | 'date' | 'boolean' | 'array' | 'object'
+  description?: string
+}
+
+export interface IUpdateAttributeReqParams extends ParamsDictionary {
+  attributeId: string
+}
+
+export interface IUpdateAttributeDto {
+  name?: string
+  type?: 'string' | 'number' | 'date' | 'boolean' | 'array' | 'object'
   description?: string
 }
