@@ -39,6 +39,8 @@ const attributeSchema = new Schema<IAttribute>(
   }
 )
 
+attributeSchema.index({ name: 'text', description: 'text' })
+
 attributeSchema.pre('save', async function (next) {
   if (this.isModified('name') || this.isNew) {
     const base = slugify(this.name, {
