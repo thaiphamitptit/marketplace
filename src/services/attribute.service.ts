@@ -1,8 +1,8 @@
 import AttributeRepository from '@/repositories/attribute.repository'
-import { CreateNewAttributeDto, UpdateAttributeDto } from '@/shared/dtos/attribute.dto'
+import { CreateNewAttributeDto, GetAttributesDto, UpdateAttributeDto } from '@/shared/dtos/attribute.dto'
 import { BadRequest, NotFound } from '@/shared/responses/error.response'
 import { unGetInfoData } from '@/shared/utils'
-import { ICreateNewAttributeDto, IUpdateAttributeDto } from '@/shared/types/attribute'
+import { ICreateNewAttributeDto, IGetAttributesDto, IUpdateAttributeDto } from '@/shared/types/attribute'
 import { ErrorMessages } from '@/shared/constants'
 
 export default class AttributeService {
@@ -78,6 +78,23 @@ export default class AttributeService {
 
     return {
       attribute: unGetInfoData(foundAttribute.toObject(), ['__v'])
+    }
+  }
+
+  static getAttributes = async (dto: IGetAttributesDto) => {
+    /** Get attributes combined filter and pagination */
+    const getAttributesDto = new GetAttributesDto({
+      ...dto
+    })
+    const { page, limit } = getAttributesDto
+    const foundAttributes = await AttributeRepository.findByFilterAndPagination(getAttributesDto)
+
+    return {
+      pagination: {
+        page,
+        limit
+      },
+      attributes: foundAttributes
     }
   }
 }

@@ -38,5 +38,6 @@ export enum SuccessMessages {
   CREATE_NEW_ATTRIBUTE_SUCCESSFULLY = 'Create new attribute successfully',
   UPDATE_ATTRIBUTE_SUCCESSFULLY = 'Update attribute successfully',
   DELETE_ATTRIBUTE_SUCCESSFULLY = 'Delete attribute successfully',
-  GET_ATTRIBUTE_SUCCESSFULLY = 'Get attribute successfully'
+  GET_ATTRIBUTE_SUCCESSFULLY = 'Get attribute successfully',
+  GET_ATTRIBUTES_SUCCESSFULLY = 'Get attributes successfully'
 }
