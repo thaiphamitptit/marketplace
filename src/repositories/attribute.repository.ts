@@ -1,5 +1,6 @@
 import { attributeModel } from '@/models/attribute.model'
-import { ICreateNewAttributeDto, IUpdateAttributeDto } from '@/shared/types/attribute'
+import { ICreateNewAttributeDto, IGetAttributesDto, IUpdateAttributeDto } from '@/shared/types/attribute'
+import { getSelectData } from '@/shared/utils'
 
 export default class AttributeRepository {
   static createNew = async (dto: ICreateNewAttributeDto) => {
@@ -15,6 +16,23 @@ export default class AttributeRepository {
       name
     }
     return await attributeModel.findOne(filter)
+  }
+
+  static findByFilterAndPagination = async (dto: IGetAttributesDto) => {
+    const {
+      filter = {},
+      page = 1,
+      limit = 50,
+      sort = 'updatedAt',
+      order = 'desc',
+      select = ['slug', 'name', 'type', 'description']
+    } = dto
+    const offset = (page - 1) * limit
+    const arg = {
+      [sort]: order
+    }
+    const fields = getSelectData(select)
+    return await attributeModel.find(filter).skip(offset).limit(limit).sort(arg).select(fields)
   }
 
   static updateById = async (attributeId: string, dto: IUpdateAttributeDto) => {
