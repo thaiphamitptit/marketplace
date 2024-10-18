@@ -7,6 +7,7 @@ import {
   deleteAttributeReqParams,
   getAttributeReqParams,
   getAttributesReqQuery,
+  searchAttributesReqQuery,
   updateAttributeReqBody,
   updateAttributeReqParams
 } from '@/shared/validators/attribute.validator'
@@ -15,6 +16,11 @@ import asyncHandler from '@/shared/helpers/async-handler'
 
 const attributeRoutes = Router()
 
+attributeRoutes.get(
+  '/search',
+  validateSchema(searchAttributesReqQuery, 'query'),
+  asyncHandler(attributeController.searchAttributes)
+)
 attributeRoutes.get('', validateSchema(getAttributesReqQuery, 'query'), asyncHandler(attributeController.getAttributes))
 attributeRoutes.get(
   '/:attributeId',

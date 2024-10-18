@@ -1,8 +1,18 @@
 import AttributeRepository from '@/repositories/attribute.repository'
-import { CreateNewAttributeDto, GetAttributesDto, UpdateAttributeDto } from '@/shared/dtos/attribute.dto'
+import {
+  CreateNewAttributeDto,
+  GetAttributesDto,
+  SearchAttributesDto,
+  UpdateAttributeDto
+} from '@/shared/dtos/attribute.dto'
 import { BadRequest, NotFound } from '@/shared/responses/error.response'
 import { unGetInfoData } from '@/shared/utils'
-import { ICreateNewAttributeDto, IGetAttributesDto, IUpdateAttributeDto } from '@/shared/types/attribute'
+import {
+  ICreateNewAttributeDto,
+  IGetAttributesDto,
+  ISearchAttributesDto,
+  IUpdateAttributeDto
+} from '@/shared/types/attribute'
 import { ErrorMessages } from '@/shared/constants'
 
 export default class AttributeService {
@@ -88,6 +98,23 @@ export default class AttributeService {
     })
     const { page, limit } = getAttributesDto
     const foundAttributes = await AttributeRepository.findByFilterAndPagination(getAttributesDto)
+
+    return {
+      pagination: {
+        page,
+        limit
+      },
+      attributes: foundAttributes
+    }
+  }
+
+  static searchAttributes = async (dto: ISearchAttributesDto) => {
+    /** Search attributes combined filter and pagination */
+    const searchAttributesDto = new SearchAttributesDto({
+      ...dto
+    })
+    const { page, limit } = searchAttributesDto
+    const foundAttributes = await AttributeRepository.findByKeywordFilterAndPagination(searchAttributesDto)
 
     return {
       pagination: {
