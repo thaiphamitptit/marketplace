@@ -66,4 +66,18 @@ export default class AttributeService {
       attribute: attributeId
     }
   }
+
+  static getAttribute = async (attributeId: string) => {
+    /** Get attribute */
+    const foundAttribute = await AttributeRepository.findById(attributeId)
+    if (!foundAttribute) {
+      throw new NotFound({
+        message: ErrorMessages.ATTRIBUTE_NOT_FOUND
+      })
+    }
+
+    return {
+      attribute: unGetInfoData(foundAttribute.toObject(), ['__v'])
+    }
+  }
 }

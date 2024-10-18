@@ -5,6 +5,7 @@ import { Created, Ok } from '@/shared/responses/success.response'
 import {
   ICreateNewAttributeReqBody,
   IDeleteAttributeReqParams,
+  IGetAttributeReqParams,
   IUpdateAttributeReqBody,
   IUpdateAttributeReqParams
 } from '@/shared/types/attribute'
@@ -49,6 +50,14 @@ class AttributeController {
     new Ok({
       message: SuccessMessages.DELETE_ATTRIBUTE_SUCCESSFULLY,
       metadata: await AttributeService.deleteAttribute(attributeId)
+    }).send(res)
+  }
+
+  getAttribute = async (req: Request<IGetAttributeReqParams, any, any, any>, res: Response, next: NextFunction) => {
+    const { attributeId } = req.params
+    new Ok({
+      message: SuccessMessages.GET_ATTRIBUTE_SUCCESSFULLY,
+      metadata: await AttributeService.getAttribute(attributeId)
     }).send(res)
   }
 }

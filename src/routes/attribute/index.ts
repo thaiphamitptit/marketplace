@@ -5,6 +5,7 @@ import attributeController from '@/controllers/attribute.controller'
 import {
   createNewAttributeReqBody,
   deleteAttributeReqParams,
+  getAttributeReqParams,
   updateAttributeReqBody,
   updateAttributeReqParams
 } from '@/shared/validators/attribute.validator'
@@ -12,6 +13,12 @@ import { authReqHeaders } from '@/shared/validators/auth.validator'
 import asyncHandler from '@/shared/helpers/async-handler'
 
 const attributeRoutes = Router()
+
+attributeRoutes.get(
+  '/:attributeId',
+  validateSchema(getAttributeReqParams, 'params'),
+  asyncHandler(attributeController.getAttribute)
+)
 
 /** Check authentication */
 attributeRoutes.use(validateSchema(authReqHeaders, 'headers'), checkAuthentication)
