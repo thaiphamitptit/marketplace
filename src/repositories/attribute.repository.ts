@@ -6,6 +6,10 @@ export default class AttributeRepository {
     return await attributeModel.create(dto)
   }
 
+  static findById = async (attributeId: string) => {
+    return await attributeModel.findById(attributeId)
+  }
+
   static findByName = async (name: string) => {
     const filter = {
       name

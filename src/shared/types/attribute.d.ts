@@ -43,3 +43,7 @@ export interface IUpdateAttributeDto {
 export interface IDeleteAttributeReqParams extends ParamsDictionary {
   attributeId: string
 }
+
+export interface IGetAttributeReqParams extends ParamsDictionary {
+  attributeId: string
+}
