@@ -39,3 +39,7 @@ export interface IUpdateAttributeDto {
   type?: 'string' | 'number' | 'date' | 'boolean' | 'array' | 'object'
   description?: string
 }
+
+export interface IDeleteAttributeReqParams extends ParamsDictionary {
+  attributeId: string
+}

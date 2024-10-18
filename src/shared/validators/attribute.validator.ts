@@ -15,3 +15,7 @@ export const updateAttributeReqBody = Joi.object({
 export const updateAttributeReqParams = Joi.object({
   attributeId: Joi.string().uuid().required()
 })
+
+export const deleteAttributeReqParams = Joi.object({
+  attributeId: Joi.string().uuid().required()
+})
