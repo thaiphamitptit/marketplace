@@ -1,0 +1,21 @@
+import { Router } from 'express'
+import { validateSchema } from '@/middlewares/validator.middleware'
+import { checkAuthentication, checkAuthorization } from '@/middlewares/auth.middleware'
+import attributeController from '@/controllers/attribute.controller'
+import { createNewAttributeReqBody } from '@/shared/validators/attribute.validator'
+import { authReqHeaders } from '@/shared/validators/auth.validator'
+import asyncHandler from '@/shared/helpers/async-handler'
+
+const attributeRoutes = Router()
+
+/** Check authentication */
+attributeRoutes.use(validateSchema(authReqHeaders, 'headers'), checkAuthentication)
+attributeRoutes.use(checkAuthorization(['admin', 'seller']))
+
+attributeRoutes.post(
+  '',
+  validateSchema(createNewAttributeReqBody, 'body'),
+  asyncHandler(attributeController.createNewAttribute)
+)
+
+export default attributeRoutes
