@@ -1,11 +1,12 @@
 import { NextFunction, Request, Response } from 'express'
 import AttributeService from '@/services/attribute.service'
-import { CreateNewAttributeDto, UpdateAttributeDto } from '@/shared/dtos/attribute.dto'
+import { CreateNewAttributeDto, GetAttributesDto, UpdateAttributeDto } from '@/shared/dtos/attribute.dto'
 import { Created, Ok } from '@/shared/responses/success.response'
 import {
   ICreateNewAttributeReqBody,
   IDeleteAttributeReqParams,
   IGetAttributeReqParams,
+  IGetAttributesReqQuery,
   IUpdateAttributeReqBody,
   IUpdateAttributeReqParams
 } from '@/shared/types/attribute'
@@ -58,6 +59,16 @@ class AttributeController {
     new Ok({
       message: SuccessMessages.GET_ATTRIBUTE_SUCCESSFULLY,
       metadata: await AttributeService.getAttribute(attributeId)
+    }).send(res)
+  }
+
+  getAttributes = async (req: Request<any, any, any, IGetAttributesReqQuery>, res: Response, next: NextFunction) => {
+    const getAttributesDto = new GetAttributesDto({
+      ...req.query
+    })
+    new Ok({
+      message: SuccessMessages.GET_ATTRIBUTES_SUCCESSFULLY,
+      metadata: await AttributeService.getAttributes(getAttributesDto)
     }).send(res)
   }
 }
