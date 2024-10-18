@@ -22,4 +22,8 @@ export default class AttributeRepository {
     }
     return await attributeModel.findByIdAndUpdate(attributeId, update, options)
   }
+
+  static deleteById = async (attributeId: string) => {
+    return await attributeModel.findByIdAndDelete(attributeId)
+  }
 }

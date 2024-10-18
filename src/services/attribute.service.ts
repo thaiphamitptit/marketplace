@@ -52,4 +52,18 @@ export default class AttributeService {
       attribute: unGetInfoData(updatedAttribute.toObject(), ['__v'])
     }
   }
+
+  static deleteAttribute = async (attributeId: string) => {
+    /** Delete attribute */
+    const deletedAttribute = await AttributeRepository.deleteById(attributeId)
+    if (!deletedAttribute) {
+      throw new NotFound({
+        message: ErrorMessages.ATTRIBUTE_NOT_FOUND
+      })
+    }
+
+    return {
+      attribute: attributeId
+    }
+  }
 }
