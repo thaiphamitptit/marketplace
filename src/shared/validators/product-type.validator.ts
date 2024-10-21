@@ -6,3 +6,14 @@ export const createNewProductTypeReqBody = Joi.object({
   thumb: Joi.string().optional(),
   description: Joi.string().optional()
 })
+
+export const updateProductTypeReqBody = Joi.object({
+  name: Joi.string().optional(),
+  attributes: Joi.array().items(Joi.string().uuid().required()).unique().optional(),
+  thumb: Joi.string().optional(),
+  description: Joi.string().optional()
+}).or('name', 'attributes', 'thumb', 'description')
+
+export const updateProductTypeReqParams = Joi.object({
+  productTypeId: Joi.string().uuid().required()
+})
