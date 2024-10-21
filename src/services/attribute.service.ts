@@ -1,4 +1,5 @@
 import AttributeRepository from '@/repositories/attribute.repository'
+import ProductTypeRepository from '@/repositories/product-type.repository'
 import {
   CreateNewAttributeDto,
   GetAttributesDto,
@@ -71,6 +72,8 @@ export default class AttributeService {
         message: ErrorMessages.ATTRIBUTE_NOT_FOUND
       })
     }
+    /** Update ref product types */
+    await ProductTypeRepository.updateByRemovingAttribute(attributeId)
 
     return {
       attribute: attributeId

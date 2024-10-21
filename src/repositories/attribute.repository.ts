@@ -23,6 +23,15 @@ export default class AttributeRepository {
     return await attributeModel.findOne(filter)
   }
 
+  static findByIds = async (attributeIds: string[]) => {
+    const filter = {
+      _id: {
+        $in: attributeIds
+      }
+    }
+    return await attributeModel.find(filter)
+  }
+
   static findByFilterAndPagination = async (dto: IGetAttributesDto) => {
     const {
       filter = {},
