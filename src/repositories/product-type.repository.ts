@@ -1,9 +1,19 @@
 import { productTypeModel } from '@/models/product-type.model'
-import { ICreateNewProductTypeDto } from '@/shared/types/product-type'
+import { ICreateNewProductTypeDto, IUpdateProductTypeDto } from '@/shared/types/product-type'
 
 export default class ProductTypeRepository {
   static createNew = async (dto: ICreateNewProductTypeDto) => {
     return await productTypeModel.create(dto)
+  }
+
+  static updateById = async (productTypeId: string, dto: IUpdateProductTypeDto) => {
+    const update = {
+      $set: dto
+    }
+    const options = {
+      new: true
+    }
+    return await productTypeModel.findByIdAndUpdate(productTypeId, update, options)
   }
 
   static updateByRemovingAttribute = async (attributeId: string) => {

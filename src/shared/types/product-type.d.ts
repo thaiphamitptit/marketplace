@@ -1,4 +1,5 @@
 import { Document } from 'mongoose'
+import { ParamsDictionary } from 'express-serve-static-core'
 
 export interface IProductType extends Document {
   _id: string
@@ -22,6 +23,24 @@ export interface ICreateNewProductTypeReqBody {
 export interface ICreateNewProductTypeDto {
   name: string
   attributes: string[]
+  thumb?: string
+  description?: string
+}
+
+export interface IUpdateProductTypeReqBody {
+  name?: string
+  attributes?: string[]
+  thumb?: string
+  description?: string
+}
+
+export interface IUpdateProductTypeReqParams extends ParamsDictionary {
+  productTypeId: string
+}
+
+export interface IUpdateProductTypeDto {
+  name?: string
+  attributes?: string[]
   thumb?: string
   description?: string
 }
