@@ -4,6 +4,7 @@ import { checkAuthentication, checkAuthorization } from '@/middlewares/auth.midd
 import productTypeController from '@/controllers/product-type.controller'
 import {
   createNewProductTypeReqBody,
+  deleteProductTypeReqParams,
   updateProductTypeReqBody,
   updateProductTypeReqParams
 } from '@/shared/validators/product-type.validator'
@@ -26,6 +27,11 @@ productTypeRoutes.patch(
   validateSchema(updateProductTypeReqParams, 'params'),
   validateSchema(updateProductTypeReqBody, 'body'),
   asyncHandler(productTypeController.updateProductType)
+)
+productTypeRoutes.delete(
+  '/:productTypeId',
+  validateSchema(deleteProductTypeReqParams, 'params'),
+  asyncHandler(productTypeController.deleteProductType)
 )
 
 export default productTypeRoutes

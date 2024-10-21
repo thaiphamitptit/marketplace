@@ -44,3 +44,7 @@ export interface IUpdateProductTypeDto {
   thumb?: string
   description?: string
 }
+
+export interface IDeleteProductTypeReqParams extends ParamsDictionary {
+  productTypeId: string
+}
