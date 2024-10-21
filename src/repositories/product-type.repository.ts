@@ -27,4 +27,8 @@ export default class ProductTypeRepository {
     }
     return await productTypeModel.updateMany(filter, update)
   }
+
+  static deleteById = async (productTypeId: string) => {
+    return await productTypeModel.findByIdAndDelete(productTypeId)
+  }
 }

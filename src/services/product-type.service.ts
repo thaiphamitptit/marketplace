@@ -69,4 +69,18 @@ export default class ProductTypeService {
       productType: unGetInfoData(populatedProductType.toObject(), ['__v'])
     }
   }
+
+  static deleteProductType = async (productTypeId: string) => {
+    /** Delete product type */
+    const deletedProductType = await ProductTypeRepository.deleteById(productTypeId)
+    if (!deletedProductType) {
+      throw new NotFound({
+        message: ErrorMessages.PRODUCT_TYPE_NOT_FOUND
+      })
+    }
+
+    return {
+      productType: productTypeId
+    }
+  }
 }

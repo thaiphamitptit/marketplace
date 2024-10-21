@@ -4,6 +4,7 @@ import { CreateNewProductTypeDto, UpdateProductTypeDto } from '@/shared/dtos/pro
 import { Created, Ok } from '@/shared/responses/success.response'
 import {
   ICreateNewProductTypeReqBody,
+  IDeleteProductTypeReqParams,
   IUpdateProductTypeReqBody,
   IUpdateProductTypeReqParams
 } from '@/shared/types/product-type'
@@ -36,6 +37,18 @@ class ProductTypeController {
     new Ok({
       message: SuccessMessages.UPDATE_PRODUCT_TYPE_SUCCESSFULLY,
       metadata: await ProductTypeService.updateProductType(productTypeId, updateProductTypeDto)
+    }).send(res)
+  }
+
+  deleteProductType = async (
+    req: Request<IDeleteProductTypeReqParams, any, any, any>,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const { productTypeId } = req.params
+    new Ok({
+      message: SuccessMessages.DELETE_PRODUCT_TYPE_SUCCESSFULLY,
+      metadata: await ProductTypeService.deleteProductType(productTypeId)
     }).send(res)
   }
 }
