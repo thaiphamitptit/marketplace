@@ -21,3 +21,7 @@ export const updateProductTypeReqParams = Joi.object({
 export const deleteProductTypeReqParams = Joi.object({
   productTypeId: Joi.string().uuid().required()
 })
+
+export const getProductTypeReqParams = Joi.object({
+  productTypeId: Joi.string().uuid().required()
+})

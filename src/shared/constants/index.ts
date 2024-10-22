@@ -45,5 +45,6 @@ export enum SuccessMessages {
   SEARCH_ATTRIBUTES_SUCCESSFULLY = 'Search attributes successfully',
   CREATE_NEW_PRODUCT_TYPE_SUCCESSFULLY = 'Create new product type successfully',
   UPDATE_PRODUCT_TYPE_SUCCESSFULLY = 'Update product type successfully',
-  DELETE_PRODUCT_TYPE_SUCCESSFULLY = 'Delete product type successfully'
+  DELETE_PRODUCT_TYPE_SUCCESSFULLY = 'Delete product type successfully',
+  GET_PRODUCT_TYPE_SUCCESSFULLY = 'Get product type successfully'
 }

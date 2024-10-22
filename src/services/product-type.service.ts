@@ -83,4 +83,26 @@ export default class ProductTypeService {
       productType: productTypeId
     }
   }
+
+  static getProductType = async (productTypeId: string) => {
+    /** Get product type */
+    const foundProductType = await ProductTypeRepository.findById(productTypeId)
+    if (!foundProductType) {
+      throw new NotFound({
+        message: ErrorMessages.PRODUCT_TYPE_NOT_FOUND
+      })
+    }
+    /** Populate product type */
+    const paths = [
+      {
+        path: 'attributes',
+        select: ['name', 'type']
+      }
+    ]
+    const populatedProductType = await foundProductType.populate(paths)
+
+    return {
+      productType: unGetInfoData(populatedProductType.toObject(), ['__v'])
+    }
+  }
 }

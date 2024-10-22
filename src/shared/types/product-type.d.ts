@@ -48,3 +48,7 @@ export interface IUpdateProductTypeDto {
 export interface IDeleteProductTypeReqParams extends ParamsDictionary {
   productTypeId: string
 }
+
+export interface IGetProductTypeReqParams extends ParamsDictionary {
+  productTypeId: string
+}

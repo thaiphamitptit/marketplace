@@ -6,6 +6,10 @@ export default class ProductTypeRepository {
     return await productTypeModel.create(dto)
   }
 
+  static findById = async (productTypeId: string) => {
+    return await productTypeModel.findById(productTypeId)
+  }
+
   static updateById = async (productTypeId: string, dto: IUpdateProductTypeDto) => {
     const update = {
       $set: dto
