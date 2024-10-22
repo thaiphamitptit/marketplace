@@ -1,9 +1,19 @@
 import ProductTypeRepository from '@/repositories/product-type.repository'
 import AttributeRepository from '@/repositories/attribute.repository'
-import { CreateNewProductTypeDto, GetProductTypesDto, UpdateProductTypeDto } from '@/shared/dtos/product-type.dto'
+import {
+  CreateNewProductTypeDto,
+  GetProductTypesDto,
+  SearchProductTypesDto,
+  UpdateProductTypeDto
+} from '@/shared/dtos/product-type.dto'
 import { BadRequest, NotFound } from '@/shared/responses/error.response'
 import { unGetInfoData } from '@/shared/utils'
-import { ICreateNewProductTypeDto, IGetProductTypesDto, IUpdateProductTypeDto } from '@/shared/types/product-type'
+import {
+  ICreateNewProductTypeDto,
+  IGetProductTypesDto,
+  ISearchProductTypesDto,
+  IUpdateProductTypeDto
+} from '@/shared/types/product-type'
 import { ErrorMessages } from '@/shared/constants'
 
 export default class ProductTypeService {
@@ -113,6 +123,23 @@ export default class ProductTypeService {
     })
     const { page, limit } = getProductTypesDto
     const foundProductTypes = await ProductTypeRepository.findByFilterAndPagination(getProductTypesDto)
+
+    return {
+      pagination: {
+        page,
+        limit
+      },
+      productTypes: foundProductTypes
+    }
+  }
+
+  static searchProductTypes = async (dto: ISearchProductTypesDto) => {
+    /** Search product types combined filter and pagination */
+    const searchProductTypeDto = new SearchProductTypesDto({
+      ...dto
+    })
+    const { page, limit } = searchProductTypeDto
+    const foundProductTypes = await ProductTypeRepository.findByKeywordFilterAndPagination(searchProductTypeDto)
 
     return {
       pagination: {

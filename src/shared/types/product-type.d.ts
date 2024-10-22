@@ -86,3 +86,23 @@ export interface IGetProductTypesDto {
   order?: 'asc' | 'desc'
   select?: string[]
 }
+
+export interface ISearchProductTypesReqQuery extends ParsedQs {
+  keyword: string
+  filter?: IProductTypeFilter
+  page?: number
+  limit?: number
+  sort?: 'name' | 'createdAt' | 'updatedAt'
+  order?: 'asc' | 'desc'
+  select?: string[]
+}
+
+export interface ISearchProductTypesDto {
+  keyword: string
+  filter?: IProductTypeFilter
+  page?: number
+  limit?: number
+  sort?: 'name' | 'createdAt' | 'updatedAt'
+  order?: 'asc' | 'desc'
+  select?: string[]
+}

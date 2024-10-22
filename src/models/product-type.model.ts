@@ -46,6 +46,8 @@ const productTypeSchema = new Schema<IProductType>(
   }
 )
 
+productTypeSchema.index({ name: 'text', description: 'text' })
+
 productTypeSchema.pre('save', async function (next) {
   if (this.isModified('name') || this.isNew) {
     const base = slugify(this.name, {
