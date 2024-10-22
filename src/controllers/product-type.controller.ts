@@ -5,6 +5,7 @@ import { Created, Ok } from '@/shared/responses/success.response'
 import {
   ICreateNewProductTypeReqBody,
   IDeleteProductTypeReqParams,
+  IGetProductTypeReqParams,
   IUpdateProductTypeReqBody,
   IUpdateProductTypeReqParams
 } from '@/shared/types/product-type'
@@ -49,6 +50,14 @@ class ProductTypeController {
     new Ok({
       message: SuccessMessages.DELETE_PRODUCT_TYPE_SUCCESSFULLY,
       metadata: await ProductTypeService.deleteProductType(productTypeId)
+    }).send(res)
+  }
+
+  getProductType = async (req: Request<IGetProductTypeReqParams, any, any, any>, res: Response, next: NextFunction) => {
+    const { productTypeId } = req.params
+    new Ok({
+      message: SuccessMessages.GET_PRODUCT_TYPE_SUCCESSFULLY,
+      metadata: await ProductTypeService.getProductType(productTypeId)
     }).send(res)
   }
 }
