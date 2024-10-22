@@ -1,5 +1,10 @@
 import { productTypeModel } from '@/models/product-type.model'
-import { ICreateNewProductTypeDto, IGetProductTypesDto, IUpdateProductTypeDto } from '@/shared/types/product-type'
+import {
+  ICreateNewProductTypeDto,
+  IGetProductTypesDto,
+  ISearchProductTypesDto,
+  IUpdateProductTypeDto
+} from '@/shared/types/product-type'
 import { getSelectData } from '@/shared/utils'
 
 export default class ProductTypeRepository {
@@ -26,6 +31,33 @@ export default class ProductTypeRepository {
     }
     const fields = getSelectData(select)
     return await productTypeModel.find(filter).skip(offset).limit(limit).sort(arg).select(fields)
+  }
+
+  static findByKeywordFilterAndPagination = async (dto: ISearchProductTypesDto) => {
+    const {
+      keyword,
+      filter = {},
+      page = 1,
+      limit = 50,
+      sort = 'updatedAt',
+      order = 'desc',
+      select = ['slug', 'name', 'type', 'description']
+    } = dto
+    const engine = {
+      ...filter,
+      $text: {
+        $search: keyword
+      }
+    }
+    const offset = (page - 1) * limit
+    const arg = {
+      score: {
+        $meta: 'textScore'
+      },
+      [sort]: order
+    }
+    const fields = getSelectData(select)
+    return await productTypeModel.find(engine).skip(offset).limit(limit).sort(arg).select(fields)
   }
 
   static updateById = async (productTypeId: string, dto: IUpdateProductTypeDto) => {

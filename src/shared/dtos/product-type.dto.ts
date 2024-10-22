@@ -2,6 +2,7 @@ import {
   ICreateNewProductTypeDto,
   IGetProductTypesDto,
   IProductTypeFilter,
+  ISearchProductTypesDto,
   IUpdateProductTypeDto
 } from '@/shared/types/product-type'
 
@@ -49,6 +50,34 @@ export class GetProductTypesDto {
     order = 'desc',
     select = ['slug', 'name', 'thumb', 'description']
   }: IGetProductTypesDto) {
+    this.filter = filter
+    this.page = page
+    this.limit = limit
+    this.sort = sort
+    this.order = order
+    this.select = select
+  }
+}
+
+export class SearchProductTypesDto {
+  keyword: string
+  filter: IProductTypeFilter
+  page: number
+  limit: number
+  sort: 'name' | 'createdAt' | 'updatedAt'
+  order: 'asc' | 'desc'
+  select: string[]
+
+  constructor({
+    keyword,
+    filter = {},
+    page = 1,
+    limit = 50,
+    sort = 'updatedAt',
+    order = 'desc',
+    select = ['slug', 'name', 'thumb', 'description']
+  }: ISearchProductTypesDto) {
+    this.keyword = keyword
     this.filter = filter
     this.page = page
     this.limit = limit

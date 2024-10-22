@@ -1,12 +1,18 @@
 import { NextFunction, Request, Response } from 'express'
 import ProductTypeService from '@/services/product-type.service'
-import { CreateNewProductTypeDto, GetProductTypesDto, UpdateProductTypeDto } from '@/shared/dtos/product-type.dto'
+import {
+  CreateNewProductTypeDto,
+  GetProductTypesDto,
+  SearchProductTypesDto,
+  UpdateProductTypeDto
+} from '@/shared/dtos/product-type.dto'
 import { Created, Ok } from '@/shared/responses/success.response'
 import {
   ICreateNewProductTypeReqBody,
   IDeleteProductTypeReqParams,
   IGetProductTypeReqParams,
   IGetProductTypesReqQuery,
+  ISearchProductTypesReqQuery,
   IUpdateProductTypeReqBody,
   IUpdateProductTypeReqParams
 } from '@/shared/types/product-type'
@@ -73,6 +79,20 @@ class ProductTypeController {
     new Ok({
       message: SuccessMessages.GET_PRODUCT_TYPES_SUCCESSFULLY,
       metadata: await ProductTypeService.getProductTypes(getProductTypesDto)
+    }).send(res)
+  }
+
+  searchProductTypes = async (
+    req: Request<any, any, any, ISearchProductTypesReqQuery>,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const searchProductTypesDto = new SearchProductTypesDto({
+      ...req.query
+    })
+    new Ok({
+      message: SuccessMessages.SEARCH_PRODUCT_TYPES_SUCCESSFULLY,
+      metadata: await ProductTypeService.searchProductTypes(searchProductTypesDto)
     }).send(res)
   }
 }

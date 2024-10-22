@@ -49,3 +49,28 @@ export const getProductTypesReqQuery = Joi.object({
     .unique()
     .optional()
 })
+
+export const searchProductTypesReqQuery = Joi.object({
+  keyword: Joi.string().required(),
+  filter: Joi.object({
+    attributes: Joi.object({
+      $in: Joi.array().items(Joi.string().uuid().required()).unique().optional()
+    }).optional(),
+    createdAt: Joi.object({
+      $gte: Joi.date().iso().optional(),
+      $lte: Joi.date().iso().optional()
+    }).optional(),
+    updatedAt: Joi.object({
+      $gte: Joi.date().iso().optional(),
+      $lte: Joi.date().iso().optional()
+    }).optional()
+  }).optional(),
+  page: Joi.number().integer().optional(),
+  limit: Joi.number().integer().optional(),
+  sort: Joi.string().valid('name', 'createdAt', 'updatedAt').optional(),
+  order: Joi.string().valid('asc', 'desc').optional(),
+  select: Joi.array()
+    .items(Joi.string().valid('slug', 'name', 'thumb', 'description').optional())
+    .unique()
+    .optional()
+})
