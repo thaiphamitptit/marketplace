@@ -6,6 +6,7 @@ import {
   createNewProductTypeReqBody,
   deleteProductTypeReqParams,
   getProductTypeReqParams,
+  getProductTypesReqQuery,
   updateProductTypeReqBody,
   updateProductTypeReqParams
 } from '@/shared/validators/product-type.validator'
@@ -14,6 +15,11 @@ import asyncHandler from '@/shared/helpers/async-handler'
 
 const productTypeRoutes = Router()
 
+productTypeRoutes.get(
+  '',
+  validateSchema(getProductTypesReqQuery, 'query'),
+  asyncHandler(productTypeController.getProductTypes)
+)
 productTypeRoutes.get(
   '/:productTypeId',
   validateSchema(getProductTypeReqParams, 'params'),

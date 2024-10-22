@@ -1,4 +1,9 @@
-import { ICreateNewProductTypeDto, IUpdateProductTypeDto } from '@/shared/types/product-type'
+import {
+  ICreateNewProductTypeDto,
+  IGetProductTypesDto,
+  IProductTypeFilter,
+  IUpdateProductTypeDto
+} from '@/shared/types/product-type'
 
 export class CreateNewProductTypeDto {
   name: string
@@ -25,5 +30,30 @@ export class UpdateProductTypeDto {
     this.attributes = attributes
     this.thumb = thumb
     this.description = description
+  }
+}
+
+export class GetProductTypesDto {
+  filter: IProductTypeFilter
+  page: number
+  limit: number
+  sort: 'name' | 'createdAt' | 'updatedAt'
+  order: 'asc' | 'desc'
+  select: string[]
+
+  constructor({
+    filter = {},
+    page = 1,
+    limit = 50,
+    sort = 'updatedAt',
+    order = 'desc',
+    select = ['slug', 'name', 'thumb', 'description']
+  }: IGetProductTypesDto) {
+    this.filter = filter
+    this.page = page
+    this.limit = limit
+    this.sort = sort
+    this.order = order
+    this.select = select
   }
 }
