@@ -1,9 +1,9 @@
 import ProductTypeRepository from '@/repositories/product-type.repository'
 import AttributeRepository from '@/repositories/attribute.repository'
-import { CreateNewProductTypeDto, UpdateProductTypeDto } from '@/shared/dtos/product-type.dto'
+import { CreateNewProductTypeDto, GetProductTypesDto, UpdateProductTypeDto } from '@/shared/dtos/product-type.dto'
 import { BadRequest, NotFound } from '@/shared/responses/error.response'
 import { unGetInfoData } from '@/shared/utils'
-import { ICreateNewProductTypeDto, IUpdateProductTypeDto } from '@/shared/types/product-type'
+import { ICreateNewProductTypeDto, IGetProductTypesDto, IUpdateProductTypeDto } from '@/shared/types/product-type'
 import { ErrorMessages } from '@/shared/constants'
 
 export default class ProductTypeService {
@@ -103,6 +103,23 @@ export default class ProductTypeService {
 
     return {
       productType: unGetInfoData(populatedProductType.toObject(), ['__v'])
+    }
+  }
+
+  static getProductTypes = async (dto: IGetProductTypesDto) => {
+    /** Get product types combined filter and pagination */
+    const getProductTypesDto = new GetProductTypesDto({
+      ...dto
+    })
+    const { page, limit } = getProductTypesDto
+    const foundProductTypes = await ProductTypeRepository.findByFilterAndPagination(getProductTypesDto)
+
+    return {
+      pagination: {
+        page,
+        limit
+      },
+      productTypes: foundProductTypes
     }
   }
 }
