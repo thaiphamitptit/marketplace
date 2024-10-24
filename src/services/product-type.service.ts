@@ -1,5 +1,6 @@
 import ProductTypeRepository from '@/repositories/product-type.repository'
 import AttributeRepository from '@/repositories/attribute.repository'
+import ProductRepository from '@/repositories/product.repository'
 import {
   CreateNewProductTypeDto,
   GetProductTypesDto,
@@ -88,6 +89,8 @@ export default class ProductTypeService {
         message: ErrorMessages.PRODUCT_TYPE_NOT_FOUND
       })
     }
+    /** Delete ref products */
+    await ProductRepository.deleteByType(productTypeId)
 
     return {
       productType: productTypeId

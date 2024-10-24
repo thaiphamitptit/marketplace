@@ -70,7 +70,7 @@ export default class ProductTypeRepository {
     return await productTypeModel.findByIdAndUpdate(productTypeId, update, options)
   }
 
-  static updateByAttributes = async (attributeId: string) => {
+  static updateByRemovingAttribute = async (attributeId: string) => {
     const filter = {
       attributes: attributeId
     }
