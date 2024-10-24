@@ -32,6 +32,28 @@ export default class CategoryRepository {
     return await categoryModel.findOne(filter).sort(arg)
   }
 
+  static findByIds = async (categoryIds: string[]) => {
+    const filter = {
+      _id: {
+        $in: categoryIds
+      }
+    }
+    return await categoryModel.find(filter)
+  }
+
+  static findByLeftGreaterThanAndRightLessThan = async (left: number, right: number, equals: boolean) => {
+    const operators = equals ? ['$gte', '$lte'] : ['$gt', '$lt']
+    const filter = {
+      left: {
+        [operators[0]]: left
+      },
+      right: {
+        [operators[1]]: right
+      }
+    }
+    return await categoryModel.find(filter)
+  }
+
   static findByFilterAndPagination = async (dto: IGetCategoriesDto) => {
     const {
       filter = {},

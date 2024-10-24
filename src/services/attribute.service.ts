@@ -1,5 +1,6 @@
 import AttributeRepository from '@/repositories/attribute.repository'
 import ProductTypeRepository from '@/repositories/product-type.repository'
+import ProductRepository from '@/repositories/product.repository'
 import {
   CreateNewAttributeDto,
   GetAttributesDto,
@@ -73,7 +74,11 @@ export default class AttributeService {
       })
     }
     /** Update ref product types */
-    await ProductTypeRepository.updateByRemovingAttribute(attributeId)
+    /** Update ref products */
+    await Promise.all([
+      ProductTypeRepository.updateByRemovingAttribute(attributeId),
+      ProductRepository.updateByRemovingSpecificationAttribute(attributeId)
+    ])
 
     return {
       attribute: attributeId

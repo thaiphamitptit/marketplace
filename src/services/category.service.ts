@@ -1,4 +1,5 @@
 import CategoryRepository from '@/repositories/category.repository'
+import ProductRepository from '@/repositories/product.repository'
 import {
   CreateNewCategoryDto,
   GetAncestorCategoriesDto,
@@ -132,6 +133,10 @@ export default class CategoryService {
     }
     const { left, right } = deletedCategory
     const width = right - left + 1
+    /** Update ref products */
+    const categories = await CategoryRepository.findByLeftGreaterThanAndRightLessThan(left, right, false)
+    const categoryIds = [...categories.map((category) => category._id), categoryId]
+    await ProductRepository.updateByRemovingCategories(categoryIds)
     /** Update ref categories */
     await Promise.all([
       CategoryRepository.deleteByLeftGreaterThanAndRightLessThan(left, right, false),

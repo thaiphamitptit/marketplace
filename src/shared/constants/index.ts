@@ -21,7 +21,10 @@ export enum ErrorMessages {
   INVALID_ATTRIBUTE_NAME = 'Invalid attribute name',
   ATTRIBUTE_NOT_FOUND = 'Attribute not found',
   INVALID_ATTRIBUTES = 'Invalid attributes',
-  PRODUCT_TYPE_NOT_FOUND = 'Product type not found'
+  PRODUCT_TYPE_NOT_FOUND = 'Product type not found',
+  INVALID_CATEGORIES = 'Invalid categories',
+  INVALID_PRODUCT_TYPE = 'Invalid product type',
+  INVALID_SPECIFICATIONS = 'Invalid specifications'
 }
 
 export enum SuccessMessages {
@@ -48,5 +51,6 @@ export enum SuccessMessages {
   DELETE_PRODUCT_TYPE_SUCCESSFULLY = 'Delete product type successfully',
   GET_PRODUCT_TYPE_SUCCESSFULLY = 'Get product type successfully',
   GET_PRODUCT_TYPES_SUCCESSFULLY = 'Get product types successfully',
-  SEARCH_PRODUCT_TYPES_SUCCESSFULLY = 'Search product types successfully'
+  SEARCH_PRODUCT_TYPES_SUCCESSFULLY = 'Search product types successfully',
+  CREATE_NEW_PRODUCT_SUCCESSFULLY = 'Create new product successfully'
 }

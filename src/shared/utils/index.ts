@@ -23,3 +23,12 @@ export const getSelectData = (keys: string[]) => {
 export const unGetSelectData = (keys: string[]) => {
   return Object.fromEntries(keys.map((key) => [key, 0]))
 }
+
+export const isMatchArrays = <T>(a: T[], b: T[]) => {
+  if (a.length !== b.length) {
+    return false
+  }
+  const sortedA = [...a].sort()
+  const sortedB = [...b].sort()
+  return sortedA.every((value, index) => value === sortedB[index])
+}
