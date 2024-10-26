@@ -1,4 +1,4 @@
-import { ICreateNewProductDto, IProductSpecification, IProductVariant } from '@/shared/types/product'
+import { ICreateNewProductDto, IProductSpecification, IProductVariant, IUpdateProductDto } from '@/shared/types/product'
 
 export class CreateNewProductDto {
   seller: string
@@ -23,6 +23,28 @@ export class CreateNewProductDto {
     variants
   }: ICreateNewProductDto) {
     this.seller = seller
+    this.categories = categories
+    this.type = type
+    this.name = name
+    this.thumb = thumb
+    this.images = images
+    this.description = description
+    this.specifications = specifications
+    this.variants = variants
+  }
+}
+
+export class UpdateProductDto {
+  categories?: string[]
+  type?: string
+  name?: string
+  thumb?: string
+  images?: string[]
+  description?: string
+  specifications?: IProductSpecification[]
+  variants?: IProductVariant[]
+
+  constructor({ categories, type, name, thumb, images, description, specifications, variants }: IUpdateProductDto) {
     this.categories = categories
     this.type = type
     this.name = name
