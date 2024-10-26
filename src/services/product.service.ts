@@ -134,4 +134,18 @@ export default class ProductService {
       product: unGetInfoData(populatedProduct.toObject(), ['__v'])
     }
   }
+
+  static deleteProduct = async (productId: string, seller: string) => {
+    /** Delete product */
+    const deletedProduct = await ProductRepository.deleteByIdAndSeller(productId, seller)
+    if (!deletedProduct) {
+      throw new NotFound({
+        message: ErrorMessages.PRODUCT_NOT_FOUND
+      })
+    }
+
+    return {
+      product: productId
+    }
+  }
 }

@@ -81,3 +81,7 @@ export interface IUpdateProductDto {
   specifications?: IProductSpecification[]
   variants?: IProductVariant[]
 }
+
+export interface IDeleteProductReqParams extends ParamsDictionary {
+  productId: string
+}

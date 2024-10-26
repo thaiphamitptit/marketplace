@@ -54,6 +54,14 @@ export default class ProductRepository {
     return await productModel.updateMany(filter, update)
   }
 
+  static deleteByIdAndSeller = async (productId: string, seller: string) => {
+    const filter = {
+      _id: productId,
+      seller
+    }
+    return await productModel.findOneAndDelete(filter)
+  }
+
   static deleteByType = async (productTypeId: string) => {
     const filter = {
       type: productTypeId

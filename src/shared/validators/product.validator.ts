@@ -73,3 +73,7 @@ export const updateProductReqBody = Joi.object({
 export const updateProductReqParams = Joi.object({
   productId: Joi.string().uuid().required()
 })
+
+export const deleteProductReqParams = Joi.object({
+  productId: Joi.string().uuid().required()
+})
