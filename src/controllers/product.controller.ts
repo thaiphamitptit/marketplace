@@ -6,6 +6,7 @@ import {
   ICreateNewProductReqBody,
   IDeleteProductReqParams,
   IPublishProductReqParams,
+  IUnPublishProductReqParams,
   IUpdateProductReqBody,
   IUpdateProductReqParams
 } from '@/shared/types/product'
@@ -60,6 +61,19 @@ class ProductController {
     new Ok({
       message: SuccessMessages.PUBLISH_PRODUCT_SUCCESSFULLY,
       metadata: await ProductService.publishProduct(productId, userId)
+    }).send(res)
+  }
+
+  unPublishProduct = async (
+    req: Request<IUnPublishProductReqParams, any, any, any>,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const { user: userId } = req.userInfo as IUserInfo
+    const { productId } = req.params
+    new Ok({
+      message: SuccessMessages.UN_PUBLISH_PRODUCT_SUCCESSFULLY,
+      metadata: await ProductService.unPublishProduct(productId, userId)
     }).send(res)
   }
 }

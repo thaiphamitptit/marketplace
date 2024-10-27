@@ -6,6 +6,7 @@ import {
   createNewProductReqBody,
   deleteProductReqParams,
   publishProductReqParams,
+  unPublishProductReqParams,
   updateProductReqBody,
   updateProductReqParams
 } from '@/shared/validators/product.validator'
@@ -38,6 +39,11 @@ productRoutes.patch(
   '/:productId/publish',
   validateSchema(publishProductReqParams, 'params'),
   asyncHandler(productController.publishProduct)
+)
+productRoutes.patch(
+  '/:productId/un-publish',
+  validateSchema(unPublishProductReqParams, 'params'),
+  asyncHandler(productController.unPublishProduct)
 )
 
 export default productRoutes
