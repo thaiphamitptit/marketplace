@@ -5,6 +5,7 @@ import { Created, Ok } from '@/shared/responses/success.response'
 import {
   ICreateNewProductReqBody,
   IDeleteProductReqParams,
+  IPublishProductReqParams,
   IUpdateProductReqBody,
   IUpdateProductReqParams
 } from '@/shared/types/product'
@@ -50,6 +51,15 @@ class ProductController {
     new Ok({
       message: SuccessMessages.DELETE_PRODUCT_SUCCESSFULLY,
       metadata: await ProductService.deleteProduct(productId, userId)
+    }).send(res)
+  }
+
+  publishProduct = async (req: Request<IPublishProductReqParams, any, any, any>, res: Response, next: NextFunction) => {
+    const { user: userId } = req.userInfo as IUserInfo
+    const { productId } = req.params
+    new Ok({
+      message: SuccessMessages.PUBLISH_PRODUCT_SUCCESSFULLY,
+      metadata: await ProductService.publishProduct(productId, userId)
     }).send(res)
   }
 }

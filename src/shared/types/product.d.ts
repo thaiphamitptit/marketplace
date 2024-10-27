@@ -85,3 +85,7 @@ export interface IUpdateProductDto {
 export interface IDeleteProductReqParams extends ParamsDictionary {
   productId: string
 }
+
+export interface IPublishProductReqParams extends ParamsDictionary {
+  productId: string
+}

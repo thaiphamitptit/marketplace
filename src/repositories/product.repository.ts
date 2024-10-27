@@ -20,6 +20,28 @@ export default class ProductRepository {
     return await productModel.findOneAndUpdate(filter, update, options)
   }
 
+  static updateByModifyingStatus = async (
+    productId: string,
+    seller: string,
+    status: 'draft' | 'publish',
+    newStatus: 'draft' | 'publish'
+  ) => {
+    const filter = {
+      _id: productId,
+      seller,
+      status
+    }
+    const update = {
+      $set: {
+        status: newStatus
+      }
+    }
+    const options = {
+      new: true
+    }
+    return await productModel.findOneAndUpdate(filter, update, options)
+  }
+
   static updateByRemovingCategories = async (categoryIds: string[]) => {
     const filter = {
       categories: {
