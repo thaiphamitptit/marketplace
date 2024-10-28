@@ -1,10 +1,10 @@
 import ProductRepository from '@/repositories/product.repository'
 import CategoryRepository from '@/repositories/category.repository'
 import ProductTypeRepository from '@/repositories/product-type.repository'
-import { CreateNewProductDto, GetProductsDto, UpdateProductDto } from '@/shared/dtos/product.dto'
+import { CreateNewProductDto, GetProductsDto, SearchProductsDto, UpdateProductDto } from '@/shared/dtos/product.dto'
 import { BadRequest, NotFound } from '@/shared/responses/error.response'
 import { isMatchArrays, unGetInfoData } from '@/shared/utils'
-import { ICreateNewProductDto, IGetProductsDto, IUpdateProductDto } from '@/shared/types/product'
+import { ICreateNewProductDto, IGetProductsDto, ISearchProductsDto, IUpdateProductDto } from '@/shared/types/product'
 import { ErrorMessages } from '@/shared/constants'
 
 export default class ProductService {
@@ -258,6 +258,23 @@ export default class ProductService {
     })
     const { page, limit } = getProductsDto
     const foundProducts = await ProductRepository.findByFilterAndPagination(getProductsDto)
+
+    return {
+      pagination: {
+        page,
+        limit
+      },
+      products: foundProducts
+    }
+  }
+
+  static searchProducts = async (dto: ISearchProductsDto) => {
+    /** Search products combined filter and pagination */
+    const searchProductsDto = new SearchProductsDto({
+      ...dto
+    })
+    const { page, limit } = searchProductsDto
+    const foundProducts = await ProductRepository.findByKeywordFilterAndPagination(searchProductsDto)
 
     return {
       pagination: {

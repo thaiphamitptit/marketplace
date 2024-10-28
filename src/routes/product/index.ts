@@ -9,6 +9,7 @@ import {
   getProductsReqQuery,
   publishProductReqParams,
   unPublishProductReqParams,
+  searchProductsReqQuery,
   updateProductReqBody,
   updateProductReqParams
 } from '@/shared/validators/product.validator'
@@ -17,6 +18,11 @@ import asyncHandler from '@/shared/helpers/async-handler'
 
 const productRoutes = Router()
 
+productRoutes.get(
+  '/search',
+  validateSchema(searchProductsReqQuery, 'query'),
+  asyncHandler(productController.searchProducts)
+)
 productRoutes.get('', validateSchema(getProductsReqQuery, 'query'), asyncHandler(productController.getProducts))
 productRoutes.get(
   '/:productId',

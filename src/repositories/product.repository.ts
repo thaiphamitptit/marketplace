@@ -1,5 +1,5 @@
 import { productModel } from '@/models/product.model'
-import { ICreateNewProductDto, IGetProductsDto, IUpdateProductDto } from '@/shared/types/product'
+import { ICreateNewProductDto, IGetProductsDto, ISearchProductsDto, IUpdateProductDto } from '@/shared/types/product'
 import { getSelectData } from '@/shared/utils'
 
 export default class ProductRepository {
@@ -46,6 +46,49 @@ export default class ProductRepository {
       }
     ]
     return await productModel.find(filter).skip(offset).limit(limit).sort(arg).select(fields).populate(paths)
+  }
+
+  static findByKeywordFilterAndPagination = async (dto: ISearchProductsDto) => {
+    const {
+      keyword,
+      filter = {
+        status: 'publish'
+      },
+      page = 1,
+      limit = 50,
+      sort = 'updatedAt',
+      order = 'desc',
+      select = ['slug', 'seller', 'categories', 'type', 'name', 'thumb', 'rating']
+    } = dto
+    const engine = {
+      ...filter,
+      $text: {
+        $search: keyword
+      }
+    }
+    const offset = (page - 1) * limit
+    const arg = {
+      score: {
+        $meta: 'textScore'
+      },
+      [sort]: order
+    }
+    const fields = getSelectData(select)
+    const paths = [
+      {
+        path: 'seller',
+        select: ['email']
+      },
+      {
+        path: 'categories',
+        select: ['parent', 'name']
+      },
+      {
+        path: 'type',
+        select: ['name']
+      }
+    ]
+    return await productModel.find(engine).skip(offset).limit(limit).sort(arg).select(fields).populate(paths)
   }
 
   static updateByIdAndSeller = async (productId: string, seller: string, dto: IUpdateProductDto) => {

@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 import ProductService from '@/services/product.service'
-import { CreateNewProductDto, GetProductsDto, UpdateProductDto } from '@/shared/dtos/product.dto'
+import { CreateNewProductDto, GetProductsDto, SearchProductsDto, UpdateProductDto } from '@/shared/dtos/product.dto'
 import { Created, Ok } from '@/shared/responses/success.response'
 import {
   ICreateNewProductReqBody,
@@ -9,6 +9,7 @@ import {
   IGetProductsReqQuery,
   IPublishProductReqParams,
   IUnPublishProductReqParams,
+  ISearchProductsReqQuery,
   IUpdateProductReqBody,
   IUpdateProductReqParams
 } from '@/shared/types/product'
@@ -94,6 +95,16 @@ class ProductController {
     new Ok({
       message: SuccessMessages.GET_PRODUCTS_SUCCESSFULLY,
       metadata: await ProductService.getProducts(getProductsDto)
+    }).send(res)
+  }
+
+  searchProducts = async (req: Request<any, any, any, ISearchProductsReqQuery>, res: Response, next: NextFunction) => {
+    const searchProductsDto = new SearchProductsDto({
+      ...req.query
+    })
+    new Ok({
+      message: SuccessMessages.SEARCH_PRODUCTS_SUCCESSFULLY,
+      metadata: await ProductService.searchProducts(searchProductsDto)
     }).send(res)
   }
 }

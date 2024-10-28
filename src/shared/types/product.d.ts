@@ -138,3 +138,23 @@ export interface IGetProductsDto {
   order?: 'asc' | 'desc'
   select?: string[]
 }
+
+export interface ISearchProductsReqQuery extends ParsedQs {
+  keyword: string
+  filter?: Omit<IProductFilter, 'status'>
+  page?: number
+  limit?: number
+  sort?: 'name' | 'rating' | 'createdAt' | 'updatedAt'
+  order?: 'asc' | 'desc'
+  select?: string[]
+}
+
+export interface ISearchProductsDto {
+  keyword: string
+  filter?: IProductFilter
+  page?: number
+  limit?: number
+  sort?: 'name' | 'rating' | 'createdAt' | 'updatedAt'
+  order?: 'asc' | 'desc'
+  select?: string[]
+}
