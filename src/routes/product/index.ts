@@ -5,6 +5,7 @@ import productController from '@/controllers/product.controller'
 import {
   createNewProductReqBody,
   deleteProductReqParams,
+  getDraftProductsReqQuery,
   getProductReqParams,
   getProductsReqQuery,
   publishProductReqParams,
@@ -59,6 +60,11 @@ productRoutes.patch(
   '/:productId/un-publish',
   validateSchema(unPublishProductReqParams, 'params'),
   asyncHandler(productController.unPublishProduct)
+)
+productRoutes.get(
+  '/drafts/all',
+  validateSchema(getDraftProductsReqQuery, 'query'),
+  asyncHandler(productController.getDraftProducts)
 )
 
 export default productRoutes

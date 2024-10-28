@@ -60,5 +60,6 @@ export enum SuccessMessages {
   UN_PUBLISH_PRODUCT_SUCCESSFULLY = 'Un publish product successfully',
   GET_PRODUCT_SUCCESSFULLY = 'Get product successfully',
   GET_PRODUCTS_SUCCESSFULLY = 'Get products successfully',
-  SEARCH_PRODUCTS_SUCCESSFULLY = 'Search products successfully'
+  SEARCH_PRODUCTS_SUCCESSFULLY = 'Search products successfully',
+  GET_DRAFT_PRODUCTS_SUCCESSFULLY = 'Get draft products successfully'
 }

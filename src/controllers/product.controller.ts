@@ -1,10 +1,17 @@
 import { NextFunction, Request, Response } from 'express'
 import ProductService from '@/services/product.service'
-import { CreateNewProductDto, GetProductsDto, SearchProductsDto, UpdateProductDto } from '@/shared/dtos/product.dto'
+import {
+  CreateNewProductDto,
+  GetDraftProductsDto,
+  GetProductsDto,
+  SearchProductsDto,
+  UpdateProductDto
+} from '@/shared/dtos/product.dto'
 import { Created, Ok } from '@/shared/responses/success.response'
 import {
   ICreateNewProductReqBody,
   IDeleteProductReqParams,
+  IGetDraftProductsReqQuery,
   IGetProductReqParams,
   IGetProductsReqQuery,
   IPublishProductReqParams,
@@ -105,6 +112,21 @@ class ProductController {
     new Ok({
       message: SuccessMessages.SEARCH_PRODUCTS_SUCCESSFULLY,
       metadata: await ProductService.searchProducts(searchProductsDto)
+    }).send(res)
+  }
+
+  getDraftProducts = async (
+    req: Request<any, any, any, IGetDraftProductsReqQuery>,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const { user: userId } = req.userInfo as IUserInfo
+    const getDraftProductsDto = new GetDraftProductsDto({
+      ...req.query
+    })
+    new Ok({
+      message: SuccessMessages.GET_DRAFT_PRODUCTS_SUCCESSFULLY,
+      metadata: await ProductService.getDraftProducts(userId, getDraftProductsDto)
     }).send(res)
   }
 }

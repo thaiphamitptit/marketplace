@@ -1,5 +1,6 @@
 import {
   ICreateNewProductDto,
+  IGetDraftProductsDto,
   IGetProductsDto,
   IProductFilter,
   IProductSpecification,
@@ -118,6 +119,36 @@ export class SearchProductsDto {
     this.filter = {
       ...filter,
       status: 'publish'
+    }
+    this.page = page
+    this.limit = limit
+    this.sort = sort
+    this.order = order
+    this.select = select
+  }
+}
+
+export class GetDraftProductsDto {
+  filter: IProductFilter
+  page: number
+  limit: number
+  sort: 'name' | 'rating' | 'createdAt' | 'updatedAt'
+  order: 'asc' | 'desc'
+  select: string[]
+
+  constructor({
+    filter = {
+      status: 'draft'
+    },
+    page = 1,
+    limit = 50,
+    sort = 'updatedAt',
+    order = 'desc',
+    select = ['slug', 'seller', 'categories', 'type', 'name', 'thumb', 'rating']
+  }: IGetDraftProductsDto) {
+    this.filter = {
+      ...filter,
+      status: 'draft'
     }
     this.page = page
     this.limit = limit

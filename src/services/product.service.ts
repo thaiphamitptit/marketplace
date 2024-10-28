@@ -1,10 +1,22 @@
 import ProductRepository from '@/repositories/product.repository'
 import CategoryRepository from '@/repositories/category.repository'
 import ProductTypeRepository from '@/repositories/product-type.repository'
-import { CreateNewProductDto, GetProductsDto, SearchProductsDto, UpdateProductDto } from '@/shared/dtos/product.dto'
+import {
+  CreateNewProductDto,
+  GetDraftProductsDto,
+  GetProductsDto,
+  SearchProductsDto,
+  UpdateProductDto
+} from '@/shared/dtos/product.dto'
 import { BadRequest, NotFound } from '@/shared/responses/error.response'
 import { isMatchArrays, unGetInfoData } from '@/shared/utils'
-import { ICreateNewProductDto, IGetProductsDto, ISearchProductsDto, IUpdateProductDto } from '@/shared/types/product'
+import {
+  ICreateNewProductDto,
+  IGetDraftProductsDto,
+  IGetProductsDto,
+  ISearchProductsDto,
+  IUpdateProductDto
+} from '@/shared/types/product'
 import { ErrorMessages } from '@/shared/constants'
 
 export default class ProductService {
@@ -282,6 +294,29 @@ export default class ProductService {
         limit
       },
       products: foundProducts
+    }
+  }
+
+  static getDraftProducts = async (seller: string, dto: IGetDraftProductsDto) => {
+    /** Get draft products combined filter and pagination */
+    const { filter } = dto
+    const getDraftProductsDto = new GetDraftProductsDto({
+      ...dto,
+      filter: {
+        ...filter,
+        seller,
+        status: 'draft'
+      }
+    })
+    const { page, limit } = getDraftProductsDto
+    const draftProducts = await ProductRepository.findByFilterAndPagination(getDraftProductsDto)
+
+    return {
+      pagination: {
+        page,
+        limit
+      },
+      products: draftProducts
     }
   }
 }
