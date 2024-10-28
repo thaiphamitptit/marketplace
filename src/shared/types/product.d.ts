@@ -176,3 +176,21 @@ export interface IGetDraftProductsDto {
   order?: 'asc' | 'desc'
   select?: string[]
 }
+
+export interface IGetPublishProductsReqQuery extends ParsedQs {
+  filter?: Omit<IProductFilter, 'seller', 'status'>
+  page?: number
+  limit?: number
+  sort?: 'name' | 'rating' | 'createdAt' | 'updatedAt'
+  order?: 'asc' | 'desc'
+  select?: string[]
+}
+
+export interface IGetPublishProductsDto {
+  filter?: IProductFilter
+  page?: number
+  limit?: number
+  sort?: 'name' | 'rating' | 'createdAt' | 'updatedAt'
+  order?: 'asc' | 'desc'
+  select?: string[]
+}

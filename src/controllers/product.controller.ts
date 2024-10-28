@@ -4,6 +4,7 @@ import {
   CreateNewProductDto,
   GetDraftProductsDto,
   GetProductsDto,
+  GetPublishProductsDto,
   SearchProductsDto,
   UpdateProductDto
 } from '@/shared/dtos/product.dto'
@@ -14,6 +15,7 @@ import {
   IGetDraftProductsReqQuery,
   IGetProductReqParams,
   IGetProductsReqQuery,
+  IGetPublishProductsReqQuery,
   IPublishProductReqParams,
   IUnPublishProductReqParams,
   ISearchProductsReqQuery,
@@ -127,6 +129,21 @@ class ProductController {
     new Ok({
       message: SuccessMessages.GET_DRAFT_PRODUCTS_SUCCESSFULLY,
       metadata: await ProductService.getDraftProducts(userId, getDraftProductsDto)
+    }).send(res)
+  }
+
+  getPublishProducts = async (
+    req: Request<any, any, any, IGetPublishProductsReqQuery>,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const { user: userId } = req.userInfo as IUserInfo
+    const getPublishProductsDto = new GetPublishProductsDto({
+      ...req.query
+    })
+    new Ok({
+      message: SuccessMessages.GET_PUBLISH_PRODUCTS_SUCCESSFULLY,
+      metadata: await ProductService.getPublishProducts(userId, getPublishProductsDto)
     }).send(res)
   }
 }

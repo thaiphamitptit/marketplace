@@ -5,6 +5,7 @@ import {
   CreateNewProductDto,
   GetDraftProductsDto,
   GetProductsDto,
+  GetPublishProductsDto,
   SearchProductsDto,
   UpdateProductDto
 } from '@/shared/dtos/product.dto'
@@ -14,6 +15,7 @@ import {
   ICreateNewProductDto,
   IGetDraftProductsDto,
   IGetProductsDto,
+  IGetPublishProductsDto,
   ISearchProductsDto,
   IUpdateProductDto
 } from '@/shared/types/product'
@@ -317,6 +319,29 @@ export default class ProductService {
         limit
       },
       products: draftProducts
+    }
+  }
+
+  static getPublishProducts = async (seller: string, dto: IGetPublishProductsDto) => {
+    /** Get publish products combined filter and pagination */
+    const { filter } = dto
+    const getPublishProductsDto = new GetPublishProductsDto({
+      ...dto,
+      filter: {
+        ...filter,
+        seller,
+        status: 'publish'
+      }
+    })
+    const { page, limit } = getPublishProductsDto
+    const publishProducts = await ProductRepository.findByFilterAndPagination(getPublishProductsDto)
+
+    return {
+      pagination: {
+        page,
+        limit
+      },
+      products: publishProducts
     }
   }
 }

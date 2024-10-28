@@ -8,6 +8,7 @@ import {
   getDraftProductsReqQuery,
   getProductReqParams,
   getProductsReqQuery,
+  getPublishProductsReqQuery,
   publishProductReqParams,
   unPublishProductReqParams,
   searchProductsReqQuery,
@@ -65,6 +66,11 @@ productRoutes.get(
   '/drafts/all',
   validateSchema(getDraftProductsReqQuery, 'query'),
   asyncHandler(productController.getDraftProducts)
+)
+productRoutes.get(
+  '/publishes/all',
+  validateSchema(getPublishProductsReqQuery, 'query'),
+  asyncHandler(productController.getPublishProducts)
 )
 
 export default productRoutes
