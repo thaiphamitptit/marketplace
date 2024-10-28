@@ -85,3 +85,7 @@ export const publishProductReqParams = Joi.object({
 export const unPublishProductReqParams = Joi.object({
   productId: Joi.string().uuid().required()
 })
+
+export const getProductReqParams = Joi.object({
+  productId: Joi.string().uuid().required()
+})

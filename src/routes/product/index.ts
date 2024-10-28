@@ -5,6 +5,7 @@ import productController from '@/controllers/product.controller'
 import {
   createNewProductReqBody,
   deleteProductReqParams,
+  getProductReqParams,
   publishProductReqParams,
   unPublishProductReqParams,
   updateProductReqBody,
@@ -14,6 +15,12 @@ import { authReqHeaders } from '@/shared/validators/auth.validator'
 import asyncHandler from '@/shared/helpers/async-handler'
 
 const productRoutes = Router()
+
+productRoutes.get(
+  '/:productId',
+  validateSchema(getProductReqParams, 'params'),
+  asyncHandler(productController.getProduct)
+)
 
 /** Check authentication */
 productRoutes.use(validateSchema(authReqHeaders, 'headers'), checkAuthentication)

@@ -216,4 +216,38 @@ export default class ProductService {
       product: unGetInfoData(populatedProduct.toObject(), ['__v'])
     }
   }
+
+  static getProduct = async (productId: string) => {
+    /** Get product */
+    const foundProduct = await ProductRepository.findByIdAndStatus(productId, 'publish')
+    if (!foundProduct) {
+      throw new NotFound({
+        message: ErrorMessages.PRODUCT_NOT_FOUND
+      })
+    }
+    /** Populate product */
+    const paths = [
+      {
+        path: 'seller',
+        select: ['email']
+      },
+      {
+        path: 'categories',
+        select: ['parent', 'name']
+      },
+      {
+        path: 'type',
+        select: ['name']
+      },
+      {
+        path: 'specifications.attribute',
+        select: ['name', 'type']
+      }
+    ]
+    const populatedProduct = await foundProduct.populate(paths)
+
+    return {
+      product: unGetInfoData(populatedProduct.toObject(), ['status', '__v'])
+    }
+  }
 }

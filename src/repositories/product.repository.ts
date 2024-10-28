@@ -6,6 +6,14 @@ export default class ProductRepository {
     return await productModel.create(dto)
   }
 
+  static findByIdAndStatus = async (productId: string, status: 'draft' | 'publish') => {
+    const filter = {
+      _id: productId,
+      status
+    }
+    return await productModel.findOne(filter)
+  }
+
   static updateByIdAndSeller = async (productId: string, seller: string, dto: IUpdateProductDto) => {
     const filter = {
       _id: productId,
