@@ -1,5 +1,6 @@
 import { Document } from 'mongoose'
 import { ParamsDictionary } from 'express-serve-static-core'
+import { ParsedQs } from 'qs'
 
 export interface IProduct extends Document {
   _id: string
@@ -30,6 +31,28 @@ export interface IProductVariant {
   options: {
     name: string
     images: string[]
+  }
+}
+
+export interface IProductFilter {
+  _id?: string
+  seller?: string
+  categories?: {
+    $in: string[]
+  }
+  type?: string
+  rating?: {
+    $gte?: number
+    $lte?: number
+  }
+  status?: 'draft' | 'publish'
+  createdAt?: {
+    $gte?: Date | string
+    $lte?: Date | string
+  }
+  updatedAt?: {
+    $gte?: Date | string
+    $lte?: Date | string
   }
 }
 
@@ -96,4 +119,22 @@ export interface IUnPublishProductReqParams extends ParamsDictionary {
 
 export interface IGetProductReqParams extends ParamsDictionary {
   productId: string
+}
+
+export interface IGetProductsReqQuery extends ParsedQs {
+  filter?: Omit<IProductFilter, 'status'>
+  page?: number
+  limit?: number
+  sort?: 'name' | 'rating' | 'createdAt' | 'updatedAt'
+  order?: 'asc' | 'desc'
+  select?: string[]
+}
+
+export interface IGetProductsDto {
+  filter?: IProductFilter
+  page?: number
+  limit?: number
+  sort?: 'name' | 'rating' | 'createdAt' | 'updatedAt'
+  order?: 'asc' | 'desc'
+  select?: string[]
 }

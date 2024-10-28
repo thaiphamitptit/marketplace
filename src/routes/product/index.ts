@@ -6,6 +6,7 @@ import {
   createNewProductReqBody,
   deleteProductReqParams,
   getProductReqParams,
+  getProductsReqQuery,
   publishProductReqParams,
   unPublishProductReqParams,
   updateProductReqBody,
@@ -16,6 +17,7 @@ import asyncHandler from '@/shared/helpers/async-handler'
 
 const productRoutes = Router()
 
+productRoutes.get('', validateSchema(getProductsReqQuery, 'query'), asyncHandler(productController.getProducts))
 productRoutes.get(
   '/:productId',
   validateSchema(getProductReqParams, 'params'),

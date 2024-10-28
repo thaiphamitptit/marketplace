@@ -1,5 +1,6 @@
 import { productModel } from '@/models/product.model'
-import { ICreateNewProductDto, IUpdateProductDto } from '@/shared/types/product'
+import { ICreateNewProductDto, IGetProductsDto, IUpdateProductDto } from '@/shared/types/product'
+import { getSelectData } from '@/shared/utils'
 
 export default class ProductRepository {
   static createNew = async (dto: ICreateNewProductDto) => {
@@ -12,6 +13,39 @@ export default class ProductRepository {
       status
     }
     return await productModel.findOne(filter)
+  }
+
+  static findByFilterAndPagination = async (dto: IGetProductsDto) => {
+    const {
+      filter = {
+        status: 'publish'
+      },
+      page = 1,
+      limit = 50,
+      sort = 'updatedAt',
+      order = 'desc',
+      select = ['slug', 'seller', 'categories', 'type', 'name', 'thumb', 'rating']
+    } = dto
+    const offset = (page - 1) * limit
+    const arg = {
+      [sort]: order
+    }
+    const fields = getSelectData(select)
+    const paths = [
+      {
+        path: 'seller',
+        select: ['email']
+      },
+      {
+        path: 'categories',
+        select: ['parent', 'name']
+      },
+      {
+        path: 'type',
+        select: ['name']
+      }
+    ]
+    return await productModel.find(filter).skip(offset).limit(limit).sort(arg).select(fields).populate(paths)
   }
 
   static updateByIdAndSeller = async (productId: string, seller: string, dto: IUpdateProductDto) => {
