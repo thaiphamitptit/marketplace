@@ -25,7 +25,8 @@ export enum ErrorMessages {
   INVALID_CATEGORIES = 'Invalid categories',
   INVALID_SPECIFICATIONS = 'Invalid specifications',
   INVALID_PRODUCT_TYPE_OR_SPECIFICATIONS = 'Invalid product type or specifications',
-  PRODUCT_NOT_FOUND = 'Product not found'
+  PRODUCT_NOT_FOUND = 'Product not found',
+  PRICING_NOT_FOUND = 'Pricing not found'
 }
 
 export enum SuccessMessages {
@@ -63,5 +64,6 @@ export enum SuccessMessages {
   SEARCH_PRODUCTS_SUCCESSFULLY = 'Search products successfully',
   GET_DRAFT_PRODUCTS_SUCCESSFULLY = 'Get draft products successfully',
   GET_PUBLISH_PRODUCTS_SUCCESSFULLY = 'Get publish products successfully',
-  CREATE_NEW_PRICING_SUCCESSFULLY = 'Create new pricing successfully'
+  CREATE_NEW_PRICING_SUCCESSFULLY = 'Create new pricing successfully',
+  GET_PRICING_SUCCESSFULLY = 'Get pricing successfully'
 }

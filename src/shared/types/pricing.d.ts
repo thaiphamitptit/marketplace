@@ -32,3 +32,8 @@ export interface ICreateNewPricingDto {
   startDate?: Date | string
   endDate?: Date | string | null
 }
+
+export interface IGetPricingReqParams extends ParamsDictionary {
+  productId: string
+  pricingId: string
+}

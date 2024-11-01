@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from 'express'
 import PricingService from '@/services/pricing.service'
 import { CreateNewPricingDto } from '@/shared/dtos/pricing.dto'
-import { Created } from '@/shared/responses/success.response'
-import { ICreateNewPricingReqBody, ICreateNewPricingReqParams } from '@/shared/types/pricing'
+import { Created, Ok } from '@/shared/responses/success.response'
+import { ICreateNewPricingReqBody, ICreateNewPricingReqParams, IGetPricingReqParams } from '@/shared/types/pricing'
 import { IUserInfo } from '@/shared/types/user'
 import { SuccessMessages } from '@/shared/constants'
 
@@ -21,6 +21,15 @@ class PricingController {
     new Created({
       message: SuccessMessages.CREATE_NEW_PRICING_SUCCESSFULLY,
       metadata: await PricingService.createNewPricing(userId, createNewPricingDto)
+    }).send(res)
+  }
+
+  getPricing = async (req: Request<IGetPricingReqParams, any, any, any>, res: Response, next: NextFunction) => {
+    const { user: userId } = req.userInfo as IUserInfo
+    const { productId, pricingId } = req.params
+    new Ok({
+      message: SuccessMessages.GET_PRICING_SUCCESSFULLY,
+      metadata: await PricingService.getPricing(userId, productId, pricingId)
     }).send(res)
   }
 }

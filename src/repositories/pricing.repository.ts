@@ -6,6 +6,14 @@ export default class PricingRepository {
     return await pricingModel.create(dto)
   }
 
+  static findByIdAndProduct = async (pricingId: string, productId: string) => {
+    const filter = {
+      _id: pricingId,
+      productId
+    }
+    return await pricingModel.findOne(filter)
+  }
+
   static updateByEndDate = async (currentDate: Date | string | null) => {
     const filter = {
       endDate: null
