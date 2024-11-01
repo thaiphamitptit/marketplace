@@ -62,5 +62,6 @@ export enum SuccessMessages {
   GET_PRODUCTS_SUCCESSFULLY = 'Get products successfully',
   SEARCH_PRODUCTS_SUCCESSFULLY = 'Search products successfully',
   GET_DRAFT_PRODUCTS_SUCCESSFULLY = 'Get draft products successfully',
-  GET_PUBLISH_PRODUCTS_SUCCESSFULLY = 'Get publish products successfully'
+  GET_PUBLISH_PRODUCTS_SUCCESSFULLY = 'Get publish products successfully',
+  CREATE_NEW_PRICING_SUCCESSFULLY = 'Create new pricing successfully'
 }

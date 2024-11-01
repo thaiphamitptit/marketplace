@@ -4,6 +4,7 @@ import {
   IGetProductsDto,
   IGetPublishProductsDto,
   IProductFilter,
+  IProductPricing,
   IProductSpecification,
   IProductVariant,
   ISearchProductsDto,
@@ -16,6 +17,7 @@ export class CreateNewProductDto {
   type: string
   name: string
   thumb: string
+  pricing: IProductPricing
   images?: string[]
   description?: string
   specifications: IProductSpecification[]
@@ -27,6 +29,7 @@ export class CreateNewProductDto {
     type,
     name,
     thumb,
+    pricing,
     images,
     description,
     specifications,
@@ -37,6 +40,7 @@ export class CreateNewProductDto {
     this.type = type
     this.name = name
     this.thumb = thumb
+    this.pricing = pricing
     this.images = images
     this.description = description
     this.specifications = specifications
@@ -49,16 +53,28 @@ export class UpdateProductDto {
   type?: string
   name?: string
   thumb?: string
+  pricing?: IProductPricing
   images?: string[]
   description?: string
   specifications?: IProductSpecification[]
   variants?: IProductVariant[]
 
-  constructor({ categories, type, name, thumb, images, description, specifications, variants }: IUpdateProductDto) {
+  constructor({
+    categories,
+    type,
+    name,
+    thumb,
+    pricing,
+    images,
+    description,
+    specifications,
+    variants
+  }: IUpdateProductDto) {
     this.categories = categories
     this.type = type
     this.name = name
     this.thumb = thumb
+    this.pricing = pricing
     this.images = images
     this.description = description
     this.specifications = specifications
@@ -70,7 +86,7 @@ export class GetProductsDto {
   filter: IProductFilter
   page: number
   limit: number
-  sort: 'name' | 'rating' | 'createdAt' | 'updatedAt'
+  sort: 'name' | 'pricing.sale' | 'rating' | 'createdAt' | 'updatedAt'
   order: 'asc' | 'desc'
   select: string[]
 
@@ -82,7 +98,7 @@ export class GetProductsDto {
     limit = 50,
     sort = 'updatedAt',
     order = 'desc',
-    select = ['slug', 'seller', 'categories', 'type', 'name', 'thumb', 'rating']
+    select = ['slug', 'seller', 'categories', 'type', 'name', 'thumb', 'pricing', 'rating']
   }: IGetProductsDto) {
     this.filter = {
       ...filter,
@@ -101,7 +117,7 @@ export class SearchProductsDto {
   filter: IProductFilter
   page: number
   limit: number
-  sort: 'name' | 'rating' | 'createdAt' | 'updatedAt'
+  sort: 'name' | 'pricing.sale' | 'rating' | 'createdAt' | 'updatedAt'
   order: 'asc' | 'desc'
   select: string[]
 
@@ -114,7 +130,7 @@ export class SearchProductsDto {
     limit = 50,
     sort = 'updatedAt',
     order = 'desc',
-    select = ['slug', 'seller', 'categories', 'type', 'name', 'thumb', 'rating']
+    select = ['slug', 'seller', 'categories', 'type', 'name', 'thumb', 'pricing', 'rating']
   }: ISearchProductsDto) {
     this.keyword = keyword
     this.filter = {
@@ -133,7 +149,7 @@ export class GetDraftProductsDto {
   filter: IProductFilter
   page: number
   limit: number
-  sort: 'name' | 'rating' | 'createdAt' | 'updatedAt'
+  sort: 'name' | 'pricing.sale' | 'rating' | 'createdAt' | 'updatedAt'
   order: 'asc' | 'desc'
   select: string[]
 
@@ -145,7 +161,7 @@ export class GetDraftProductsDto {
     limit = 50,
     sort = 'updatedAt',
     order = 'desc',
-    select = ['slug', 'seller', 'categories', 'type', 'name', 'thumb', 'rating']
+    select = ['slug', 'seller', 'categories', 'type', 'name', 'thumb', 'pricing', 'rating']
   }: IGetDraftProductsDto) {
     this.filter = {
       ...filter,
@@ -163,7 +179,7 @@ export class GetPublishProductsDto {
   filter: IProductFilter
   page: number
   limit: number
-  sort: 'name' | 'rating' | 'createdAt' | 'updatedAt'
+  sort: 'name' | 'pricing.sale' | 'rating' | 'createdAt' | 'updatedAt'
   order: 'asc' | 'desc'
   select: string[]
 
@@ -175,7 +191,7 @@ export class GetPublishProductsDto {
     limit = 50,
     sort = 'updatedAt',
     order = 'desc',
-    select = ['slug', 'seller', 'categories', 'type', 'name', 'thumb', 'rating']
+    select = ['slug', 'seller', 'categories', 'type', 'name', 'thumb', 'pricing', 'rating']
   }: IGetPublishProductsDto) {
     this.filter = {
       ...filter,

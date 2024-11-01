@@ -5,6 +5,11 @@ export const createNewProductReqBody = Joi.object({
   type: Joi.string().uuid().required(),
   name: Joi.string().required(),
   thumb: Joi.string().required(),
+  pricing: Joi.object({
+    origin: Joi.number().required(),
+    sale: Joi.number().required(),
+    currency: Joi.string().valid('vnd', 'usd').optional()
+  }).required(),
   images: Joi.array().items(Joi.string().optional()).unique().optional(),
   description: Joi.string().optional(),
   specifications: Joi.array()
@@ -40,6 +45,11 @@ export const updateProductReqBody = Joi.object({
   type: Joi.string().uuid().optional(),
   name: Joi.string().optional(),
   thumb: Joi.string().optional(),
+  pricing: Joi.object({
+    origin: Joi.number().required(),
+    sale: Joi.number().required(),
+    currency: Joi.string().valid('vnd', 'usd').optional()
+  }).optional(),
   images: Joi.array().items(Joi.string().optional()).unique().optional(),
   description: Joi.string().optional(),
   specifications: Joi.array()
@@ -97,6 +107,12 @@ export const getProductsReqQuery = Joi.object({
       $in: Joi.array().items(Joi.string().uuid().required()).unique().optional()
     }).optional(),
     type: Joi.string().uuid().optional(),
+    pricing: Joi.object({
+      sale: Joi.object({
+        $gte: Joi.number().integer().optional(),
+        $lte: Joi.number().integer().optional()
+      }).optional()
+    }).optional(),
     rating: Joi.object({
       $gte: Joi.number().integer().optional(),
       $lte: Joi.number().integer().optional()
@@ -112,7 +128,7 @@ export const getProductsReqQuery = Joi.object({
   }).optional(),
   page: Joi.number().integer().optional(),
   limit: Joi.number().integer().optional(),
-  sort: Joi.string().valid('name', 'rating', 'createdAt', 'updatedAt').optional(),
+  sort: Joi.string().valid('name', 'pricing.sale', 'rating', 'createdAt', 'updatedAt').optional(),
   order: Joi.string().valid('asc', 'desc').optional(),
   select: Joi.array()
     .items(Joi.string().valid('slug', 'seller', 'categories', 'type', 'name', 'thumb', 'rating').optional())
@@ -128,6 +144,12 @@ export const searchProductsReqQuery = Joi.object({
       $in: Joi.array().items(Joi.string().uuid().required()).unique().optional()
     }).optional(),
     type: Joi.string().uuid().optional(),
+    pricing: Joi.object({
+      sale: Joi.object({
+        $gte: Joi.number().integer().optional(),
+        $lte: Joi.number().integer().optional()
+      }).optional()
+    }).optional(),
     rating: Joi.object({
       $gte: Joi.number().integer().optional(),
       $lte: Joi.number().integer().optional()
@@ -143,7 +165,7 @@ export const searchProductsReqQuery = Joi.object({
   }).optional(),
   page: Joi.number().integer().optional(),
   limit: Joi.number().integer().optional(),
-  sort: Joi.string().valid('name', 'rating', 'createdAt', 'updatedAt').optional(),
+  sort: Joi.string().valid('name', 'pricing.sale', 'rating', 'createdAt', 'updatedAt').optional(),
   order: Joi.string().valid('asc', 'desc').optional(),
   select: Joi.array()
     .items(Joi.string().valid('slug', 'seller', 'categories', 'type', 'name', 'thumb', 'rating').optional())
@@ -157,6 +179,12 @@ export const getDraftProductsReqQuery = Joi.object({
       $in: Joi.array().items(Joi.string().uuid().required()).unique().optional()
     }).optional(),
     type: Joi.string().uuid().optional(),
+    pricing: Joi.object({
+      sale: Joi.object({
+        $gte: Joi.number().integer().optional(),
+        $lte: Joi.number().integer().optional()
+      }).optional()
+    }).optional(),
     rating: Joi.object({
       $gte: Joi.number().integer().optional(),
       $lte: Joi.number().integer().optional()
@@ -172,7 +200,7 @@ export const getDraftProductsReqQuery = Joi.object({
   }).optional(),
   page: Joi.number().integer().optional(),
   limit: Joi.number().integer().optional(),
-  sort: Joi.string().valid('name', 'rating', 'createdAt', 'updatedAt').optional(),
+  sort: Joi.string().valid('name', 'pricing.sale', 'rating', 'createdAt', 'updatedAt').optional(),
   order: Joi.string().valid('asc', 'desc').optional(),
   select: Joi.array()
     .items(Joi.string().valid('slug', 'seller', 'categories', 'type', 'name', 'thumb', 'rating').optional())
@@ -186,6 +214,12 @@ export const getPublishProductsReqQuery = Joi.object({
       $in: Joi.array().items(Joi.string().uuid().required()).unique().optional()
     }).optional(),
     type: Joi.string().uuid().optional(),
+    pricing: Joi.object({
+      sale: Joi.object({
+        $gte: Joi.number().integer().optional(),
+        $lte: Joi.number().integer().optional()
+      }).optional()
+    }).optional(),
     rating: Joi.object({
       $gte: Joi.number().integer().optional(),
       $lte: Joi.number().integer().optional()
@@ -201,7 +235,7 @@ export const getPublishProductsReqQuery = Joi.object({
   }).optional(),
   page: Joi.number().integer().optional(),
   limit: Joi.number().integer().optional(),
-  sort: Joi.string().valid('name', 'rating', 'createdAt', 'updatedAt').optional(),
+  sort: Joi.string().valid('name', 'pricing.sale', 'rating', 'createdAt', 'updatedAt').optional(),
   order: Joi.string().valid('asc', 'desc').optional(),
   select: Joi.array()
     .items(Joi.string().valid('slug', 'seller', 'categories', 'type', 'name', 'thumb', 'rating').optional())

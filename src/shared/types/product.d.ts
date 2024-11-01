@@ -10,6 +10,7 @@ export interface IProduct extends Document {
   type: string
   name: string
   thumb: string
+  pricing: IProductPricing
   images: string[]
   description: string
   rating: number
@@ -34,6 +35,12 @@ export interface IProductVariant {
   }
 }
 
+export interface IProductPricing {
+  origin: number
+  sale: number
+  currency?: 'vnd' | 'usd'
+}
+
 export interface IProductFilter {
   _id?: string
   seller?: string
@@ -41,6 +48,12 @@ export interface IProductFilter {
     $in: string[]
   }
   type?: string
+  pricing?: {
+    sale?: {
+      $gte?: number
+      $lte?: number
+    }
+  }
   rating?: {
     $gte?: number
     $lte?: number
@@ -61,6 +74,7 @@ export interface ICreateNewProductReqBody {
   type: string
   name: string
   thumb: string
+  pricing: IProductPricing
   images?: string[]
   description?: string
   specifications: IProductSpecification[]
@@ -73,6 +87,7 @@ export interface ICreateNewProductDto {
   type: string
   name: string
   thumb: string
+  pricing: IProductPricing
   images?: string[]
   description?: string
   specifications: IProductSpecification[]
@@ -84,6 +99,7 @@ export interface IUpdateProductReqBody {
   type?: string
   name?: string
   thumb?: string
+  pricing?: IProductPricing
   images?: string[]
   description?: string
   specifications?: IProductSpecification[]
@@ -99,6 +115,7 @@ export interface IUpdateProductDto {
   type?: string
   name?: string
   thumb?: string
+  pricing?: IProductPricing
   images?: string[]
   description?: string
   specifications?: IProductSpecification[]
@@ -125,7 +142,7 @@ export interface IGetProductsReqQuery extends ParsedQs {
   filter?: Omit<IProductFilter, 'status'>
   page?: number
   limit?: number
-  sort?: 'name' | 'rating' | 'createdAt' | 'updatedAt'
+  sort?: 'name' | 'pricing.sale' | 'rating' | 'createdAt' | 'updatedAt'
   order?: 'asc' | 'desc'
   select?: string[]
 }
@@ -134,7 +151,7 @@ export interface IGetProductsDto {
   filter?: IProductFilter
   page?: number
   limit?: number
-  sort?: 'name' | 'rating' | 'createdAt' | 'updatedAt'
+  sort?: 'name' | 'pricing.sale' | 'rating' | 'createdAt' | 'updatedAt'
   order?: 'asc' | 'desc'
   select?: string[]
 }
@@ -144,7 +161,7 @@ export interface ISearchProductsReqQuery extends ParsedQs {
   filter?: Omit<IProductFilter, 'status'>
   page?: number
   limit?: number
-  sort?: 'name' | 'rating' | 'createdAt' | 'updatedAt'
+  sort?: 'name' | 'pricing.sale' | 'rating' | 'createdAt' | 'updatedAt'
   order?: 'asc' | 'desc'
   select?: string[]
 }
@@ -154,7 +171,7 @@ export interface ISearchProductsDto {
   filter?: IProductFilter
   page?: number
   limit?: number
-  sort?: 'name' | 'rating' | 'createdAt' | 'updatedAt'
+  sort?: 'name' | 'pricing.sale' | 'rating' | 'createdAt' | 'updatedAt'
   order?: 'asc' | 'desc'
   select?: string[]
 }
@@ -163,7 +180,7 @@ export interface IGetDraftProductsReqQuery extends ParsedQs {
   filter?: Omit<IProductFilter, 'seller', 'status'>
   page?: number
   limit?: number
-  sort?: 'name' | 'rating' | 'createdAt' | 'updatedAt'
+  sort?: 'name' | 'pricing.sale' | 'rating' | 'createdAt' | 'updatedAt'
   order?: 'asc' | 'desc'
   select?: string[]
 }
@@ -172,7 +189,7 @@ export interface IGetDraftProductsDto {
   filter?: IProductFilter
   page?: number
   limit?: number
-  sort?: 'name' | 'rating' | 'createdAt' | 'updatedAt'
+  sort?: 'name' | 'pricing.sale' | 'rating' | 'createdAt' | 'updatedAt'
   order?: 'asc' | 'desc'
   select?: string[]
 }
@@ -181,7 +198,7 @@ export interface IGetPublishProductsReqQuery extends ParsedQs {
   filter?: Omit<IProductFilter, 'seller', 'status'>
   page?: number
   limit?: number
-  sort?: 'name' | 'rating' | 'createdAt' | 'updatedAt'
+  sort?: 'name' | 'pricing.sale' | 'rating' | 'createdAt' | 'updatedAt'
   order?: 'asc' | 'desc'
   select?: string[]
 }
@@ -190,7 +207,7 @@ export interface IGetPublishProductsDto {
   filter?: IProductFilter
   page?: number
   limit?: number
-  sort?: 'name' | 'rating' | 'createdAt' | 'updatedAt'
+  sort?: 'name' | 'pricing.sale' | 'rating' | 'createdAt' | 'updatedAt'
   order?: 'asc' | 'desc'
   select?: string[]
 }

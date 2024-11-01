@@ -1,4 +1,5 @@
 import { Router } from 'express'
+import pricingRoutes from '@/routes/product/pricing'
 import { validateSchema } from '@/middlewares/validator.middleware'
 import { checkAuthentication, checkAuthorization } from '@/middlewares/auth.middleware'
 import productController from '@/controllers/product.controller'
@@ -72,5 +73,7 @@ productRoutes.get(
   validateSchema(getPublishProductsReqQuery, 'query'),
   asyncHandler(productController.getPublishProducts)
 )
+
+productRoutes.use('/:productId/pricings', validateSchema(getProductReqParams, 'params'), pricingRoutes)
 
 export default productRoutes

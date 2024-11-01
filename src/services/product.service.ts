@@ -1,6 +1,7 @@
 import ProductRepository from '@/repositories/product.repository'
 import CategoryRepository from '@/repositories/category.repository'
 import ProductTypeRepository from '@/repositories/product-type.repository'
+import PricingRepository from '@/repositories/pricing.repository'
 import {
   CreateNewProductDto,
   GetDraftProductsDto,
@@ -9,6 +10,7 @@ import {
   SearchProductsDto,
   UpdateProductDto
 } from '@/shared/dtos/product.dto'
+import { CreateNewPricingDto } from '@/shared/dtos/pricing.dto'
 import { BadRequest, NotFound } from '@/shared/responses/error.response'
 import { isMatchArrays, unGetInfoData } from '@/shared/utils'
 import {
@@ -23,7 +25,7 @@ import { ErrorMessages } from '@/shared/constants'
 
 export default class ProductService {
   static createNewProduct = async (dto: ICreateNewProductDto) => {
-    const { categories: categoryIds, type: productTypeId, specifications } = dto
+    const { categories: categoryIds, type: productTypeId, pricing, specifications } = dto
     const [categories, productType] = await Promise.all([
       CategoryRepository.findByIds(categoryIds),
       ProductTypeRepository.findById(productTypeId)
@@ -53,6 +55,16 @@ export default class ProductService {
       ...dto
     })
     const newProduct = await ProductRepository.createNew(createNewProductDto)
+    /** Create new pricing */
+    const { _id: productId } = newProduct
+    const currentDate = new Date()
+    const createNewPricingDto = new CreateNewPricingDto({
+      ...pricing,
+      product: productId,
+      startDate: currentDate,
+      endDate: null
+    })
+    await PricingRepository.createNew(createNewPricingDto)
     /** Populate product */
     const paths = [
       {
@@ -80,7 +92,7 @@ export default class ProductService {
   }
 
   static updateProduct = async (productId: string, seller: string, dto: IUpdateProductDto) => {
-    const { categories: categoryIds, type: productTypeId, specifications } = dto
+    const { categories: categoryIds, type: productTypeId, pricing, specifications } = dto
     /** Check categories valid or not */
     if (categoryIds) {
       const categories = await CategoryRepository.findByIds(categoryIds)
@@ -123,6 +135,17 @@ export default class ProductService {
         message: ErrorMessages.PRODUCT_NOT_FOUND
       })
     }
+    /** Create new pricing */
+    if (pricing) {
+      const currentDate = new Date()
+      const createNewPricingDto = new CreateNewPricingDto({
+        ...pricing,
+        product: productId,
+        startDate: currentDate,
+        endDate: null
+      })
+      await PricingRepository.createNew(createNewPricingDto)
+    }
     /** Populate product */
     const paths = [
       {
@@ -157,6 +180,8 @@ export default class ProductService {
         message: ErrorMessages.PRODUCT_NOT_FOUND
       })
     }
+    /** Delete ref pricing */
+    await PricingRepository.deleteByProduct(productId)
 
     return {
       product: productId

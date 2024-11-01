@@ -45,6 +45,27 @@ const productSchema = new Schema<IProduct>(
       type: String,
       required: true
     },
+    pricing: {
+      type: {
+        origin: {
+          type: Number,
+          required: true
+        },
+        sale: {
+          type: Number,
+          required: true
+        },
+        currency: {
+          type: String,
+          enum: ['vnd', 'usd'],
+          default: 'vnd'
+        }
+      },
+      _id: false,
+      default: {
+        currency: 'vnd'
+      }
+    },
     images: {
       type: [String],
       default: []

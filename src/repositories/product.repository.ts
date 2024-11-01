@@ -15,6 +15,14 @@ export default class ProductRepository {
     return await productModel.findOne(filter)
   }
 
+  static findByIdAndSeller = async (productId: string, seller: string) => {
+    const filter = {
+      _id: productId,
+      seller
+    }
+    return await productModel.findOne(filter)
+  }
+
   static findByFilterAndPagination = async (dto: IGetProductsDto) => {
     const {
       filter = {
@@ -24,7 +32,7 @@ export default class ProductRepository {
       limit = 50,
       sort = 'updatedAt',
       order = 'desc',
-      select = ['slug', 'seller', 'categories', 'type', 'name', 'thumb', 'rating']
+      select = ['slug', 'seller', 'categories', 'type', 'name', 'thumb', 'pricing', 'rating']
     } = dto
     const offset = (page - 1) * limit
     const arg = {
@@ -58,7 +66,7 @@ export default class ProductRepository {
       limit = 50,
       sort = 'updatedAt',
       order = 'desc',
-      select = ['slug', 'seller', 'categories', 'type', 'name', 'thumb', 'rating']
+      select = ['slug', 'seller', 'categories', 'type', 'name', 'thumb', 'pricing', 'rating']
     } = dto
     const engine = {
       ...filter,
