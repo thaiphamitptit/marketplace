@@ -1,10 +1,10 @@
 import PricingRepository from '@/repositories/pricing.repository'
 import ProductRepository from '@/repositories/product.repository'
-import { CreateNewPricingDto } from '@/shared/dtos/pricing.dto'
+import { CreateNewPricingDto, GetPricingsDto } from '@/shared/dtos/pricing.dto'
 import { UpdateProductDto } from '@/shared/dtos/product.dto'
 import { BadRequest, NotFound } from '@/shared/responses/error.response'
 import { unGetInfoData } from '@/shared/utils'
-import { ICreateNewPricingDto } from '@/shared/types/pricing'
+import { ICreateNewPricingDto, IGetPricingsDto } from '@/shared/types/pricing'
 import { ErrorMessages } from '@/shared/constants'
 
 export default class PricingService {
@@ -60,6 +60,34 @@ export default class PricingService {
 
     return {
       pricing: unGetInfoData(foundPricing.toObject(), ['product', '__v'])
+    }
+  }
+
+  static getPricings = async (seller: string, productId: string, dto: IGetPricingsDto) => {
+    /** Check product exists or not */
+    const product = await ProductRepository.findByIdAndSeller(productId, seller)
+    if (!product) {
+      throw new BadRequest({
+        message: ErrorMessages.PRODUCT_NOT_FOUND
+      })
+    }
+    /** Get pricings combined filter and pagination */
+    const getPricingsDto = new GetPricingsDto({
+      ...dto,
+      filter: {
+        ...dto.filter,
+        product: productId
+      }
+    })
+    const { page, limit } = getPricingsDto
+    const foundPricings = await PricingRepository.findByFilterAndPagination(getPricingsDto)
+
+    return {
+      pagination: {
+        page,
+        limit
+      },
+      pricings: foundPricings
     }
   }
 }

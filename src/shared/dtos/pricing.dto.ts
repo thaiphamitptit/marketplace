@@ -1,4 +1,4 @@
-import { ICreateNewPricingDto } from '@/shared/types/pricing'
+import { ICreateNewPricingDto, IGetPricingsDto, IPricingFilter } from '@/shared/types/pricing'
 
 export class CreateNewPricingDto {
   product: string
@@ -15,5 +15,30 @@ export class CreateNewPricingDto {
     this.currency = currency
     this.startDate = startDate
     this.endDate = endDate
+  }
+}
+
+export class GetPricingsDto {
+  filter: IPricingFilter
+  page: number
+  limit: number
+  sort: 'origin' | 'sale' | 'startDate' | 'endDate' | 'createdAt' | 'updatedAt'
+  order: 'asc' | 'desc'
+  select: string[]
+
+  constructor({
+    filter = {},
+    page = 1,
+    limit = 50,
+    sort = 'updatedAt',
+    order = 'desc',
+    select = ['origin', 'sale', 'currency']
+  }: IGetPricingsDto) {
+    this.filter = filter
+    this.page = page
+    this.limit = limit
+    this.sort = sort
+    this.order = order
+    this.select = select
   }
 }
