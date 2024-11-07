@@ -66,6 +66,10 @@ const productSchema = new Schema<IProduct>(
         currency: 'vnd'
       }
     },
+    stock: {
+      type: Number,
+      default: 0
+    },
     images: {
       type: [String],
       default: []

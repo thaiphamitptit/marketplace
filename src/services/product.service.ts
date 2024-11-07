@@ -2,6 +2,7 @@ import ProductRepository from '@/repositories/product.repository'
 import CategoryRepository from '@/repositories/category.repository'
 import ProductTypeRepository from '@/repositories/product-type.repository'
 import PricingRepository from '@/repositories/pricing.repository'
+import InventoryRepository from '@/repositories/inventory.repository'
 import {
   CreateNewProductDto,
   GetDraftProductsDto,
@@ -181,7 +182,8 @@ export default class ProductService {
       })
     }
     /** Delete ref pricing */
-    await PricingRepository.deleteByProduct(productId)
+    /** Delete ref inventory */
+    await Promise.all([PricingRepository.deleteByProduct(productId), InventoryRepository.deleteByProduct(productId)])
 
     return {
       product: productId

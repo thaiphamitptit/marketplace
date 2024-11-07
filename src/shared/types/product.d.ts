@@ -11,6 +11,7 @@ export interface IProduct extends Document {
   name: string
   thumb: string
   pricing: IProductPricing
+  stock: number
   images: string[]
   description: string
   rating: number

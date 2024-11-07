@@ -113,6 +113,21 @@ export default class ProductRepository {
     return await productModel.findOneAndUpdate(filter, update, options)
   }
 
+  static updateByModifyingStock = async (productId: string, offset: number) => {
+    const filter = {
+      _id: productId
+    }
+    const update = {
+      $inc: {
+        stock: offset
+      }
+    }
+    const options = {
+      new: true
+    }
+    return await productModel.findOneAndUpdate(filter, update, options)
+  }
+
   static updateByModifyingStatus = async (
     productId: string,
     seller: string,
