@@ -5,6 +5,7 @@ import { Created, Ok } from '@/shared/responses/success.response'
 import {
   ICreateNewInventoryReqBody,
   IDeleteInventoryReqParams,
+  IGetInventoryReqParams,
   IUpdateInventoryReqBody,
   IUpdateInventoryReqParams
 } from '@/shared/types/inventory'
@@ -49,6 +50,14 @@ class InventoryController {
     new Ok({
       message: SuccessMessages.DELETE_INVENTORY_SUCCESSFULLY,
       metadata: await InventoryService.deleteInventory(inventoryId)
+    }).send(res)
+  }
+
+  getInventory = async (req: Request<IGetInventoryReqParams, any, any, any>, res: Response, next: NextFunction) => {
+    const { inventoryId } = req.params
+    new Ok({
+      message: SuccessMessages.GET_INVENTORY_SUCCESSFULLY,
+      metadata: await InventoryService.getInventory(inventoryId)
     }).send(res)
   }
 }

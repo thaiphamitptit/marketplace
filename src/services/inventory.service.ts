@@ -106,4 +106,26 @@ export default class InventoryService {
       inventory: inventoryId
     }
   }
+
+  static getInventory = async (inventoryId: string) => {
+    /** Get inventory */
+    const foundInventory = await InventoryRepository.findById(inventoryId)
+    if (!foundInventory) {
+      throw new NotFound({
+        message: ErrorMessages.INVENTORY_NOT_FOUND
+      })
+    }
+    /** Populate inventory */
+    const paths = [
+      {
+        path: 'product',
+        select: ['name', 'thumb', 'pricing', 'rating']
+      }
+    ]
+    const populatedInventory = await foundInventory.populate(paths)
+
+    return {
+      inventory: unGetInfoData(populatedInventory.toObject(), ['__v'])
+    }
+  }
 }

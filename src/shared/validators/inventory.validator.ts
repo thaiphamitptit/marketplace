@@ -20,3 +20,7 @@ export const updateInventoryReqParams = Joi.object({
 export const deleteInventoryReqParams = Joi.object({
   inventoryId: Joi.string().uuid().required()
 })
+
+export const getInventoryReqParams = Joi.object({
+  inventoryId: Joi.string().uuid().required()
+})

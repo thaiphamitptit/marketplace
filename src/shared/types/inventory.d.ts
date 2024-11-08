@@ -51,3 +51,7 @@ export interface IUpdateInventoryDto {
 export interface IDeleteInventoryReqParams extends ParamsDictionary {
   inventoryId: string
 }
+
+export interface IGetInventoryReqParams extends ParamsDictionary {
+  inventoryId: string
+}
