@@ -1,4 +1,5 @@
 import { Document } from 'mongoose'
+import { ParamsDictionary } from 'express-serve-static-core'
 
 export interface IInventory extends Document {
   _id: string
@@ -28,5 +29,21 @@ export interface ICreateNewInventoryDto {
   product: string
   location?: string
   stock: number
+  threshold?: number
+}
+
+export interface IUpdateInventoryReqBody {
+  location?: string
+  offset?: number
+  threshold?: number
+}
+
+export interface IUpdateInventoryReqParams extends ParamsDictionary {
+  inventoryId: string
+}
+
+export interface IUpdateInventoryDto {
+  location?: string
+  offset?: number
   threshold?: number
 }

@@ -1,4 +1,4 @@
-import { ICreateNewInventoryDto } from '@/shared/types/inventory'
+import { ICreateNewInventoryDto, IUpdateInventoryDto } from '@/shared/types/inventory'
 
 export class CreateNewInventoryDto {
   product: string
@@ -10,6 +10,18 @@ export class CreateNewInventoryDto {
     this.product = product
     this.location = location
     this.stock = stock
+    this.threshold = threshold
+  }
+}
+
+export class UpdateInventoryDto {
+  location?: string
+  offset?: number
+  threshold?: number
+
+  constructor({ location, offset, threshold }: IUpdateInventoryDto) {
+    this.location = location
+    this.offset = offset
     this.threshold = threshold
   }
 }

@@ -6,3 +6,13 @@ export const createNewInventoryReqBody = Joi.object({
   stock: Joi.number().integer().required(),
   threshold: Joi.number().integer().optional()
 })
+
+export const updateInventoryReqBody = Joi.object({
+  location: Joi.string().optional(),
+  offset: Joi.number().integer().optional(),
+  threshold: Joi.number().integer().optional()
+}).or('location', 'offset', 'threshold')
+
+export const updateInventoryReqParams = Joi.object({
+  inventoryId: Joi.string().uuid().required()
+})

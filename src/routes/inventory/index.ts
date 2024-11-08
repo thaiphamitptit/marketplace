@@ -2,7 +2,11 @@ import { Router } from 'express'
 import { validateSchema } from '@/middlewares/validator.middleware'
 import { checkAuthentication, checkAuthorization } from '@/middlewares/auth.middleware'
 import inventoryController from '@/controllers/inventory.controller'
-import { createNewInventoryReqBody } from '@/shared/validators/inventory.validator'
+import {
+  createNewInventoryReqBody,
+  updateInventoryReqBody,
+  updateInventoryReqParams
+} from '@/shared/validators/inventory.validator'
 import { authReqHeaders } from '@/shared/validators/auth.validator'
 import asyncHandler from '@/shared/helpers/async-handler'
 
@@ -15,6 +19,12 @@ inventoryRoutes.post(
   '',
   validateSchema(createNewInventoryReqBody, 'body'),
   asyncHandler(inventoryController.createNewInventory)
+)
+inventoryRoutes.patch(
+  '/:inventoryId',
+  validateSchema(updateInventoryReqParams, 'params'),
+  validateSchema(updateInventoryReqBody, 'body'),
+  asyncHandler(inventoryController.updateInventory)
 )
 
 export default inventoryRoutes
