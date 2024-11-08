@@ -1,9 +1,19 @@
 import InventoryRepository from '@/repositories/inventory.repository'
 import ProductRepository from '@/repositories/product.repository'
-import { CreateNewInventoryDto, GetInventoriesDto, UpdateInventoryDto } from '@/shared/dtos/inventory.dto'
+import {
+  CreateNewInventoryDto,
+  GetInventoriesDto,
+  SearchInventoriesDto,
+  UpdateInventoryDto
+} from '@/shared/dtos/inventory.dto'
 import { BadRequest, Forbidden, NotFound } from '@/shared/responses/error.response'
 import { unGetInfoData } from '@/shared/utils'
-import { ICreateNewInventoryDto, IGetInventoriesDto, IUpdateInventoryDto } from '@/shared/types/inventory'
+import {
+  ICreateNewInventoryDto,
+  IGetInventoriesDto,
+  ISearchInventoriesDto,
+  IUpdateInventoryDto
+} from '@/shared/types/inventory'
 import { ErrorMessages } from '@/shared/constants'
 
 export default class InventoryService {
@@ -136,6 +146,23 @@ export default class InventoryService {
     })
     const { page, limit } = getInventoriesDto
     const foundInventories = await InventoryRepository.findByFilterAndPagination(getInventoriesDto)
+
+    return {
+      pagination: {
+        page,
+        limit
+      },
+      inventories: foundInventories
+    }
+  }
+
+  static searchInventories = async (dto: ISearchInventoriesDto) => {
+    /** Search inventories combined filter and pagination */
+    const searchInventoriesDto = new SearchInventoriesDto({
+      ...dto
+    })
+    const { page, limit } = searchInventoriesDto
+    const foundInventories = await InventoryRepository.findByKeywordFilterAndPagination(searchInventoriesDto)
 
     return {
       pagination: {

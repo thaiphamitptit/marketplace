@@ -2,6 +2,7 @@ import {
   ICreateNewInventoryDto,
   IGetInventoriesDto,
   IInventoryFilter,
+  ISearchInventoriesDto,
   IUpdateInventoryDto
 } from '@/shared/types/inventory'
 
@@ -47,6 +48,34 @@ export class GetInventoriesDto {
     order = 'desc',
     select = ['product', 'location', 'stock', 'threshold']
   }: IGetInventoriesDto) {
+    this.filter = filter
+    this.page = page
+    this.limit = limit
+    this.sort = sort
+    this.order = order
+    this.select = select
+  }
+}
+
+export class SearchInventoriesDto {
+  keyword: string
+  filter: IInventoryFilter
+  page: number
+  limit: number
+  sort: 'stock' | 'threshold' | 'createdAt' | 'updatedAt'
+  order: 'asc' | 'desc'
+  select: string[]
+
+  constructor({
+    keyword,
+    filter = {},
+    page = 1,
+    limit = 50,
+    sort = 'updatedAt',
+    order = 'desc',
+    select = ['product', 'location', 'stock', 'threshold']
+  }: ISearchInventoriesDto) {
+    this.keyword = keyword
     this.filter = filter
     this.page = page
     this.limit = limit

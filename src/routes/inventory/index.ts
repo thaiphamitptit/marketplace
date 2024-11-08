@@ -7,6 +7,7 @@ import {
   deleteInventoryReqParams,
   getInventoriesReqQuery,
   getInventoryReqParams,
+  searchInventoriesReqQuery,
   updateInventoryReqBody,
   updateInventoryReqParams
 } from '@/shared/validators/inventory.validator'
@@ -18,6 +19,11 @@ const inventoryRoutes = Router()
 inventoryRoutes.use(validateSchema(authReqHeaders, 'headers'), checkAuthentication)
 inventoryRoutes.use(checkAuthorization(['admin', 'seller']))
 
+inventoryRoutes.get(
+  '/search',
+  validateSchema(searchInventoriesReqQuery, 'query'),
+  asyncHandler(inventoryController.searchInventories)
+)
 inventoryRoutes.get(
   '',
   validateSchema(getInventoriesReqQuery, 'query'),

@@ -95,3 +95,23 @@ export interface IGetInventoriesDto {
   order?: 'asc' | 'desc'
   select?: string[]
 }
+
+export interface ISearchInventoriesReqQuery extends ParsedQs {
+  keyword: string
+  filter?: IInventoryFilter
+  page?: number
+  limit?: number
+  sort?: 'stock' | 'threshold' | 'createdAt' | 'updatedAt'
+  order?: 'asc' | 'desc'
+  select?: string[]
+}
+
+export interface ISearchInventoriesDto {
+  keyword: string
+  filter?: IInventoryFilter
+  page?: number
+  limit?: number
+  sort?: 'stock' | 'threshold' | 'createdAt' | 'updatedAt'
+  order?: 'asc' | 'desc'
+  select?: string[]
+}

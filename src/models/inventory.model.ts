@@ -50,4 +50,6 @@ const inventorySchema = new Schema<IInventory>(
   }
 )
 
+inventorySchema.index({ location: 'text' })
+
 export const inventoryModel = model<IInventory>(DOCUMENT_NAME, inventorySchema)

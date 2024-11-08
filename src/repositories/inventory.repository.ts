@@ -1,5 +1,10 @@
 import { inventoryModel } from '@/models/inventory.model'
-import { ICreateNewInventoryDto, IGetInventoriesDto, IUpdateInventoryDto } from '@/shared/types/inventory'
+import {
+  ICreateNewInventoryDto,
+  IGetInventoriesDto,
+  ISearchInventoriesDto,
+  IUpdateInventoryDto
+} from '@/shared/types/inventory'
 import { getSelectData } from '@/shared/utils'
 
 export default class InventoryRepository {
@@ -39,6 +44,39 @@ export default class InventoryRepository {
       }
     ]
     return await inventoryModel.find(filter).skip(offset).limit(limit).sort(arg).select(fields).populate(paths)
+  }
+
+  static findByKeywordFilterAndPagination = async (dto: ISearchInventoriesDto) => {
+    const {
+      keyword,
+      filter = {},
+      page = 1,
+      limit = 50,
+      sort = 'updatedAt',
+      order = 'desc',
+      select = ['product', 'location', 'stock', 'threshold']
+    } = dto
+    const engine = {
+      ...filter,
+      $text: {
+        $search: keyword
+      }
+    }
+    const offset = (page - 1) * limit
+    const arg = {
+      score: {
+        $meta: 'textScore'
+      },
+      [sort]: order
+    }
+    const fields = getSelectData(select)
+    const paths = [
+      {
+        path: 'product',
+        select: ['name', 'thumb', 'pricing', 'rating']
+      }
+    ]
+    return await inventoryModel.find(engine).skip(offset).limit(limit).sort(arg).select(fields).populate(paths)
   }
 
   static updateById = async (inventoryId: string, dto: IUpdateInventoryDto) => {

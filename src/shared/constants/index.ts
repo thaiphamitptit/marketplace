@@ -74,5 +74,6 @@ export enum SuccessMessages {
   UPDATE_INVENTORY_SUCCESSFULLY = 'Update inventory successfully',
   DELETE_INVENTORY_SUCCESSFULLY = 'Delete inventory successfully',
   GET_INVENTORY_SUCCESSFULLY = 'Get inventory successfully',
-  GET_INVENTORIES_SUCCESSFULLY = 'Get inventories successfully'
+  GET_INVENTORIES_SUCCESSFULLY = 'Get inventories successfully',
+  SEARCH_INVENTORIES_SUCCESSFULLY = 'Search inventories successfully'
 }
