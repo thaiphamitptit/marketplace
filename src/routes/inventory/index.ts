@@ -4,6 +4,7 @@ import { checkAuthentication, checkAuthorization } from '@/middlewares/auth.midd
 import inventoryController from '@/controllers/inventory.controller'
 import {
   createNewInventoryReqBody,
+  deleteInventoryReqParams,
   updateInventoryReqBody,
   updateInventoryReqParams
 } from '@/shared/validators/inventory.validator'
@@ -25,6 +26,11 @@ inventoryRoutes.patch(
   validateSchema(updateInventoryReqParams, 'params'),
   validateSchema(updateInventoryReqBody, 'body'),
   asyncHandler(inventoryController.updateInventory)
+)
+inventoryRoutes.delete(
+  '/:inventoryId',
+  validateSchema(deleteInventoryReqParams, 'params'),
+  asyncHandler(inventoryController.deleteInventory)
 )
 
 export default inventoryRoutes

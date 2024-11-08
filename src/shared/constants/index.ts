@@ -28,7 +28,8 @@ export enum ErrorMessages {
   PRODUCT_NOT_FOUND = 'Product not found',
   INVALID_PRODUCT = 'Invalid product',
   PRICING_NOT_FOUND = 'Pricing not found',
-  INVENTORY_NOT_FOUND = 'Inventory not found'
+  INVENTORY_NOT_FOUND = 'Inventory not found',
+  INVENTORY_CAN_NOT_DELETED = 'Inventory can not deleted'
 }
 
 export enum SuccessMessages {
@@ -70,5 +71,6 @@ export enum SuccessMessages {
   GET_PRICING_SUCCESSFULLY = 'Get pricing successfully',
   GET_PRICINGS_SUCCESSFULLY = 'Get pricings successfully',
   CREATE_NEW_INVENTORY_SUCCESSFULLY = 'Create new inventory successfully',
-  UPDATE_INVENTORY_SUCCESSFULLY = 'Update inventory successfully'
+  UPDATE_INVENTORY_SUCCESSFULLY = 'Update inventory successfully',
+  DELETE_INVENTORY_SUCCESSFULLY = 'Delete inventory successfully'
 }

@@ -1,7 +1,7 @@
 import InventoryRepository from '@/repositories/inventory.repository'
 import ProductRepository from '@/repositories/product.repository'
 import { CreateNewInventoryDto, UpdateInventoryDto } from '@/shared/dtos/inventory.dto'
-import { BadRequest, NotFound } from '@/shared/responses/error.response'
+import { BadRequest, Forbidden, NotFound } from '@/shared/responses/error.response'
 import { unGetInfoData } from '@/shared/utils'
 import { ICreateNewInventoryDto, IUpdateInventoryDto } from '@/shared/types/inventory'
 import { ErrorMessages } from '@/shared/constants'
@@ -74,6 +74,36 @@ export default class InventoryService {
 
     return {
       inventory: unGetInfoData(populatedInventory.toObject(), ['__v'])
+    }
+  }
+
+  static deleteInventory = async (inventoryId: string) => {
+    /** Check inventory exists or not */
+    const inventory = await InventoryRepository.findById(inventoryId)
+    if (!inventory) {
+      throw new NotFound({
+        message: ErrorMessages.INVENTORY_NOT_FOUND
+      })
+    }
+    /** Check inventory has reservations or not */
+    const { product: productId, stock, reservations } = inventory
+    if (reservations && reservations.length > 0) {
+      throw new Forbidden({
+        message: ErrorMessages.INVENTORY_CAN_NOT_DELETED
+      })
+    }
+    /** Update ref product */
+    await ProductRepository.updateByModifyingStock(productId, -stock)
+    /** Delete inventory */
+    const deletedInventory = await InventoryRepository.deleteById(inventoryId)
+    if (!deletedInventory) {
+      throw new NotFound({
+        message: ErrorMessages.INVENTORY_NOT_FOUND
+      })
+    }
+
+    return {
+      inventory: inventoryId
     }
   }
 }

@@ -47,3 +47,7 @@ export interface IUpdateInventoryDto {
   offset?: number
   threshold?: number
 }
+
+export interface IDeleteInventoryReqParams extends ParamsDictionary {
+  inventoryId: string
+}

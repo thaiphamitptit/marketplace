@@ -4,6 +4,7 @@ import { CreateNewInventoryDto, UpdateInventoryDto } from '@/shared/dtos/invento
 import { Created, Ok } from '@/shared/responses/success.response'
 import {
   ICreateNewInventoryReqBody,
+  IDeleteInventoryReqParams,
   IUpdateInventoryReqBody,
   IUpdateInventoryReqParams
 } from '@/shared/types/inventory'
@@ -36,6 +37,18 @@ class InventoryController {
     new Ok({
       message: SuccessMessages.UPDATE_INVENTORY_SUCCESSFULLY,
       metadata: await InventoryService.updateInventory(inventoryId, updateInventoryDto)
+    }).send(res)
+  }
+
+  deleteInventory = async (
+    req: Request<IDeleteInventoryReqParams, any, any, any>,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const { inventoryId } = req.params
+    new Ok({
+      message: SuccessMessages.DELETE_INVENTORY_SUCCESSFULLY,
+      metadata: await InventoryService.deleteInventory(inventoryId)
     }).send(res)
   }
 }

@@ -6,6 +6,10 @@ export default class InventoryRepository {
     return await inventoryModel.create(dto)
   }
 
+  static findById = async (inventoryId: string) => {
+    return await inventoryModel.findById(inventoryId)
+  }
+
   static findByProduct = async (productId: string) => {
     const filter = {
       product: productId
@@ -25,6 +29,10 @@ export default class InventoryRepository {
       new: true
     }
     return await inventoryModel.findByIdAndUpdate(inventoryId, update, options)
+  }
+
+  static deleteById = async (inventoryId: string) => {
+    return await inventoryModel.findByIdAndDelete(inventoryId)
   }
 
   static deleteByProduct = async (productId: string) => {
