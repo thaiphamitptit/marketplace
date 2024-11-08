@@ -1,4 +1,9 @@
-import { ICreateNewInventoryDto, IUpdateInventoryDto } from '@/shared/types/inventory'
+import {
+  ICreateNewInventoryDto,
+  IGetInventoriesDto,
+  IInventoryFilter,
+  IUpdateInventoryDto
+} from '@/shared/types/inventory'
 
 export class CreateNewInventoryDto {
   product: string
@@ -23,5 +28,30 @@ export class UpdateInventoryDto {
     this.location = location
     this.offset = offset
     this.threshold = threshold
+  }
+}
+
+export class GetInventoriesDto {
+  filter: IInventoryFilter
+  page: number
+  limit: number
+  sort: 'stock' | 'threshold' | 'createdAt' | 'updatedAt'
+  order: 'asc' | 'desc'
+  select: string[]
+
+  constructor({
+    filter = {},
+    page = 1,
+    limit = 50,
+    sort = 'updatedAt',
+    order = 'desc',
+    select = ['product', 'location', 'stock', 'threshold']
+  }: IGetInventoriesDto) {
+    this.filter = filter
+    this.page = page
+    this.limit = limit
+    this.sort = sort
+    this.order = order
+    this.select = select
   }
 }

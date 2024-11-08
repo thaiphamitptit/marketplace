@@ -5,6 +5,7 @@ import inventoryController from '@/controllers/inventory.controller'
 import {
   createNewInventoryReqBody,
   deleteInventoryReqParams,
+  getInventoriesReqQuery,
   getInventoryReqParams,
   updateInventoryReqBody,
   updateInventoryReqParams
@@ -17,6 +18,11 @@ const inventoryRoutes = Router()
 inventoryRoutes.use(validateSchema(authReqHeaders, 'headers'), checkAuthentication)
 inventoryRoutes.use(checkAuthorization(['admin', 'seller']))
 
+inventoryRoutes.get(
+  '',
+  validateSchema(getInventoriesReqQuery, 'query'),
+  asyncHandler(inventoryController.getInventories)
+)
 inventoryRoutes.get(
   '/:inventoryId',
   validateSchema(getInventoryReqParams, 'params'),

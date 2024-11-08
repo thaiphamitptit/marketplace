@@ -24,3 +24,33 @@ export const deleteInventoryReqParams = Joi.object({
 export const getInventoryReqParams = Joi.object({
   inventoryId: Joi.string().uuid().required()
 })
+
+export const getInventoriesReqQuery = Joi.object({
+  filter: Joi.object({
+    product: Joi.string().uuid().optional(),
+    stock: Joi.object({
+      $gte: Joi.number().integer().optional(),
+      $lte: Joi.number().integer().optional()
+    }).optional(),
+    threshold: Joi.object({
+      $gte: Joi.number().integer().optional(),
+      $lte: Joi.number().integer().optional()
+    }).optional(),
+    createdAt: Joi.object({
+      $gte: Joi.date().iso().optional(),
+      $lte: Joi.date().iso().optional()
+    }).optional(),
+    updatedAt: Joi.object({
+      $gte: Joi.date().iso().optional(),
+      $lte: Joi.date().iso().optional()
+    }).optional()
+  }).optional(),
+  page: Joi.number().integer().optional(),
+  limit: Joi.number().integer().optional(),
+  sort: Joi.string().valid('stock', 'threshold', 'createdAt', 'updatedAt').optional(),
+  order: Joi.string().valid('asc', 'desc').optional(),
+  select: Joi.array()
+    .items(Joi.string().valid('product', 'location', 'stock', 'threshold').optional())
+    .unique()
+    .optional()
+})

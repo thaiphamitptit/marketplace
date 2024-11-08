@@ -1,9 +1,9 @@
 import InventoryRepository from '@/repositories/inventory.repository'
 import ProductRepository from '@/repositories/product.repository'
-import { CreateNewInventoryDto, UpdateInventoryDto } from '@/shared/dtos/inventory.dto'
+import { CreateNewInventoryDto, GetInventoriesDto, UpdateInventoryDto } from '@/shared/dtos/inventory.dto'
 import { BadRequest, Forbidden, NotFound } from '@/shared/responses/error.response'
 import { unGetInfoData } from '@/shared/utils'
-import { ICreateNewInventoryDto, IUpdateInventoryDto } from '@/shared/types/inventory'
+import { ICreateNewInventoryDto, IGetInventoriesDto, IUpdateInventoryDto } from '@/shared/types/inventory'
 import { ErrorMessages } from '@/shared/constants'
 
 export default class InventoryService {
@@ -126,6 +126,23 @@ export default class InventoryService {
 
     return {
       inventory: unGetInfoData(populatedInventory.toObject(), ['__v'])
+    }
+  }
+
+  static getInventories = async (dto: IGetInventoriesDto) => {
+    /** Get inventories combined filter and pagination */
+    const getInventoriesDto = new GetInventoriesDto({
+      ...dto
+    })
+    const { page, limit } = getInventoriesDto
+    const foundInventories = await InventoryRepository.findByFilterAndPagination(getInventoriesDto)
+
+    return {
+      pagination: {
+        page,
+        limit
+      },
+      inventories: foundInventories
     }
   }
 }

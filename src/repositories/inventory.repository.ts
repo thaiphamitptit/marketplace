@@ -1,5 +1,6 @@
 import { inventoryModel } from '@/models/inventory.model'
-import { ICreateNewInventoryDto, IUpdateInventoryDto } from '@/shared/types/inventory'
+import { ICreateNewInventoryDto, IGetInventoriesDto, IUpdateInventoryDto } from '@/shared/types/inventory'
+import { getSelectData } from '@/shared/utils'
 
 export default class InventoryRepository {
   static createNew = async (dto: ICreateNewInventoryDto) => {
@@ -15,6 +16,29 @@ export default class InventoryRepository {
       product: productId
     }
     return await inventoryModel.findOne(filter)
+  }
+
+  static findByFilterAndPagination = async (dto: IGetInventoriesDto) => {
+    const {
+      filter = {},
+      page = 1,
+      limit = 50,
+      sort = 'updatedAt',
+      order = 'desc',
+      select = ['product', 'location', 'stock', 'threshold']
+    } = dto
+    const offset = (page - 1) * limit
+    const arg = {
+      [sort]: order
+    }
+    const fields = getSelectData(select)
+    const paths = [
+      {
+        path: 'product',
+        select: ['name', 'thumb', 'pricing', 'rating']
+      }
+    ]
+    return await inventoryModel.find(filter).skip(offset).limit(limit).sort(arg).select(fields).populate(paths)
   }
 
   static updateById = async (inventoryId: string, dto: IUpdateInventoryDto) => {

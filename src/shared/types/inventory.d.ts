@@ -1,5 +1,6 @@
 import { Document } from 'mongoose'
 import { ParamsDictionary } from 'express-serve-static-core'
+import { ParsedQs } from 'qs'
 
 export interface IInventory extends Document {
   _id: string
@@ -16,6 +17,27 @@ export interface IInventory extends Document {
 export interface IInventoryReservation {
   cart: string
   quantity: number
+}
+
+export interface IInventoryFilter {
+  _id?: string
+  product?: string
+  stock?: {
+    $gte?: number
+    $lte?: number
+  }
+  threshold?: {
+    $gte?: number
+    $lte?: number
+  }
+  createdAt?: {
+    $gte?: Date | string
+    $lte?: Date | string
+  }
+  updatedAt?: {
+    $gte?: Date | string
+    $lte?: Date | string
+  }
 }
 
 export interface ICreateNewInventoryReqBody {
@@ -54,4 +76,22 @@ export interface IDeleteInventoryReqParams extends ParamsDictionary {
 
 export interface IGetInventoryReqParams extends ParamsDictionary {
   inventoryId: string
+}
+
+export interface IGetInventoriesReqQuery extends ParsedQs {
+  filter?: IInventoryFilter
+  page?: number
+  limit?: number
+  sort?: 'stock' | 'threshold' | 'createdAt' | 'updatedAt'
+  order?: 'asc' | 'desc'
+  select?: string[]
+}
+
+export interface IGetInventoriesDto {
+  filter?: IInventoryFilter
+  page?: number
+  limit?: number
+  sort?: 'stock' | 'threshold' | 'createdAt' | 'updatedAt'
+  order?: 'asc' | 'desc'
+  select?: string[]
 }
