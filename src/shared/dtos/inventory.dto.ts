@@ -2,6 +2,7 @@ import {
   ICreateNewInventoryDto,
   IGetHighStockInventoriesDto,
   IGetInventoriesDto,
+  IGetLowStockInventoriesDto,
   IInventoryFilter,
   ISearchInventoriesDto,
   IUpdateInventoryDto
@@ -102,6 +103,31 @@ export class GetHighStockInventoriesDto {
     order = 'desc',
     select = ['product', 'location', 'stock', 'threshold']
   }: IGetHighStockInventoriesDto) {
+    this.filter = filter
+    this.page = page
+    this.limit = limit
+    this.sort = sort
+    this.order = order
+    this.select = select
+  }
+}
+
+export class GetLowStockInventoriesDto {
+  filter: IInventoryFilter
+  page: number
+  limit: number
+  sort: 'stock' | 'threshold' | 'createdAt' | 'updatedAt'
+  order: 'asc' | 'desc'
+  select: string[]
+
+  constructor({
+    filter = {},
+    page = 1,
+    limit = 50,
+    sort = 'updatedAt',
+    order = 'desc',
+    select = ['product', 'location', 'stock', 'threshold']
+  }: IGetLowStockInventoriesDto) {
     this.filter = filter
     this.page = page
     this.limit = limit

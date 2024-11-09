@@ -8,6 +8,7 @@ import {
   getHighStockInventoriesReqQuery,
   getInventoriesReqQuery,
   getInventoryReqParams,
+  getLowStockInventoriesReqQuery,
   searchInventoriesReqQuery,
   updateInventoryReqBody,
   updateInventoryReqParams
@@ -55,6 +56,11 @@ inventoryRoutes.get(
   '/high-stocks/all',
   validateSchema(getHighStockInventoriesReqQuery, 'query'),
   asyncHandler(inventoryController.getHighStockInventories)
+)
+inventoryRoutes.get(
+  '/low-stocks/all',
+  validateSchema(getLowStockInventoriesReqQuery, 'query'),
+  asyncHandler(inventoryController.getLowStockInventories)
 )
 
 export default inventoryRoutes

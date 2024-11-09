@@ -4,6 +4,7 @@ import {
   CreateNewInventoryDto,
   GetHighStockInventoriesDto,
   GetInventoriesDto,
+  GetLowStockInventoriesDto,
   SearchInventoriesDto,
   UpdateInventoryDto
 } from '@/shared/dtos/inventory.dto'
@@ -14,6 +15,7 @@ import {
   IGetHighStockInventoriesReqQuery,
   IGetInventoriesReqQuery,
   IGetInventoryReqParams,
+  IGetLowStockInventoriesReqQuery,
   ISearchInventoriesReqQuery,
   IUpdateInventoryReqBody,
   IUpdateInventoryReqParams
@@ -105,6 +107,20 @@ class InventoryController {
     new Ok({
       message: SuccessMessages.GET_HIGH_STOCK_INVENTORIES_SUCCESSFULLY,
       metadata: await InventoryService.getHighStockInventories(getHighStockInventoriesDto)
+    }).send(res)
+  }
+
+  getLowStockInventories = async (
+    req: Request<any, any, any, IGetLowStockInventoriesReqQuery>,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const getLowStockInventoriesDto = new GetLowStockInventoriesDto({
+      ...req.query
+    })
+    new Ok({
+      message: SuccessMessages.GET_LOW_STOCK_INVENTORIES_SUCCESSFULLY,
+      metadata: await InventoryService.getLowStockInventories(getLowStockInventoriesDto)
     }).send(res)
   }
 }

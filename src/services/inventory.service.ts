@@ -4,6 +4,7 @@ import {
   CreateNewInventoryDto,
   GetHighStockInventoriesDto,
   GetInventoriesDto,
+  GetLowStockInventoriesDto,
   SearchInventoriesDto,
   UpdateInventoryDto
 } from '@/shared/dtos/inventory.dto'
@@ -13,6 +14,7 @@ import {
   ICreateNewInventoryDto,
   IGetHighStockInventoriesDto,
   IGetInventoriesDto,
+  IGetLowStockInventoriesDto,
   ISearchInventoriesDto,
   IUpdateInventoryDto
 } from '@/shared/types/inventory'
@@ -196,6 +198,30 @@ export default class InventoryService {
         limit
       },
       inventories: highStockInventories
+    }
+  }
+
+  static getLowStockInventories = async (dto: IGetLowStockInventoriesDto) => {
+    /** Get low stock inventories combined filter and pagination */
+    const { filter } = dto
+    const getLowStockInventoriesDto = new GetLowStockInventoriesDto({
+      ...dto,
+      filter: {
+        ...filter,
+        $expr: {
+          $lte: ['$stock', '$threshold']
+        }
+      }
+    })
+    const { page, limit } = getLowStockInventoriesDto
+    const lowStockInventories = await InventoryRepository.findByFilterAndPagination(getLowStockInventoriesDto)
+
+    return {
+      pagination: {
+        page,
+        limit
+      },
+      inventories: lowStockInventories
     }
   }
 }

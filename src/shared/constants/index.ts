@@ -76,5 +76,6 @@ export enum SuccessMessages {
   GET_INVENTORY_SUCCESSFULLY = 'Get inventory successfully',
   GET_INVENTORIES_SUCCESSFULLY = 'Get inventories successfully',
   SEARCH_INVENTORIES_SUCCESSFULLY = 'Search inventories successfully',
-  GET_HIGH_STOCK_INVENTORIES_SUCCESSFULLY = 'Get high stock inventories successfully'
+  GET_HIGH_STOCK_INVENTORIES_SUCCESSFULLY = 'Get high stock inventories successfully',
+  GET_LOW_STOCK_INVENTORIES_SUCCESSFULLY = 'Get low stock inventories successfully'
 }

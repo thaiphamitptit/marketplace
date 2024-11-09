@@ -137,3 +137,21 @@ export interface IGetHighStockInventoriesDto {
   order?: 'asc' | 'desc'
   select?: string[]
 }
+
+export interface IGetLowStockInventoriesReqQuery extends ParsedQs {
+  filter?: Omit<IInventoryFilter, '$expr'>
+  page?: number
+  limit?: number
+  sort?: 'stock' | 'threshold' | 'createdAt' | 'updatedAt'
+  order?: 'asc' | 'desc'
+  select?: string[]
+}
+
+export interface IGetLowStockInventoriesDto {
+  filter?: IInventoryFilter
+  page?: number
+  limit?: number
+  sort?: 'stock' | 'threshold' | 'createdAt' | 'updatedAt'
+  order?: 'asc' | 'desc'
+  select?: string[]
+}
