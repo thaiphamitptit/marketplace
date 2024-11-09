@@ -1,5 +1,6 @@
 import {
   ICreateNewInventoryDto,
+  IGetHighStockInventoriesDto,
   IGetInventoriesDto,
   IInventoryFilter,
   ISearchInventoriesDto,
@@ -76,6 +77,31 @@ export class SearchInventoriesDto {
     select = ['product', 'location', 'stock', 'threshold']
   }: ISearchInventoriesDto) {
     this.keyword = keyword
+    this.filter = filter
+    this.page = page
+    this.limit = limit
+    this.sort = sort
+    this.order = order
+    this.select = select
+  }
+}
+
+export class GetHighStockInventoriesDto {
+  filter: IInventoryFilter
+  page: number
+  limit: number
+  sort: 'stock' | 'threshold' | 'createdAt' | 'updatedAt'
+  order: 'asc' | 'desc'
+  select: string[]
+
+  constructor({
+    filter = {},
+    page = 1,
+    limit = 50,
+    sort = 'updatedAt',
+    order = 'desc',
+    select = ['product', 'location', 'stock', 'threshold']
+  }: IGetHighStockInventoriesDto) {
     this.filter = filter
     this.page = page
     this.limit = limit

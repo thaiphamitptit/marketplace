@@ -22,6 +22,10 @@ export interface IInventoryReservation {
 export interface IInventoryFilter {
   _id?: string
   product?: string
+  $expr?: {
+    $gt?: ['$stock', '$threshold']
+    $lte?: ['$stock', '$threshold']
+  }
   stock?: {
     $gte?: number
     $lte?: number
@@ -79,7 +83,7 @@ export interface IGetInventoryReqParams extends ParamsDictionary {
 }
 
 export interface IGetInventoriesReqQuery extends ParsedQs {
-  filter?: IInventoryFilter
+  filter?: Omit<IInventoryFilter, '$expr'>
   page?: number
   limit?: number
   sort?: 'stock' | 'threshold' | 'createdAt' | 'updatedAt'
@@ -98,7 +102,7 @@ export interface IGetInventoriesDto {
 
 export interface ISearchInventoriesReqQuery extends ParsedQs {
   keyword: string
-  filter?: IInventoryFilter
+  filter?: Omit<IInventoryFilter, '$expr'>
   page?: number
   limit?: number
   sort?: 'stock' | 'threshold' | 'createdAt' | 'updatedAt'
@@ -108,6 +112,24 @@ export interface ISearchInventoriesReqQuery extends ParsedQs {
 
 export interface ISearchInventoriesDto {
   keyword: string
+  filter?: IInventoryFilter
+  page?: number
+  limit?: number
+  sort?: 'stock' | 'threshold' | 'createdAt' | 'updatedAt'
+  order?: 'asc' | 'desc'
+  select?: string[]
+}
+
+export interface IGetHighStockInventoriesReqQuery extends ParsedQs {
+  filter?: Omit<IInventoryFilter, '$expr'>
+  page?: number
+  limit?: number
+  sort?: 'stock' | 'threshold' | 'createdAt' | 'updatedAt'
+  order?: 'asc' | 'desc'
+  select?: string[]
+}
+
+export interface IGetHighStockInventoriesDto {
   filter?: IInventoryFilter
   page?: number
   limit?: number

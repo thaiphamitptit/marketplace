@@ -2,6 +2,7 @@ import InventoryRepository from '@/repositories/inventory.repository'
 import ProductRepository from '@/repositories/product.repository'
 import {
   CreateNewInventoryDto,
+  GetHighStockInventoriesDto,
   GetInventoriesDto,
   SearchInventoriesDto,
   UpdateInventoryDto
@@ -10,6 +11,7 @@ import { BadRequest, Forbidden, NotFound } from '@/shared/responses/error.respon
 import { unGetInfoData } from '@/shared/utils'
 import {
   ICreateNewInventoryDto,
+  IGetHighStockInventoriesDto,
   IGetInventoriesDto,
   ISearchInventoriesDto,
   IUpdateInventoryDto
@@ -170,6 +172,30 @@ export default class InventoryService {
         limit
       },
       inventories: foundInventories
+    }
+  }
+
+  static getHighStockInventories = async (dto: IGetHighStockInventoriesDto) => {
+    /** Get high stock inventories combined filter and pagination */
+    const { filter } = dto
+    const getHighStockInventoriesDto = new GetHighStockInventoriesDto({
+      ...dto,
+      filter: {
+        ...filter,
+        $expr: {
+          $gt: ['$stock', '$threshold']
+        }
+      }
+    })
+    const { page, limit } = getHighStockInventoriesDto
+    const highStockInventories = await InventoryRepository.findByFilterAndPagination(getHighStockInventoriesDto)
+
+    return {
+      pagination: {
+        page,
+        limit
+      },
+      inventories: highStockInventories
     }
   }
 }

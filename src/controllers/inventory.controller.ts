@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express'
 import InventoryService from '@/services/inventory.service'
 import {
   CreateNewInventoryDto,
+  GetHighStockInventoriesDto,
   GetInventoriesDto,
   SearchInventoriesDto,
   UpdateInventoryDto
@@ -10,6 +11,7 @@ import { Created, Ok } from '@/shared/responses/success.response'
 import {
   ICreateNewInventoryReqBody,
   IDeleteInventoryReqParams,
+  IGetHighStockInventoriesReqQuery,
   IGetInventoriesReqQuery,
   IGetInventoryReqParams,
   ISearchInventoriesReqQuery,
@@ -89,6 +91,20 @@ class InventoryController {
     new Ok({
       message: SuccessMessages.GET_INVENTORIES_SUCCESSFULLY,
       metadata: await InventoryService.searchInventories(searchInventoriesDto)
+    }).send(res)
+  }
+
+  getHighStockInventories = async (
+    req: Request<any, any, any, IGetHighStockInventoriesReqQuery>,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const getHighStockInventoriesDto = new GetHighStockInventoriesDto({
+      ...req.query
+    })
+    new Ok({
+      message: SuccessMessages.GET_HIGH_STOCK_INVENTORIES_SUCCESSFULLY,
+      metadata: await InventoryService.getHighStockInventories(getHighStockInventoriesDto)
     }).send(res)
   }
 }

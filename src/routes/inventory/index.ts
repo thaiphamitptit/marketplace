@@ -5,6 +5,7 @@ import inventoryController from '@/controllers/inventory.controller'
 import {
   createNewInventoryReqBody,
   deleteInventoryReqParams,
+  getHighStockInventoriesReqQuery,
   getInventoriesReqQuery,
   getInventoryReqParams,
   searchInventoriesReqQuery,
@@ -49,6 +50,11 @@ inventoryRoutes.delete(
   '/:inventoryId',
   validateSchema(deleteInventoryReqParams, 'params'),
   asyncHandler(inventoryController.deleteInventory)
+)
+inventoryRoutes.get(
+  '/high-stocks/all',
+  validateSchema(getHighStockInventoriesReqQuery, 'query'),
+  asyncHandler(inventoryController.getHighStockInventories)
 )
 
 export default inventoryRoutes
