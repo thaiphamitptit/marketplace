@@ -1,4 +1,5 @@
 import { Document } from 'mongoose'
+import { ParamsDictionary } from 'express-serve-static-core'
 
 export interface IDiscount extends Document {
   _id: string
@@ -56,5 +57,40 @@ export interface ICreateNewDiscountDto {
   maxValue: number | null
   usageLimit: number
   appliesTo: 'all' | 'specific'
+  products?: string[]
+}
+
+export interface IUpdateDiscountReqBody {
+  name?: string
+  thumb?: string
+  description?: string
+  code?: string
+  effectiveDate?: Date | string
+  expirationDate?: Date | string
+  type?: 'fixed amount' | 'percentage'
+  value?: number
+  maxValue?: number | null
+  usageLimit?: number
+  appliesTo?: 'all' | 'specific'
+  products?: string[]
+}
+
+export interface IUpdateDiscountReqParams extends ParamsDictionary {
+  discountId: string
+}
+
+export interface IUpdateDiscountDto {
+  seller: string
+  name?: string
+  thumb?: string
+  description?: string
+  code?: string
+  effectiveDate?: Date | string
+  expirationDate?: Date | string
+  type?: 'fixed amount' | 'percentage'
+  value?: number
+  maxValue?: number | null
+  usageLimit?: number
+  appliesTo?: 'all' | 'specific'
   products?: string[]
 }

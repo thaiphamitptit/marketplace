@@ -2,7 +2,11 @@ import { Router } from 'express'
 import { validateSchema } from '@/middlewares/validator.middleware'
 import { checkAuthentication, checkAuthorization } from '@/middlewares/auth.middleware'
 import discountController from '@/controllers/discount.controller'
-import { createNewDiscountReqBody } from '@/shared/validators/discount.validator'
+import {
+  createNewDiscountReqBody,
+  updateDiscountReqBody,
+  updateDiscountReqParams
+} from '@/shared/validators/discount.validator'
 import { authReqHeaders } from '@/shared/validators/auth.validator'
 import asyncHandler from '@/shared/helpers/async-handler'
 
@@ -15,6 +19,12 @@ discountRoutes.post(
   '',
   validateSchema(createNewDiscountReqBody, 'body'),
   asyncHandler(discountController.createNewDiscount)
+)
+discountRoutes.patch(
+  '/:discountId',
+  validateSchema(updateDiscountReqParams, 'params'),
+  validateSchema(updateDiscountReqBody, 'body'),
+  asyncHandler(discountController.updateDiscount)
 )
 
 export default discountRoutes

@@ -32,7 +32,10 @@ export enum ErrorMessages {
   INVENTORY_CAN_NOT_DELETED = 'Inventory can not deleted',
   INVALID_DISCOUNT_CODE = 'Invalid discount code',
   INVALID_PRODUCTS = 'Invalid products',
-  INVALID_DISCOUNT_VALUE = 'Invalid discount value'
+  INVALID_DISCOUNT_TYPE = 'Invalid discount type',
+  INVALID_DISCOUNT_VALUE = 'Invalid discount value',
+  DISCOUNT_NOT_FOUND = 'Discount not found',
+  DISCOUNT_CAN_NOT_UPDATED = 'Discount can not updated'
 }
 
 export enum SuccessMessages {
@@ -81,5 +84,6 @@ export enum SuccessMessages {
   SEARCH_INVENTORIES_SUCCESSFULLY = 'Search inventories successfully',
   GET_HIGH_STOCK_INVENTORIES_SUCCESSFULLY = 'Get high stock inventories successfully',
   GET_LOW_STOCK_INVENTORIES_SUCCESSFULLY = 'Get low stock inventories successfully',
-  CREATE_NEW_DISCOUNT_SUCCESSFULLY = 'Create new discount successfully'
+  CREATE_NEW_DISCOUNT_SUCCESSFULLY = 'Create new discount successfully',
+  UPDATE_DISCOUNT_SUCCESSFULLY = 'Update discount successfully'
 }
