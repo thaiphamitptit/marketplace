@@ -23,6 +23,17 @@ export default class ProductRepository {
     return await productModel.findOne(filter)
   }
 
+  static findByIdsAndSellerAndStatus = async (productIds: string[], seller: string, status: 'draft' | 'publish') => {
+    const filter = {
+      _id: {
+        $in: productIds
+      },
+      seller,
+      status
+    }
+    return await productModel.find(filter)
+  }
+
   static findByFilterAndPagination = async (dto: IGetProductsDto) => {
     const {
       filter = {

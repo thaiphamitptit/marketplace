@@ -5,6 +5,7 @@ import attributeRoutes from '@/routes/attribute'
 import productTypeRoutes from '@/routes/product-type'
 import productRoutes from '@/routes/product'
 import inventoryRoutes from '@/routes/inventory'
+import discountRoutes from '@/routes/discount'
 import { validateSchema } from '@/middlewares/validator.middleware'
 import { checkApiKey, checkPermission } from '@/middlewares/api-key.middleware'
 import { apiKeyReqHeaders } from '@/shared/validators/api-key.validator'
@@ -16,6 +17,7 @@ appRoutes.use(validateSchema(apiKeyReqHeaders, 'headers'), checkApiKey)
 appRoutes.use(checkPermission(['all']))
 
 /** Define all routes after middleware */
+appRoutes.use('/discounts', discountRoutes)
 appRoutes.use('/inventories', inventoryRoutes)
 appRoutes.use('/products', productRoutes)
 appRoutes.use('/product-types', productTypeRoutes)
