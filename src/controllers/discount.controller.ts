@@ -2,7 +2,12 @@ import { NextFunction, Request, Response } from 'express'
 import DiscountService from '@/services/discount.service'
 import { CreateNewDiscountDto, UpdateDiscountDto } from '@/shared/dtos/discount.dto'
 import { Created, Ok } from '@/shared/responses/success.response'
-import { ICreateNewDiscountReqBody, IUpdateDiscountReqBody, IUpdateDiscountReqParams } from '@/shared/types/discount'
+import {
+  ICreateNewDiscountReqBody,
+  IDeleteDiscountReqParams,
+  IUpdateDiscountReqBody,
+  IUpdateDiscountReqParams
+} from '@/shared/types/discount'
 import { IUserInfo } from '@/shared/types/user'
 import { SuccessMessages } from '@/shared/constants'
 
@@ -37,6 +42,14 @@ class DiscountController {
     new Ok({
       message: SuccessMessages.UPDATE_DISCOUNT_SUCCESSFULLY,
       metadata: await DiscountService.updateDiscount(discountId, updateDiscountDto)
+    }).send(res)
+  }
+
+  deleteDiscount = async (req: Request<IDeleteDiscountReqParams, any, any, any>, res: Response, next: NextFunction) => {
+    const { discountId } = req.params
+    new Ok({
+      message: SuccessMessages.DELETE_DISCOUNT_SUCCESSFULLY,
+      metadata: await DiscountService.deleteDiscount(discountId)
     }).send(res)
   }
 }

@@ -94,3 +94,7 @@ export interface IUpdateDiscountDto {
   appliesTo?: 'all' | 'specific'
   products?: string[]
 }
+
+export interface IDeleteDiscountReqParams extends ParamsDictionary {
+  discountId: string
+}

@@ -26,4 +26,8 @@ export default class DiscountRepository {
     }
     return await discountModel.findByIdAndUpdate(discountId, update, options)
   }
+
+  static deleteById = async (discountId: string) => {
+    return await discountModel.findByIdAndDelete(discountId)
+  }
 }

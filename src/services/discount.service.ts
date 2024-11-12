@@ -152,4 +152,32 @@ export default class DiscountService {
       discount: unGetInfoData(populatedDiscount.toObject(), ['redemptions', '__v'])
     }
   }
+
+  static deleteDiscount = async (discountId: string) => {
+    /** Check discount exists or not */
+    const discount = await DiscountRepository.findById(discountId)
+    if (!discount) {
+      throw new NotFound({
+        message: ErrorMessages.DISCOUNT_NOT_FOUND
+      })
+    }
+    /** Check condition delete discount */
+    const { usageCount } = discount
+    if (usageCount !== 0) {
+      throw new BadRequest({
+        message: ErrorMessages.DISCOUNT_CAN_NOT_DELETED
+      })
+    }
+    /** Delete discount */
+    const deletedDiscount = await DiscountRepository.deleteById(discountId)
+    if (!deletedDiscount) {
+      throw new NotFound({
+        message: ErrorMessages.DISCOUNT_NOT_FOUND
+      })
+    }
+
+    return {
+      discount: discountId
+    }
+  }
 }

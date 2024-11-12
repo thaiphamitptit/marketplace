@@ -4,6 +4,7 @@ import { checkAuthentication, checkAuthorization } from '@/middlewares/auth.midd
 import discountController from '@/controllers/discount.controller'
 import {
   createNewDiscountReqBody,
+  deleteDiscountReqParams,
   updateDiscountReqBody,
   updateDiscountReqParams
 } from '@/shared/validators/discount.validator'
@@ -25,6 +26,11 @@ discountRoutes.patch(
   validateSchema(updateDiscountReqParams, 'params'),
   validateSchema(updateDiscountReqBody, 'body'),
   asyncHandler(discountController.updateDiscount)
+)
+discountRoutes.delete(
+  '/:discountId',
+  validateSchema(deleteDiscountReqParams, 'params'),
+  asyncHandler(discountController.deleteDiscount)
 )
 
 export default discountRoutes

@@ -46,3 +46,7 @@ export const updateDiscountReqBody = Joi.object({
 export const updateDiscountReqParams = Joi.object({
   discountId: Joi.string().uuid().required()
 })
+
+export const deleteDiscountReqParams = Joi.object({
+  discountId: Joi.string().uuid().required()
+})
