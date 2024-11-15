@@ -151,3 +151,23 @@ export interface IGetDiscountsDto {
   order?: 'asc' | 'desc'
   select?: string[]
 }
+
+export interface ISearchDiscountsReqQuery extends ParsedQs {
+  keyword: string
+  filter?: IDiscountFilter
+  page?: number
+  limit?: number
+  sort?: 'name' | 'value' | 'effectiveDate' | 'expirationDate' | 'createdAt' | 'updatedAt'
+  order?: 'asc' | 'desc'
+  select?: string[]
+}
+
+export interface ISearchDiscountsDto {
+  keyword: string
+  filter?: IDiscountFilter
+  page?: number
+  limit?: number
+  sort?: 'name' | 'value' | 'effectiveDate' | 'expirationDate' | 'createdAt' | 'updatedAt'
+  order?: 'asc' | 'desc'
+  select?: string[]
+}

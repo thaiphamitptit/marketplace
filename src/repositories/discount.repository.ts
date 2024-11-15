@@ -1,5 +1,10 @@
 import { discountModel } from '@/models/discount.model'
-import { ICreateNewDiscountDto, IGetDiscountsDto, IUpdateDiscountDto } from '@/shared/types/discount'
+import {
+  ICreateNewDiscountDto,
+  IGetDiscountsDto,
+  ISearchDiscountsDto,
+  IUpdateDiscountDto
+} from '@/shared/types/discount'
 import { getSelectData } from '@/shared/utils'
 
 export default class DiscountRepository {
@@ -39,6 +44,39 @@ export default class DiscountRepository {
       }
     ]
     return await discountModel.find(filter).skip(offset).limit(limit).sort(arg).select(fields).populate(paths)
+  }
+
+  static findByKeywordFilterAndPagination = async (dto: ISearchDiscountsDto) => {
+    const {
+      keyword,
+      filter = {},
+      page = 1,
+      limit = 50,
+      sort = 'updatedAt',
+      order = 'desc',
+      select = ['code', 'name', 'thumb', 'effectiveDate', 'expirationDate', 'value', 'maxValue']
+    } = dto
+    const engine = {
+      ...filter,
+      $text: {
+        $search: keyword
+      }
+    }
+    const offset = (page - 1) * limit
+    const arg = {
+      score: {
+        $meta: 'textScore'
+      },
+      [sort]: order
+    }
+    const fields = getSelectData(select)
+    const paths = [
+      {
+        path: 'seller',
+        select: ['email', 'name']
+      }
+    ]
+    return await discountModel.find(engine).skip(offset).limit(limit).sort(arg).select(fields).populate(paths)
   }
 
   static updateById = async (discountId: string, dto: IUpdateDiscountDto) => {

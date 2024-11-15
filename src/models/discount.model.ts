@@ -101,4 +101,6 @@ const discountSchema = new Schema<IDiscount>(
   }
 )
 
+discountSchema.index({ code: 'text', name: 'text', description: 'text' })
+
 export const discountModel = model<IDiscount>(DOCUMENT_NAME, discountSchema)

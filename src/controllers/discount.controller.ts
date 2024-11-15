@@ -1,12 +1,18 @@
 import { NextFunction, Request, Response } from 'express'
 import DiscountService from '@/services/discount.service'
-import { CreateNewDiscountDto, GetDiscountsDto, UpdateDiscountDto } from '@/shared/dtos/discount.dto'
+import {
+  CreateNewDiscountDto,
+  GetDiscountsDto,
+  SearchDiscountsDto,
+  UpdateDiscountDto
+} from '@/shared/dtos/discount.dto'
 import { Created, Ok } from '@/shared/responses/success.response'
 import {
   ICreateNewDiscountReqBody,
   IDeleteDiscountReqParams,
   IGetDiscountReqParams,
   IGetDiscountsReqQuery,
+  ISearchDiscountsReqQuery,
   IUpdateDiscountReqBody,
   IUpdateDiscountReqParams
 } from '@/shared/types/discount'
@@ -70,6 +76,20 @@ class DiscountController {
     new Ok({
       message: SuccessMessages.GET_DISCOUNTS_SUCCESSFULLY,
       metadata: await DiscountService.getDiscounts(getDiscountsDto)
+    }).send(res)
+  }
+
+  searchDiscounts = async (
+    req: Request<any, any, any, ISearchDiscountsReqQuery>,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const searchDiscountsDto = new SearchDiscountsDto({
+      ...req.query
+    })
+    new Ok({
+      message: SuccessMessages.GET_DISCOUNTS_SUCCESSFULLY,
+      metadata: await DiscountService.searchDiscounts(searchDiscountsDto)
     }).send(res)
   }
 }

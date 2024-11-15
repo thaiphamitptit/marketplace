@@ -1,9 +1,19 @@
 import DiscountRepository from '@/repositories/discount.repository'
 import ProductRepository from '@/repositories/product.repository'
-import { CreateNewDiscountDto, GetDiscountsDto, UpdateDiscountDto } from '@/shared/dtos/discount.dto'
+import {
+  CreateNewDiscountDto,
+  GetDiscountsDto,
+  SearchDiscountsDto,
+  UpdateDiscountDto
+} from '@/shared/dtos/discount.dto'
 import { BadRequest, NotFound } from '@/shared/responses/error.response'
 import { unGetInfoData } from '@/shared/utils'
-import { ICreateNewDiscountDto, IGetDiscountsDto, IUpdateDiscountDto } from '@/shared/types/discount'
+import {
+  ICreateNewDiscountDto,
+  IGetDiscountsDto,
+  ISearchDiscountsDto,
+  IUpdateDiscountDto
+} from '@/shared/types/discount'
 import { ErrorMessages } from '@/shared/constants'
 
 export default class DiscountService {
@@ -217,6 +227,23 @@ export default class DiscountService {
         limit
       },
       discounts: foundDiscounts
+    }
+  }
+
+  static searchDiscounts = async (dto: ISearchDiscountsDto) => {
+    /** Search discounts combined filter and pagination */
+    const searchDiscountsDto = new SearchDiscountsDto({
+      ...dto
+    })
+    const { page, limit } = searchDiscountsDto
+    const foundDiscounts = await DiscountRepository.findByKeywordFilterAndPagination(searchDiscountsDto)
+
+    return {
+      pagination: {
+        page,
+        limit
+      },
+      inventories: foundDiscounts
     }
   }
 }
