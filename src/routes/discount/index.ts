@@ -6,6 +6,7 @@ import {
   createNewDiscountReqBody,
   deleteDiscountReqParams,
   getDiscountReqParams,
+  getDiscountsReqQuery,
   updateDiscountReqBody,
   updateDiscountReqParams
 } from '@/shared/validators/discount.validator'
@@ -14,6 +15,7 @@ import asyncHandler from '@/shared/helpers/async-handler'
 
 const discountRoutes = Router()
 
+discountRoutes.get('', validateSchema(getDiscountsReqQuery, 'query'), asyncHandler(discountController.getDiscounts))
 discountRoutes.get(
   '/:discountId',
   validateSchema(getDiscountReqParams, 'params'),

@@ -88,5 +88,6 @@ export enum SuccessMessages {
   CREATE_NEW_DISCOUNT_SUCCESSFULLY = 'Create new discount successfully',
   UPDATE_DISCOUNT_SUCCESSFULLY = 'Update discount successfully',
   DELETE_DISCOUNT_SUCCESSFULLY = 'Delete discount successfully',
-  GET_DISCOUNT_SUCCESSFULLY = 'Get discount successfully'
+  GET_DISCOUNT_SUCCESSFULLY = 'Get discount successfully',
+  GET_DISCOUNTS_SUCCESSFULLY = 'Get discounts successfully'
 }

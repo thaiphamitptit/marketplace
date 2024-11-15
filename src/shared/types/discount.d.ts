@@ -1,5 +1,6 @@
 import { Document } from 'mongoose'
 import { ParamsDictionary } from 'express-serve-static-core'
+import { ParsedQs } from 'qs'
 
 export interface IDiscount extends Document {
   _id: string
@@ -27,6 +28,36 @@ export interface IDiscountRedemption {
   user: string
   cart: string
   amount: number
+}
+
+export interface IDiscountFilter {
+  _id?: string
+  seller?: string
+  type?: 'fixed amount' | 'percentage'
+  appliesTo?: 'specific' | 'all'
+  products?: {
+    $in?: string[]
+  }
+  value?: {
+    $gte: number
+    $lte: number
+  }
+  effectiveDate?: {
+    $gte?: Date | string
+    $lte?: Date | string
+  }
+  expirationDate?: {
+    $gte?: Date | string
+    $lte?: Date | string
+  }
+  createdAt?: {
+    $gte?: Date | string
+    $lte?: Date | string
+  }
+  updatedAt?: {
+    $gte?: Date | string
+    $lte?: Date | string
+  }
 }
 
 export interface ICreateNewDiscountReqBody {
@@ -101,4 +132,22 @@ export interface IDeleteDiscountReqParams extends ParamsDictionary {
 
 export interface IGetDiscountReqParams extends ParamsDictionary {
   discountId: string
+}
+
+export interface IGetDiscountsReqQuery extends ParsedQs {
+  filter?: IDiscountFilter
+  page?: number
+  limit?: number
+  sort?: 'name' | 'value' | 'effectiveDate' | 'expirationDate' | 'createdAt' | 'updatedAt'
+  order?: 'asc' | 'desc'
+  select?: string[]
+}
+
+export interface IGetDiscountsDto {
+  filter?: IDiscountFilter
+  page?: number
+  limit?: number
+  sort?: 'name' | 'value' | 'effectiveDate' | 'expirationDate' | 'createdAt' | 'updatedAt'
+  order?: 'asc' | 'desc'
+  select?: string[]
 }

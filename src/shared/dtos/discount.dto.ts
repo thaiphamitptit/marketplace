@@ -1,4 +1,4 @@
-import { ICreateNewDiscountDto, IUpdateDiscountDto } from '@/shared/types/discount'
+import { ICreateNewDiscountDto, IDiscountFilter, IGetDiscountsDto, IUpdateDiscountDto } from '@/shared/types/discount'
 
 export class CreateNewDiscountDto {
   seller: string
@@ -89,5 +89,30 @@ export class UpdateDiscountDto {
     this.usageLimit = usageLimit
     this.appliesTo = appliesTo
     this.products = products
+  }
+}
+
+export class GetDiscountsDto {
+  filter: IDiscountFilter
+  page: number
+  limit: number
+  sort: 'name' | 'value' | 'effectiveDate' | 'expirationDate' | 'createdAt' | 'updatedAt'
+  order: 'asc' | 'desc'
+  select: string[]
+
+  constructor({
+    filter = {},
+    page = 1,
+    limit = 50,
+    sort = 'updatedAt',
+    order = 'desc',
+    select = ['code', 'name', 'thumb', 'effectiveDate', 'expirationDate', 'value', 'maxValue']
+  }: IGetDiscountsDto) {
+    this.filter = filter
+    this.page = page
+    this.limit = limit
+    this.sort = sort
+    this.order = order
+    this.select = select
   }
 }
