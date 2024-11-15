@@ -180,4 +180,26 @@ export default class DiscountService {
       discount: discountId
     }
   }
+
+  static getDiscount = async (discountId: string) => {
+    /** Get discount */
+    const foundDiscount = await DiscountRepository.findById(discountId)
+    if (!foundDiscount) {
+      throw new NotFound({
+        message: ErrorMessages.DISCOUNT_NOT_FOUND
+      })
+    }
+    /** Populate discount */
+    const paths = [
+      {
+        path: 'products',
+        select: ['name', 'thumb', 'pricing', 'rating']
+      }
+    ]
+    const populatedDiscount = await foundDiscount.populate(paths)
+
+    return {
+      discount: unGetInfoData(populatedDiscount.toObject(), ['redemptions', '__v'])
+    }
+  }
 }

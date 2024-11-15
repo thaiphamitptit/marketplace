@@ -87,5 +87,6 @@ export enum SuccessMessages {
   GET_LOW_STOCK_INVENTORIES_SUCCESSFULLY = 'Get low stock inventories successfully',
   CREATE_NEW_DISCOUNT_SUCCESSFULLY = 'Create new discount successfully',
   UPDATE_DISCOUNT_SUCCESSFULLY = 'Update discount successfully',
-  DELETE_DISCOUNT_SUCCESSFULLY = 'Delete discount successfully'
+  DELETE_DISCOUNT_SUCCESSFULLY = 'Delete discount successfully',
+  GET_DISCOUNT_SUCCESSFULLY = 'Get discount successfully'
 }

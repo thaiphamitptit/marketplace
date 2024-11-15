@@ -98,3 +98,7 @@ export interface IUpdateDiscountDto {
 export interface IDeleteDiscountReqParams extends ParamsDictionary {
   discountId: string
 }
+
+export interface IGetDiscountReqParams extends ParamsDictionary {
+  discountId: string
+}

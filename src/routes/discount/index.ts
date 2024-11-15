@@ -5,6 +5,7 @@ import discountController from '@/controllers/discount.controller'
 import {
   createNewDiscountReqBody,
   deleteDiscountReqParams,
+  getDiscountReqParams,
   updateDiscountReqBody,
   updateDiscountReqParams
 } from '@/shared/validators/discount.validator'
@@ -12,6 +13,12 @@ import { authReqHeaders } from '@/shared/validators/auth.validator'
 import asyncHandler from '@/shared/helpers/async-handler'
 
 const discountRoutes = Router()
+
+discountRoutes.get(
+  '/:discountId',
+  validateSchema(getDiscountReqParams, 'params'),
+  asyncHandler(discountController.getDiscount)
+)
 
 discountRoutes.use(validateSchema(authReqHeaders, 'headers'), checkAuthentication)
 discountRoutes.use(checkAuthorization(['admin', 'seller']))

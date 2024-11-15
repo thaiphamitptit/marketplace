@@ -5,6 +5,7 @@ import { Created, Ok } from '@/shared/responses/success.response'
 import {
   ICreateNewDiscountReqBody,
   IDeleteDiscountReqParams,
+  IGetDiscountReqParams,
   IUpdateDiscountReqBody,
   IUpdateDiscountReqParams
 } from '@/shared/types/discount'
@@ -50,6 +51,14 @@ class DiscountController {
     new Ok({
       message: SuccessMessages.DELETE_DISCOUNT_SUCCESSFULLY,
       metadata: await DiscountService.deleteDiscount(discountId)
+    }).send(res)
+  }
+
+  getDiscount = async (req: Request<IGetDiscountReqParams, any, any, any>, res: Response, next: NextFunction) => {
+    const { discountId } = req.params
+    new Ok({
+      message: SuccessMessages.GET_DISCOUNT_SUCCESSFULLY,
+      metadata: await DiscountService.getDiscount(discountId)
     }).send(res)
   }
 }
