@@ -2,6 +2,7 @@ import { inventoryModel } from '@/models/inventory.model'
 import {
   ICreateNewInventoryDto,
   IGetInventoriesDto,
+  IInventoryReservation,
   ISearchInventoriesDto,
   IUpdateInventoryDto
 } from '@/shared/types/inventory'
@@ -19,6 +20,19 @@ export default class InventoryRepository {
   static findByProduct = async (productId: string) => {
     const filter = {
       product: productId
+    }
+    return await inventoryModel.findOne(filter)
+  }
+
+  static findByProductAndReservation = async (productId: string, reservation: IInventoryReservation) => {
+    const { cart: cartId } = reservation
+    const filter = {
+      product: productId,
+      reservations: {
+        $elemMatch: {
+          cart: cartId
+        }
+      }
     }
     return await inventoryModel.findOne(filter)
   }
@@ -91,6 +105,57 @@ export default class InventoryRepository {
       new: true
     }
     return await inventoryModel.findByIdAndUpdate(inventoryId, update, options)
+  }
+
+  static updateByModifyingStock = async (productId: string, offset: number) => {
+    const filter = {
+      product: productId
+    }
+    const update = {
+      $inc: {
+        stock: offset
+      }
+    }
+    const options = {
+      new: true
+    }
+    return await inventoryModel.findOneAndUpdate(filter, update, options)
+  }
+
+  static updateByAddingReservation = async (productId: string, reservation: IInventoryReservation) => {
+    const filter = {
+      product: productId
+    }
+    const update = {
+      $addToSet: {
+        reservations: reservation
+      }
+    }
+    const options = {
+      new: true
+    }
+    return await inventoryModel.findOneAndUpdate(filter, update, options)
+  }
+
+  static updateByModifyingReservation = async (productId: string, reservation: IInventoryReservation) => {
+    const { cart: cartId, quantity } = reservation
+    const filter = {
+      product: productId,
+      reservations: {
+        $elemMatch: {
+          cart: cartId
+        }
+      }
+    }
+    const update = {
+      $inc: {
+        'reservations.$.quantity': quantity
+      }
+    }
+    const options = {
+      new: true
+    }
+    return await inventoryModel.findOneAndUpdate(filter, update, options)
   }
 
   static deleteById = async (inventoryId: string) => {

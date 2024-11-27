@@ -2,8 +2,10 @@ import bcrypt from 'bcrypt'
 import { generateKeyPairSync, randomBytes } from 'crypto'
 import UserRepository from '@/repositories/user.repository'
 import KeyStoreRepository from '@/repositories/key-store.repository'
+import CartRepository from '@/repositories/cart.repository'
 import { CreateNewUserDto } from '@/shared/dtos/user.dto'
 import { CreateNewKeyStoreDto } from '@/shared/dtos/key-store.dto'
+import { CreateNewCartDto } from '@/shared/dtos/cart.dto'
 import { AuthFailure, BadRequest, Forbidden } from '@/shared/responses/error.response'
 import { generateTokenPair } from '@/shared/helpers/jwt-handler'
 import { getInfoData } from '@/shared/utils'
@@ -103,7 +105,6 @@ export default class AccessService {
       },
       secretOrPrivateKey: privateKey
     })
-    /** Create new key store */
     const createNewKeyStoreDto = new CreateNewKeyStoreDto({
       user: userId,
       privateKey,
@@ -111,7 +112,12 @@ export default class AccessService {
       refreshToken: tokens.refreshToken,
       refreshTokensUsed: []
     })
-    await KeyStoreRepository.createNew(createNewKeyStoreDto)
+    const createNewCartDto = new CreateNewCartDto({
+      user: userId
+    })
+    /** Create new key store */
+    /** Create new cart */
+    await Promise.all([KeyStoreRepository.createNew(createNewKeyStoreDto), CartRepository.createNew(createNewCartDto)])
 
     return {
       user: getInfoData(user.toObject(), ['_id', 'email']),

@@ -36,7 +36,10 @@ export enum ErrorMessages {
   INVALID_DISCOUNT_VALUE = 'Invalid discount value',
   DISCOUNT_NOT_FOUND = 'Discount not found',
   DISCOUNT_CAN_NOT_UPDATED = 'Discount can not updated',
-  DISCOUNT_CAN_NOT_DELETED = 'Discount can not deleted'
+  DISCOUNT_CAN_NOT_DELETED = 'Discount can not deleted',
+  INVALID_CART_ITEMS = 'Invalid cart items',
+  INVALID_CART_ITEMS_QUANTITY = 'Invalid cart items quantity',
+  CART_NOT_FOUND = 'Cart not found'
 }
 
 export enum SuccessMessages {
@@ -90,5 +93,6 @@ export enum SuccessMessages {
   DELETE_DISCOUNT_SUCCESSFULLY = 'Delete discount successfully',
   GET_DISCOUNT_SUCCESSFULLY = 'Get discount successfully',
   GET_DISCOUNTS_SUCCESSFULLY = 'Get discounts successfully',
-  SEARCH_DISCOUNTS_SUCCESSFULLY = 'Search discount successfully'
+  SEARCH_DISCOUNTS_SUCCESSFULLY = 'Search discount successfully',
+  ADD_ITEMS_TO_CART_SUCCESSFULLY = 'Add items to cart successfully'
 }
