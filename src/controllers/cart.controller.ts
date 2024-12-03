@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from 'express'
 import CartService from '@/services/cart.service'
 import { Ok } from '@/shared/responses/success.response'
-import { AddItemsToCartDto } from '@/shared/dtos/cart.dto'
-import { IAddItemsToCartReqBody } from '@/shared/types/cart'
+import { AddItemsToCartDto, UpdateItemInCartDto } from '@/shared/dtos/cart.dto'
+import { IAddItemsToCartReqBody, IUpdateItemInCartReqBody } from '@/shared/types/cart'
 import { IUserInfo } from '@/shared/types/user'
 import { SuccessMessages } from '@/shared/constants'
 
@@ -16,6 +16,21 @@ class CartController {
     new Ok({
       message: SuccessMessages.ADD_ITEMS_TO_CART_SUCCESSFULLY,
       metadata: await CartService.addItemsToCart(addItemsToCartDto)
+    }).send(res)
+  }
+
+  updateItemInCart = async (
+    req: Request<any, any, IUpdateItemInCartReqBody, any>,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const { user: userId } = req.userInfo as IUserInfo
+    const updateItemInCartDto = new UpdateItemInCartDto({
+      ...req.body
+    })
+    new Ok({
+      message: SuccessMessages.UPDATE_ITEM_IN_CART_SUCCESSFULLY,
+      metadata: await CartService.updateItemInCart(userId, updateItemInCartDto)
     }).send(res)
   }
 }

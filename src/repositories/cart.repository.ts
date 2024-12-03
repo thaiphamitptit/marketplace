@@ -30,6 +30,19 @@ export default class CartRepository {
     return await cartModel.findOne(filter)
   }
 
+  static findByUserAndItemProduct = async (userId: string, productId: string) => {
+    const filter = {
+      user: userId,
+      items: {
+        $elemMatch: {
+          product: productId
+        }
+      },
+      status: 'active'
+    }
+    return await cartModel.findOne(filter)
+  }
+
   static updateByAddingItem = async (userId: string, item: ICartItem) => {
     const filter = {
       user: userId,

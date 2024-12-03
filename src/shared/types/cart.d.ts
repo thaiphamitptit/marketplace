@@ -30,3 +30,13 @@ export interface ICreateNewCartDto {
   user: string
   items?: ICartItem[]
 }
+
+export interface IUpdateItemInCartReqBody {
+  product: string
+  quantity: number
+}
+
+export interface IUpdateItemInCartDto {
+  product: string
+  quantity: number
+}

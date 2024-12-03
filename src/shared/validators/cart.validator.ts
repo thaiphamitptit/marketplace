@@ -11,3 +11,8 @@ export const addItemsToCartReqBody = Joi.object({
     .unique((a, b) => a.product === b.product)
     .required()
 })
+
+export const updateItemInCartReqBody = Joi.object({
+  product: Joi.string().uuid().required(),
+  quantity: Joi.number().integer().required()
+})

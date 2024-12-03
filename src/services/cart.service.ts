@@ -2,7 +2,7 @@ import CartRepository from '@/repositories/cart.repository'
 import ProductRepository from '@/repositories/product.repository'
 import InventoryRepository from '@/repositories/inventory.repository'
 import { CreateNewCartDto } from '@/shared/dtos/cart.dto'
-import { IAddItemsToCartDto } from '@/shared/types/cart'
+import { IAddItemsToCartDto, IUpdateItemInCartDto } from '@/shared/types/cart'
 import { BadRequest, NotFound } from '@/shared/responses/error.response'
 import { unGetInfoData } from '@/shared/utils'
 import { ErrorMessages } from '@/shared/constants'
@@ -87,6 +87,64 @@ export default class CartService {
 
     return {
       cart: unGetInfoData(newCart.toObject(), ['__v'])
+    }
+  }
+
+  static updateItemInCart = async (userId: string, dto: IUpdateItemInCartDto) => {
+    const { product: productId, quantity } = dto
+    /** Check cart item exists or not */
+    const product = await ProductRepository.findByIdAndStatus(productId, 'publish')
+    if (!product) {
+      throw new NotFound({
+        message: ErrorMessages.CART_ITEM_NOT_FOUND
+      })
+    }
+    /** Check cart exists or not */
+    const cart = await CartRepository.findByUserAndItemProduct(userId, productId)
+    if (!cart) {
+      throw new NotFound({
+        message: ErrorMessages.CART_NOT_FOUND
+      })
+    }
+    /** Update cart item */
+    const { stock } = product
+    await Promise.all(
+      cart.items.map(async (item) => {
+        if (productId === item.product) {
+          if (quantity - item.quantity > stock) {
+            throw new BadRequest({
+              message: ErrorMessages.INVALID_CART_ITEM_QUANTITY
+            })
+          }
+          const cartItem = {
+            product: productId,
+            quantity: quantity - item.quantity
+          }
+          await CartRepository.updateByModifyingItem(userId, cartItem)
+          /** Update product inventory stock */
+          await Promise.all([
+            InventoryRepository.updateByModifyingStock(productId, item.quantity - quantity),
+            ProductRepository.updateByModifyingStock(productId, item.quantity - quantity)
+          ])
+          /** Update inventory reservations */
+          const { _id: cartId } = cart
+          const reservation = {
+            cart: cartId,
+            quantity: quantity - item.quantity
+          }
+          await InventoryRepository.updateByModifyingReservation(productId, reservation)
+        }
+      })
+    )
+    /** Update cart */
+    const updatedCart = await CartRepository.findByUserAndStatus(userId, 'active')
+    if (!updatedCart) {
+      throw new NotFound({
+        message: ErrorMessages.CART_NOT_FOUND
+      })
+    }
+    return {
+      cart: unGetInfoData(updatedCart.toObject(), ['__v'])
     }
   }
 }
