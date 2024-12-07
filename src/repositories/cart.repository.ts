@@ -81,4 +81,28 @@ export default class CartRepository {
     }
     return await cartModel.findOneAndUpdate(filter, update, options)
   }
+
+  static updateByRemovingItem = async (userId: string, item: ICartItem) => {
+    const { product: productId } = item
+    const filter = {
+      user: userId,
+      items: {
+        $elemMatch: {
+          product: productId
+        }
+      },
+      status: 'active'
+    }
+    const update = {
+      $pull: {
+        items: {
+          product: productId
+        }
+      }
+    }
+    const options = {
+      new: true
+    }
+    return await cartModel.findOneAndUpdate(filter, update, options)
+  }
 }

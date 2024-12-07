@@ -1,4 +1,10 @@
-import { IAddItemsToCartDto, ICartItem, ICreateNewCartDto, IUpdateItemInCartDto } from '@/shared/types/cart'
+import {
+  IAddItemsToCartDto,
+  ICartItem,
+  ICreateNewCartDto,
+  IDeleteItemFromCartDto,
+  IUpdateItemInCartDto
+} from '@/shared/types/cart'
 
 export class AddItemsToCartDto {
   user: string
@@ -27,5 +33,13 @@ export class UpdateItemInCartDto {
   constructor({ product, quantity }: IUpdateItemInCartDto) {
     this.product = product
     this.quantity = quantity
+  }
+}
+
+export class DeleteItemFromCartDto {
+  product: string
+
+  constructor({ product }: IDeleteItemFromCartDto) {
+    this.product = product
   }
 }

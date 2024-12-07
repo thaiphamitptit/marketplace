@@ -2,7 +2,7 @@ import CartRepository from '@/repositories/cart.repository'
 import ProductRepository from '@/repositories/product.repository'
 import InventoryRepository from '@/repositories/inventory.repository'
 import { CreateNewCartDto } from '@/shared/dtos/cart.dto'
-import { IAddItemsToCartDto, IUpdateItemInCartDto } from '@/shared/types/cart'
+import { IAddItemsToCartDto, IDeleteItemFromCartDto, IUpdateItemInCartDto } from '@/shared/types/cart'
 import { BadRequest, NotFound } from '@/shared/responses/error.response'
 import { unGetInfoData } from '@/shared/utils'
 import { ErrorMessages } from '@/shared/constants'
@@ -145,6 +145,52 @@ export default class CartService {
     }
     return {
       cart: unGetInfoData(updatedCart.toObject(), ['__v'])
+    }
+  }
+
+  static deleteItemFromCart = async (userId: string, dto: IDeleteItemFromCartDto) => {
+    const { product: productId } = dto
+    /** Check cart item exists or not */
+    const product = await ProductRepository.findByIdAndStatus(productId, 'publish')
+    if (!product) {
+      throw new NotFound({
+        message: ErrorMessages.CART_ITEM_NOT_FOUND
+      })
+    }
+    /** Check cart exists or not */
+    const cart = await CartRepository.findByUserAndItemProduct(userId, productId)
+    if (!cart) {
+      throw new NotFound({
+        message: ErrorMessages.CART_NOT_FOUND
+      })
+    }
+    /** Update cart item */
+    await Promise.all(
+      cart.items.map(async (item) => {
+        if (productId === item.product) {
+          const cartItem = {
+            product: productId,
+            quantity: item.quantity
+          }
+          await CartRepository.updateByRemovingItem(userId, cartItem)
+          /** Update product inventory stock */
+          await Promise.all([
+            InventoryRepository.updateByModifyingStock(productId, item.quantity),
+            ProductRepository.updateByModifyingStock(productId, item.quantity)
+          ])
+          /** Update inventory reservations */
+          const { _id: cartId } = cart
+          const reservation = {
+            cart: cartId,
+            quantity: item.quantity
+          }
+          await InventoryRepository.updateByRemovingReservation(productId, reservation)
+        }
+      })
+    )
+
+    return {
+      item: productId
     }
   }
 }

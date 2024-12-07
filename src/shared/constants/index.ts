@@ -97,5 +97,6 @@ export enum SuccessMessages {
   GET_DISCOUNTS_SUCCESSFULLY = 'Get discounts successfully',
   SEARCH_DISCOUNTS_SUCCESSFULLY = 'Search discount successfully',
   ADD_ITEMS_TO_CART_SUCCESSFULLY = 'Add items to cart successfully',
-  UPDATE_ITEM_IN_CART_SUCCESSFULLY = 'Update item in cart successfully'
+  UPDATE_ITEM_IN_CART_SUCCESSFULLY = 'Update item in cart successfully',
+  DELETE_ITEM_FROM_CART_SUCCESSFULLY = 'Delete item from cart successfully'
 }

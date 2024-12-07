@@ -16,3 +16,7 @@ export const updateItemInCartReqBody = Joi.object({
   product: Joi.string().uuid().required(),
   quantity: Joi.number().integer().required()
 })
+
+export const deleteItemFromCartReqBody = Joi.object({
+  product: Joi.string().uuid().required()
+})

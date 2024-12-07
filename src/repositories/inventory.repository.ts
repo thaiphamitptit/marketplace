@@ -158,6 +158,29 @@ export default class InventoryRepository {
     return await inventoryModel.findOneAndUpdate(filter, update, options)
   }
 
+  static updateByRemovingReservation = async (productId: string, reservation: IInventoryReservation) => {
+    const { cart: cartId } = reservation
+    const filter = {
+      product: productId,
+      reservations: {
+        $elemMatch: {
+          cart: cartId
+        }
+      }
+    }
+    const update = {
+      $pull: {
+        reservations: {
+          cart: cartId
+        }
+      }
+    }
+    const options = {
+      new: true
+    }
+    return await inventoryModel.findOneAndUpdate(filter, update, options)
+  }
+
   static deleteById = async (inventoryId: string) => {
     return await inventoryModel.findByIdAndDelete(inventoryId)
   }

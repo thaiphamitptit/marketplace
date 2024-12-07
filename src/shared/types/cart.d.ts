@@ -40,3 +40,11 @@ export interface IUpdateItemInCartDto {
   product: string
   quantity: number
 }
+
+export interface IDeleteItemFromCartReqBody {
+  product: string
+}
+
+export interface IDeleteItemFromCartDto {
+  product: string
+}
